@@ -10,6 +10,10 @@
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 Cu.import("resource://gre/modules/Services.jsm");
 
+const PREF_BRANCH = "extensions.lwthemes-manager@loucypher.";
+let prefs = Services.prefs.getBranch(PREF_BRANCH);
+let RESOURCE_NAME;
+
 function log(aString) {
   Services.console.logStringMessage("LW Themes:\n" + aString);
 }
@@ -20,8 +24,6 @@ function resProtocolHandler(aResourceName, aURI) {
              .setSubstitution(aResourceName, aURI, null)
 }
 
-let RESOURCE_NAME;
-
 function main(aWindow) {
   resProtocolHandler("lwthemes", Services.io.newURI("chrome://lwthemes/content/", null, null));
 
@@ -30,32 +32,45 @@ function main(aWindow) {
   function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
   function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
 
+  function lwThemes() {
+    let url = "resource://lwthemes/";
+    if ("switchToTabHavingURI" in aWindow)
+      // Firefox/SeaMonkey
+      aWindow.switchToTabHavingURI(url, true);
+    else
+      // Thunderbird
+      aWindow.openContentTab(url, "tab", "^https?:");
+  }
+
   function addMenuItem() {
     let menuitem = document.createElement("menuitem");
     menuitem.className = "lwthemes menuitem-iconic";
     menuitem.setAttribute("label", "Light Weight Themes");
     menuitem.setAttribute("image", "chrome://mozapps/skin/extensions/category-themes.png");
-    menuitem.addEventListener("command", function() {
-      let url = "resource://lwthemes/";
-      if ("switchToTabHavingURI" in aWindow)
-        aWindow.switchToTabHavingURI(url, true);
-      else
-        aWindow.openContentTab(url, "tab", "^https?:");
-    })
+    menuitem.addEventListener("command", lwThemes);
     return menuitem;
   }
 
-  let menuT = $("#menu_openAddons") || $("#addonsManager");
-  if (menuT)
-    menuT.parentNode.insertBefore(addMenuItem(), menuT.nextSibling);
-
+  // Firefox app menu
   let menuA = $("#appmenu_preferences");
   if (menuA)
     menuA.parentNode.insertBefore(addMenuItem(), menuA.nextSibling);
 
+  // Firefox/Thunderbird Tools menu
+  let menuT = $("#menu_openAddons") || $("#addonsManager");
+  if (menuT)
+    menuT.parentNode.insertBefore(addMenuItem(), menuT.nextSibling);
+
+  // SeaMonkey View > Apply Theme menu
   let menuV = $("#menu_viewApplyTheme_Popup menuseparator");
   if (menuV)
     menuV.parentNode.insertBefore(addMenuItem(), menuV);
+
+  // Run lwThemes() on installation
+  if (prefs.getBoolPref("firstRun")) {
+    prefs.setBoolPref("firstRun", false);
+    lwThemes();
+  }
 
   unload(function() {
     let items = $$(".lwthemes");
@@ -101,9 +116,15 @@ function shutdown(data, reason) {
 /**
  * Handle the add-on being installed
  */
-function install(data, reason) {}
+function install(data, reason) {
+  // Set default prefs value
+  Services.prefs.getDefaultBranch(PREF_BRANCH).setBoolPref("firstRun", true);
+}
 
 /**
  * Handle the add-on being uninstalled
  */
-function uninstall(data, reason) {}
+function uninstall(data, reason) {
+  // Remove prefs
+  prefs.clearUserPref("firstRun");
+}
