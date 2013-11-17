@@ -1,7 +1,11 @@
 <!ENTITY page.title                 "Light Weight Themes">
 <!ENTITY page.nothemes              "No themes installed">
+<!ENTITY page.getthemes             "Get themes">
+<!ENTITY page.getthemes.or          "or">
+<!ENTITY page.solidcolortheme       "solid color theme">
+<!ENTITY theme.author.by            "by">
 <!ENTITY theme.link.tooltip         "Visit home page">
 <!ENTITY theme.button.wear.label    "Wear">
 <!ENTITY theme.button.wear.tooltip  "Wear this theme">
-<!ENTITY theme.button.stop.label    "Stop">
+<!ENTITY theme.button.stop.label    "Take it off">
 <!ENTITY theme.button.stop.tooltip  "Stop wearing this theme">

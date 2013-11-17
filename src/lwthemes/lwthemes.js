@@ -130,7 +130,7 @@ function themeBox(aTheme) {
     $(".theme-title", box).textContent = name;
 
   if (author)
-    $(".theme-author", box).textContent = "by " + author;
+    $(".theme-author", box).textContent += author;
 
   if (description)
     $(".theme-description", box).innerHTML = description;

@@ -1,7 +1,11 @@
 <!ENTITY page.title                 "Light Weight Themes">
 <!ENTITY page.nothemes              "Tidak ada tema yang diinstall">
+<!ENTITY page.getthemes             "Dapatkan tema">
+<!ENTITY page.getthemes.or          "atau">
+<!ENTITY page.solidcolortheme       "tema warna">
+<!ENTITY theme.author.by            "oleh">
 <!ENTITY theme.link.tooltip         "Kunjungi beranda">
-<!ENTITY theme.button.wear.label    "Pakai">
-<!ENTITY theme.button.wear.tooltip  "Pakai tema ini">
-<!ENTITY theme.button.stop.label    "Hentikan">
+<!ENTITY theme.button.wear.label    "Kenakan">
+<!ENTITY theme.button.wear.tooltip  "Kenakan tema ini">
+<!ENTITY theme.button.stop.label    "Tanggalkan">
 <!ENTITY theme.button.stop.tooltip  "Berhenti memakai tema ini">

@@ -9,11 +9,11 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-  <meta charset="utf-8"/>
-  <title>&page.title;</title>
-  <link rel="stylesheet" href="lwthemes.css"/>
-  <link rel="shortcut icon" href="chrome://mozapps/skin/extensions/category-themes.png"/>
-  <script type="application/x-javascript" src="lwthemes.js"></script>
+    <meta charset="utf-8"/>
+    <title>&page.title;</title>
+    <link rel="stylesheet" href="lwthemes.css"/>
+    <link rel="shortcut icon" href="chrome://mozapps/skin/extensions/category-themes.png"/>
+    <script type="application/x-javascript" src="lwthemes.js"></script>
   </head>
 
   <body onload="load();" onunload="unload();">
@@ -28,7 +28,7 @@
             </a>
           </div>
           <h2 class="theme-title"><a title="&theme.link.tooltip;"></a></h2>
-          <span class="theme-author"></span>
+          <span class="theme-author">&theme.author.by; </span>
         </header>
         <p class="theme-description"></p>
         <button class="install" title="&theme.button.wear.tooltip;"
@@ -40,8 +40,9 @@
       </article>
       <article id="no-themes" class="hidden">
         <p>
-          &page.nothemes;. Get <a href="https://addons.mozilla.org/themes/">themes</a>
-          or <a href="http://loucypher.github.io/personas/">solid color theme</a>.
+          &page.nothemes;. <a href="https://addons.mozilla.org/themes/">&page.getthemes;</a>
+          &page.getthemes.or;
+          <a href="http://loucypher.github.io/personas/">&page.solidcolortheme;</a>.
         </p>
       </article>
       <div class="clear"></div>
@@ -49,7 +50,7 @@
     <footer>
       <p>
         <a href="https://addons.mozilla.org/addon/lwthemes/">Light Weight Themes Manager</a>
-        by <a href="https://addons.mozilla.org/user/LouCypher/">Zulkarnain K</a>.
+        &theme.author.by; <a href="https://addons.mozilla.org/user/LouCypher/">Zulkarnain K</a>.
       </p>
     </footer>
   </body>
