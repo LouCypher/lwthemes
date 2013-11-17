@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html SYSTEM "chrome://lwthemes/locale/lwthemes.dtd">
 <!--
     This Source Code Form is subject to the terms of the Mozilla Public
     License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -7,40 +7,40 @@
     Contributor(s):
     - LouCypher (original code)
 -->
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
   <meta charset="utf-8"/>
-  <title>Light Weight Themes</title>
+  <title>&page.title;</title>
   <link rel="stylesheet" href="lwthemes.css"/>
   <link rel="shortcut icon" href="chrome://mozapps/skin/extensions/category-themes.png"/>
   <script type="application/x-javascript" src="lwthemes.js"></script>
   </head>
 
   <body onload="load();" onunload="unload();">
-    <header><h1>Light Weight Themes</h1></header>
+    <header><h1>&page.title;</h1></header>
     <section>
       <article id="template" class="theme">
         <header>
           <div class="image">
-            <a title="Visit homepage">
+            <a title="&theme.link.tooltip;">
               <img onmouseenter="setTheme(this, PREVIEW);"
                    onmouseleave="setTheme(this, RESET_PREVIEW);"/>
             </a>
           </div>
-          <h2 class="theme-title"><a title="Visit homepage"></a></h2>
+          <h2 class="theme-title"><a title="&theme.link.tooltip;"></a></h2>
           <span class="theme-author"></span>
         </header>
         <p class="theme-description"></p>
-        <button class="install" title="Wear this theme"
+        <button class="install" title="&theme.button.wear.tooltip;"
                 onmouseenter="setTheme(this, PREVIEW);"
                 onmouseleave="setTheme(this, RESET_PREVIEW);"
-                onclick="setTheme(this, INSTALL);">Wear</button>
-        <button class="disable" title="Stop wearing this theme"
-                onclick="disableTheme();">Stop</button>
+                onclick="setTheme(this, INSTALL);">&theme.button.wear.label;</button>
+        <button class="disable" title="&theme.button.stop.tooltip;"
+                onclick="disableTheme();">&theme.button.stop.label;</button>
       </article>
       <article id="no-themes" class="hidden">
         <p>
-          No themes installed. Get <a href="https://addons.mozilla.org/themes/">themes</a>
+          &page.nothemes;. Get <a href="https://addons.mozilla.org/themes/">themes</a>
           or <a href="http://loucypher.github.io/personas/">solid color theme</a>.
         </p>
       </article>

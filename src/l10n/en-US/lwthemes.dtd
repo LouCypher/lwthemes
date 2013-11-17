@@ -1,0 +1,7 @@
+<!ENTITY page.title                 "Light Weight Themes">
+<!ENTITY page.nothemes              "No themes installed">
+<!ENTITY theme.link.tooltip         "Visit homepage">
+<!ENTITY theme.button.wear.label    "Wear">
+<!ENTITY theme.button.wear.tooltip  "Wear this theme">
+<!ENTITY theme.button.stop.label    "Stop">
+<!ENTITY theme.button.stop.tooltip  "Stop wearing this theme">
