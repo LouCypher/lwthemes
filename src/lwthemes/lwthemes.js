@@ -19,7 +19,38 @@ var perms = Services.perms;
 if (perms.testPermission(URI, "install") === perms.UNKNOWN_ACTION)
   perms.add(URI, "install", perms.ALLOW_ACTION);
 
-const prefs = Services.prefs.getBranch("lightweightThemes.");
+var prefs = {
+  get prefBranch() Services.prefs.getBranch("lightweightThemes."),
+
+  getBoolPref: function (aPrefName, aDefVal) {
+    try {
+      return this.prefBranch.getBoolPref(aPrefName);
+    }
+    catch (ex) {
+      return aDefVal != "undefined" ? aDefVal : null;
+    }
+    return null;        // quiet warnings
+  },
+
+  setUnicharPref: function(aPrefName, aPrefValue) {
+    try {
+      var str = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+      str.data = aPrefValue;
+      this.prefBranch.setComplexValue(aPrefName, Ci.nsISupportsString, str);
+    }
+    catch (e) {}
+  },
+
+  getLocalizedUnicharPref: function(aPrefName, aDefVal) {
+    try {
+      return this.prefBranch.getComplexValue(aPrefName, Ci.nsIPrefLocalizedString).data;
+    }
+    catch (e) {
+      return aDefVal != "undefined" ? aDefVal : null;
+    }
+    return null; // quiet warnings
+  }
+}
 
 const INSTALL = "InstallBrowserTheme";
 const PREVIEW = "PreviewBrowserTheme";
@@ -81,11 +112,7 @@ function sort(aArray) {
 }
 
 function isUsingTheme() {
-  try {
-    _isUsingTheme = prefs.getBoolPref("isThemeSelected");
-  } catch (ex) {
-    isUsingTheme = false;
-  }
+  _isUsingTheme = prefs.getBoolPref("isThemeSelected", false);
   return _isUsingTheme;
 }
 
@@ -93,11 +120,7 @@ function isUsingTheme() {
  *  Get installed themes from prefs.
  */
 function getThemes() {
-  try {
-    _usedThemes = prefs.getCharPref("usedThemes");
-  } catch (ex) {
-    return null;
-  }
+  _usedThemes = prefs.getLocalizedUnicharPref("usedThemes", "[]");
 
   var themes = JSON.parse(_usedThemes);
 

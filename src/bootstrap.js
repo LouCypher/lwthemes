@@ -125,6 +125,6 @@ function install(data, reason) {
  * Handle the add-on being uninstalled
  */
 function uninstall(data, reason) {
-  // Remove prefs
-  prefs.clearUserPref("firstRun");
+  if (reason == ADDON_UNINSTALL)
+    prefs.clearUserPref("firstRun"); // Remove prefs on uninstall
 }
