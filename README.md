@@ -1,4 +1,4 @@
-lwthemes
-========
+# Light Weight Themes Manager
 
-Light Weight Themes Manager
+Firefox extension.
+

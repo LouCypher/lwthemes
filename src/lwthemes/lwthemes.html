@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+    Contributor(s):
+    - LouCypher (original code)
+-->
+<html>
+  <head>
+  <meta charset="utf-8"/>
+  <title>Light Weight Themes</title>
+  <link rel="stylesheet" href="lwthemes.css"/>
+  <link rel="shortcut icon" href="chrome://mozapps/skin/extensions/category-themes.png"/>
+  <script type="application/x-javascript" src="lwthemes.js"></script>
+  </head>
+
+  <body onload="load();" onunload="unload();">
+    <header><h1>Light Weight Themes</h1></header>
+    <section>
+      <article id="template" class="theme">
+        <header>
+          <div class="image">
+            <a title="Visit homepage">
+              <img onmouseenter="setTheme(this, PREVIEW);"
+                   onmouseleave="setTheme(this, RESET_PREVIEW);"/>
+            </a>
+          </div>
+          <h2 class="theme-title"><a title="Visit homepage"></a></h2>
+          <span class="theme-author"></span>
+        </header>
+        <p class="theme-description"></p>
+        <button class="install" title="Wear this theme"
+                onmouseenter="setTheme(this, PREVIEW);"
+                onmouseleave="setTheme(this, RESET_PREVIEW);"
+                onclick="setTheme(this, INSTALL);">Wear</button>
+        <button class="disable" title="Stop wearing this theme"
+                onclick="disableTheme();">Stop</button>
+      </article>
+      <article id="no-themes" class="hidden">
+        <p>
+          No themes installed. Get <a href="https://addons.mozilla.org/themes/">themes</a>
+          or <a href="http://loucypher.github.io/personas/">solid color theme</a>.
+        </p>
+      </article>
+      <div class="clear"></div>
+    </section>
+    <footer>
+      <p>
+        <a href="https://addons.mozilla.org/addon/lwthemes/">Light Weight Themes Manager</a>
+        by <a href="https://addons.mozilla.org/user/LouCypher/">Zulkarnain K</a>.
+      </p>
+    </footer>
+  </body>
+</html>

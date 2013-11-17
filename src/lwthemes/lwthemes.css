@@ -1,0 +1,100 @@
+/*
+ *  This Source Code Form is subject to the terms of the Mozilla Public
+ *  License, v. 2.0. If a copy of the MPL was not distributed with this
+ *  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ *  Contributor(s):
+ *  - LouCypher (original code)
+ */
+
+body, footer { margin: 0 }
+
+body > header, body > section { margin: 1em }
+
+section, article {
+  background: #fff;
+  color: #000;
+}
+
+h1, h2 { font-family: sans-serif }
+p { font-family: serif }
+
+#template, .hidden, .current .install, .disable { display: none }
+
+.theme {
+  background: #fafafa;
+  color: inherit;
+  font-size: 10pt;
+  width: 360px;
+  min-height: 200px;
+  border: 1px solid #3d6db5;
+  outline: 1px solid #3d6db5;
+  float: left;
+  clear: right;
+  margin: 0 1em 1em 0;
+  padding: 10px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.current { border-color: #c63717 }
+
+.current .disable { display: inline-block }
+
+.theme img {
+  box-shadow: 0 0 1px #000;
+  max-width: 340px;
+  max-height: 50px;
+}
+
+.image {
+  width: 340px;
+  height: 50px;
+}
+
+.theme img:hover { box-shadow: 0 0 3px #000 }
+
+.theme-title {
+  font-size: 14pt;
+  margin: .5em 0 .25em;
+}
+
+.theme-title a {
+  color: rgb(61, 109, 181);
+  text-decoration: none;
+}
+
+.theme-title a:hover {
+  text-decoration: underline;
+}
+
+.install { background-color: #90dc98 }
+.disable { background-color: #f88 }
+
+button {
+  -moz-appearance: none;
+  border: 1px solid #000;
+  padding: 2px 1em;
+  color: #000;
+  cursor: pointer;
+  margin: 0;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .3) 100%);
+}
+
+button:focus {
+  padding: 3px 1em 1px;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.clear { clear: both }
+.bottom { position: absolute; bottom: 0 }
+
+footer {
+  position: relative;
+  left: 0; right: 0;
+  background: -moz-dialog;
+  color: -moz-dialogtext;
+  padding: 1em;
+  font-size: small;
+  text-align: center;
+}
