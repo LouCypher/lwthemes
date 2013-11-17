@@ -1,4 +1,4 @@
-<!DOCTYPE html SYSTEM "chrome://lwthemes/locale/lwthemes.dtd">
+<!DOCTYPE html SYSTEM "chrome://lwthemes/locale/">
 <!--
     This Source Code Form is subject to the terms of the Mozilla Public
     License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -23,8 +23,8 @@
         <header>
           <div class="image">
             <a title="&theme.link.tooltip;">
-              <img onmouseenter="setTheme(this, PREVIEW);"
-                   onmouseleave="setTheme(this, RESET_PREVIEW);"/>
+              <img onmouseenter="setTheme(this, 'preview');"
+                   onmouseleave="setTheme(this, 'reset');"/>
             </a>
           </div>
           <h2 class="theme-title"><a title="&theme.link.tooltip;"></a></h2>
@@ -32,11 +32,11 @@
         </header>
         <p class="theme-description"></p>
         <button class="install" title="&theme.button.wear.tooltip;"
-                onmouseenter="setTheme(this, PREVIEW);"
-                onmouseleave="setTheme(this, RESET_PREVIEW);"
-                onclick="setTheme(this, INSTALL);">&theme.button.wear.label;</button>
+                onmouseenter="setTheme(this, 'preview');"
+                onmouseleave="setTheme(this, 'reset');"
+                onclick="setTheme(this, 'wear');">&theme.button.wear.label;</button>
         <button class="disable" title="&theme.button.stop.tooltip;"
-                onclick="disableTheme();">&theme.button.stop.label;</button>
+                onclick="setTheme(this, 'stop');">&theme.button.stop.label;</button>
       </article>
       <article id="no-themes" class="hidden">
         <p>

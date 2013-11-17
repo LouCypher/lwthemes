@@ -11,53 +11,10 @@ const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 
 Cu.import("resource://gre/modules/Services.jsm");
 Cu.import("resource://gre/modules/AddonManager.jsm");
+Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
 
-// Add permission for this URL to install add-ons
-// It will be removed on unload
-var URI = Services.io.newURI(location.href, null, null);
-var perms = Services.perms;
-if (perms.testPermission(URI, "install") === perms.UNKNOWN_ACTION)
-  perms.add(URI, "install", perms.ALLOW_ACTION);
-
-var prefs = {
-  get prefBranch() Services.prefs.getBranch("lightweightThemes."),
-
-  getBoolPref: function (aPrefName, aDefVal) {
-    try {
-      return this.prefBranch.getBoolPref(aPrefName);
-    }
-    catch (ex) {
-      return aDefVal != "undefined" ? aDefVal : null;
-    }
-    return null;        // quiet warnings
-  },
-
-  setUnicharPref: function(aPrefName, aPrefValue) {
-    try {
-      var str = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
-      str.data = aPrefValue;
-      this.prefBranch.setComplexValue(aPrefName, Ci.nsISupportsString, str);
-    }
-    catch (e) {}
-  },
-
-  getLocalizedUnicharPref: function(aPrefName, aDefVal) {
-    try {
-      return this.prefBranch.getComplexValue(aPrefName, Ci.nsIPrefLocalizedString).data;
-    }
-    catch (e) {
-      return aDefVal != "undefined" ? aDefVal : null;
-    }
-    return null; // quiet warnings
-  }
-}
-
-const INSTALL = "InstallBrowserTheme";
-const PREVIEW = "PreviewBrowserTheme";
-const RESET_PREVIEW = "ResetBrowserThemePreview";
-
-var _usedThemes = _themes = _currentTheme = _template = null;
-var _isUsingTheme = false;
+var { usedThemes: _themes, currentTheme: _currentTheme } = LightweightThemeManager;
+var _template = null;
 
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
@@ -71,36 +28,6 @@ function jsBeautify(aJS) {
   }
 }
 
-function disableTheme() {
-  AddonManager.getAddonByID("{972ce4c6-7e08-4474-a285-3208198ce6fd}", function(addon) {
-    if (!addon.isActive)
-      addon.userDisabled = false;
-  })
-  $(".current").classList.remove("current");
-  _currentTheme = null;
-  _isUsingTheme = false;
-}
-
-function setTheme(aNode, aAction) {
-  var themeBox = aNode;
-  while (themeBox && !themeBox.classList.contains("theme"))
-    themeBox = themeBox.parentNode;
-
-  var theme = JSON.parse(aNode.dataset.browsertheme);
-  var event = document.createEvent("Events");
-  event.initEvent(aAction, true, false);
-  aNode.dispatchEvent(event);
-
-  if (aAction === INSTALL) {
-    if ($(".current"))
-      $(".current").classList.toggle("current");
-
-    themeBox.classList.toggle("current");
-    _currentTheme = theme;
-    _isUsingTheme = true;
-  }
-}
-
 function sort(aArray) {
   aArray.sort(function(a, b) {
     a = a.name.toLowerCase();
@@ -111,27 +38,43 @@ function sort(aArray) {
   })
 }
 
-function isUsingTheme() {
-  _isUsingTheme = prefs.getBoolPref("isThemeSelected", false);
-  return _isUsingTheme;
-}
-
 /**
- *  Get installed themes from prefs.
+ *  Set a theme
+ *  @param aNode Node that triggers the action
+ *  @param aAction "wear"     Wear a theme
+ *                 "stop"     Stop wearing a theme
+ *                 "preview"  Preview a theme
+ *                 "reset"    Reset preview
  */
-function getThemes() {
-  _usedThemes = prefs.getLocalizedUnicharPref("usedThemes", "[]");
+function setTheme(aNode, aAction) {
+  var themeBox = aNode;
+  while (themeBox && !themeBox.classList.contains("theme"))
+    themeBox = themeBox.parentNode;
 
-  var themes = JSON.parse(_usedThemes);
+  var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
 
-  if (themes.length === 0)
-    return null;
+  switch (aAction) {
+    case "wear":
+      LightweightThemeManager.setLocalTheme(theme);
+      if ($(".current"))
+        $(".current").classList.toggle("current");
+      themeBox.classList.toggle("current");
+      _currentTheme = theme;
+      break;
 
-  if (isUsingTheme())           // If using LW theme
-    _currentTheme = themes[0];  // current theme to be placed at the beginning
+    case "stop":
+      LightweightThemeManager.setLocalTheme();
+      $(".current").classList.remove("current");
+      _currentTheme = null;
+      break;
 
-  sort(themes);
-  return themes;
+    case "preview":
+      LightweightThemeManager.previewTheme(theme);
+      break;
+
+    default:
+      LightweightThemeManager.resetPreview();
+  }
 }
 
 /**
@@ -165,7 +108,7 @@ function themeBox(aTheme) {
   var box = template.cloneNode(true); // Clone from template
   box.removeAttribute("id");
   box.dataset.browsertheme = themeData;
-  if (aTheme === _currentTheme)
+  if (_currentTheme && aTheme.id === _currentTheme.id)
     box.classList.add("current");
 
   if (/^solid\-color/.test(aTheme.id)) {
@@ -177,7 +120,6 @@ function themeBox(aTheme) {
     $("img", box).src = previewURL.replace(/\?\d+/, "");
 
   $("img", box).alt = name;
-  $("img", box).dataset.browsertheme = themeData;
 
   var themeURL = getThemeURL(aTheme);
   if (themeURL) {
@@ -193,8 +135,6 @@ function themeBox(aTheme) {
   if (description)
     $(".theme-description", box).innerHTML = description;
 
-  $("button", box).dataset.browsertheme = themeData;
-
   return box;
 }
 
@@ -203,24 +143,21 @@ function load() {
   var section = document.body.querySelector("section");
   var clearer = section.querySelector(".clear");
 
-  // Get installed themes from prefs
-  _themes = getThemes();
-  if (!_themes) {                               // If no installed themes
+  if (!_themes.length) {                        // If no installed themes
     $("#no-themes").classList.remove("hidden"); // show 'No themes installed"
     $("footer").classList.add("bottom");
     return;
   }
 
-  if (_isUsingTheme)                                        // If is using LW theme
-    section.insertBefore(themeBox(_currentTheme), clearer); // place current theme at the beginning
+  sort(_themes);
 
-  for (var i in _themes) {
-    if (_themes[i] !== _currentTheme)
-      section.insertBefore(themeBox(_themes[i]), clearer);  // Add the rests
-  }
+  // Generate boxes for installed themes
+  for (var i in _themes)
+    section.insertBefore(themeBox(_themes[i]), clearer);
+
+  // Move current theme to top
+  if (_currentTheme)
+    $(".current").parentNode.insertBefore($(".current"), $(".current").parentNode.firstChild);
 }
 
-function unload() {
-  // Remove permission so it won't be used by others
-  perms.add(URI, "install", perms.UNKNOWN_ACTION);
-}
+function unload() {}

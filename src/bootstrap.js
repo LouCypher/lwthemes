@@ -25,15 +25,13 @@ function resProtocolHandler(aResourceName, aURI) {
 }
 
 function main(aWindow) {
-  resProtocolHandler("lwthemes", Services.io.newURI("chrome://lwthemes/content/", null, null));
-
   const {document} = aWindow;
 
   function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
   function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
 
   function lwThemes() {
-    let url = "resource://lwthemes/";
+    let url = "chrome://lwthemes/content/";
     if ("switchToTabHavingURI" in aWindow)
       // Firefox/SeaMonkey
       aWindow.switchToTabHavingURI(url, true);
@@ -77,8 +75,6 @@ function main(aWindow) {
     if (items.length)
       for (let i = 0; i < items.length; i++)
         items[i].parentNode.removeChild(items[i]);
-
-    resProtocolHandler("lwthemes", null);
   }, aWindow)
 }
 
