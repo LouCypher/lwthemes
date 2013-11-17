@@ -1,4 +1,5 @@
-content lwthemes          lwthemes/
-locale  lwthemes  en-US/  l10n/en-US/
+content lwthemes            lwthemes/
+locale  lwthemes  en-US     l10n/en-US/
+locale  lwthemes  id        l10n/id/
 
 override chrome://lwthemes/content/lwthemes.xul chrome://lwthemes/content/lwthemes.xhtml
