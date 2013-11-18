@@ -14,7 +14,6 @@ Cu.import("resource://gre/modules/AddonManager.jsm");
 Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
 
 var { usedThemes: _themes, currentTheme: _currentTheme } = LightweightThemeManager;
-var _template = null;
 
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
@@ -105,7 +104,7 @@ function themeBox(aTheme) {
 
   var themeData = JSON.stringify(aTheme);
 
-  var box = template.cloneNode(true); // Clone from template
+  var box = $("#template").cloneNode(true); // Clone from template
   box.removeAttribute("id");
   box.dataset.browsertheme = themeData;
   if (_currentTheme && aTheme.id === _currentTheme.id)
@@ -139,10 +138,6 @@ function themeBox(aTheme) {
 }
 
 function load() {
-  _template = document.getElementById("template");
-  var section = document.body.querySelector("section");
-  var clearer = section.querySelector(".clear");
-
   if (!_themes.length) {                        // If no installed themes
     $("#no-themes").classList.remove("hidden"); // show 'No themes installed"
     $("footer").classList.add("bottom");
@@ -153,11 +148,11 @@ function load() {
 
   // Generate boxes for installed themes
   for (var i in _themes)
-    section.insertBefore(themeBox(_themes[i]), clearer);
+    $("section").insertBefore(themeBox(_themes[i]), $("#template"));
 
   // Move current theme to top
   if (_currentTheme)
-    $(".current").parentNode.insertBefore($(".current"), $(".current").parentNode.firstChild);
+    $(".current").parentNode.insertBefore($(".current"), $("section").firstChild);
 }
 
 function unload() {}

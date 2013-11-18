@@ -10,16 +10,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8"/>
-    <title>&page.title;</title>
+    <title>Light Weight Themes</title>
     <link rel="stylesheet" href="../skin/"/>
     <link rel="shortcut icon" href="../skin/icon16.png"/>
     <script type="application/x-javascript" src="lwthemes.js"></script>
+    <!--script type="application/x-javascript" src="chrome://inspector/content/hooks.js"></script>
+    <script type="application/x-javascript">var iob = inspectObject;</script-->
   </head>
 
   <body onload="load();" onunload="unload();">
-    <header><h1>&page.title;</h1></header>
+    <header class="header">
+      <h1>
+        <!-- reserved for menu <span class="right">&#9776;</span> -->        
+        Light Weight Themes
+      </h1>
+    </header>
     <section>
-      <article id="template" class="theme">
+      <article id="template" class="theme left">
         <header>
           <div class="image">
             <a title="&theme.link.tooltip;">
@@ -28,7 +35,7 @@
             </a>
           </div>
           <h2 class="theme-title"><a title="&theme.link.tooltip;"></a></h2>
-          <span class="theme-author">&theme.author.by; </span>
+          <span class="theme-author">&by; </span>
         </header>
         <p class="theme-description"></p>
         <button class="install" title="&theme.button.wear.tooltip;"
@@ -41,8 +48,8 @@
       <article id="no-themes" class="hidden">
         <p>
           &page.nothemes;. <a href="https://addons.mozilla.org/themes/">&page.getthemes;</a>
-          &page.getthemes.or;
-          <a href="http://loucypher.github.io/personas/">&page.solidcolortheme;</a>.
+          &or;
+          <a href="http://loucypher.github.io/personas/">Solid Color Theme</a>.
         </p>
       </article>
       <div class="clear"></div>
@@ -50,8 +57,11 @@
     <footer>
       <p>
         <a href="https://addons.mozilla.org/addon/lwthemes/">Light Weight Themes Manager</a>
-        &theme.author.by; <a href="https://addons.mozilla.org/user/LouCypher/">Zulkarnain K</a>.
+        &and;
+        <a href="http://loucypher.github.io/personas/">Solid Color Theme</a>
+        &by; <a href="https://addons.mozilla.org/user/LouCypher/">Zulkarnain K</a>.
       </p>
     </footer>
+    <!-- No. I will never put advertisements or anything like that in here. NEVER! -->
   </body>
 </html>

@@ -7,17 +7,32 @@
  *  - LouCypher (original code)
  */
 
-body, footer { margin: 0 }
-
-body > header, body > section { margin: 1em }
-
-section, article {
+body {
+  font-family: serif;
   background: #fff;
   color: #000;
+  margin: 0;
 }
 
+.header {
+  top: 0;
+  padding: 0 1em;
+}
+
+.header, footer {
+  position: absolute;
+  left: 0; right: 0;
+}
+
+section { margin: 6em 1em 1em }
+
 h1, h2 { font-family: sans-serif }
-p { font-family: serif }
+
+a:link, a:visited {
+  color: #3D6DB5;
+  text-decoration: none;
+}
+a:hover { text-decoration: underline }
 
 #template, .hidden, .current .install, .disable { display: none }
 
@@ -29,8 +44,6 @@ p { font-family: serif }
   min-height: 200px;
   border: 1px solid #3d6db5;
   outline: 1px solid #3d6db5;
-  float: left;
-  clear: right;
   margin: 0 1em 1em 0;
   padding: 10px;
   text-align: left;
@@ -59,15 +72,6 @@ p { font-family: serif }
   margin: .5em 0 .25em;
 }
 
-.theme-title a {
-  color: rgb(61, 109, 181);
-  text-decoration: none;
-}
-
-.theme-title a:hover {
-  text-decoration: underline;
-}
-
 .install { background-color: #90dc98 }
 .disable { background-color: #f88 }
 
@@ -86,15 +90,17 @@ button:focus {
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
+.left { float: left }
+.right { float: right }
 .clear { clear: both }
-.bottom { position: absolute; bottom: 0 }
+.bottom { bottom: 0 }
 
 footer {
-  position: relative;
-  left: 0; right: 0;
-  background: -moz-dialog;
-  color: -moz-dialogtext;
-  padding: 1em;
+  background-color: #ddd;
+  color: inherit;
+  margin: inherit;
+  padding: .5em;
   font-size: small;
+  line-height: 1.5em;
   text-align: center;
 }
