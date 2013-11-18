@@ -5,6 +5,5 @@
 <!ENTITY theme.button.wear.tooltip  "Wear this theme">
 <!ENTITY theme.button.stop.label    "Take it off">
 <!ENTITY theme.button.stop.tooltip  "Stop wearing this theme">
-<!ENTITY and                        "and">
 <!ENTITY by                         "by">
 <!ENTITY or                         "or">

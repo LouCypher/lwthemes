@@ -35,6 +35,16 @@ function sort(aArray) {
   })
 }
 
+function donation() {
+  var gifts = ["beer", "coffee", "donut", "drink", "hot dog", "Ferrari"];
+  var num = parseInt(Math.random() * gifts.length);
+  $(".paypal a").textContent = "Buy me a " + gifts[num];
+  $(".paypal a").href = "https://www.paypal.com/cgi-bin/webscr" +
+                        "?cmd=_s-xclick&hosted_button_id=WDQL25BGYS3C2" +
+                        "&amount=3%2e14&currency_code=USD" +
+                        "&item_name=Light%20Weight%20Themes%20Manager";
+}
+
 /**
  *  Set a theme
  *  @param aNode Node that triggers the action
@@ -145,6 +155,8 @@ function themeBox(aTheme) {
 }
 
 function load() {
+  donation();
+
   if (!_themes.length) {                        // If no installed themes
     $("#no-themes").classList.remove("hidden"); // show 'No themes installed"
     $("footer").classList.add("bottom");

@@ -101,5 +101,30 @@ footer {
   padding: .5em;
   font-size: small;
   line-height: 1.5em;
+}
+
+.paypal, .paypal a { display: inline-block }
+.paypal {
+  width: 120px;
+  height: 21px;
+  border: 1px solid #f79739;
+  border-radius: 10px;
+  padding: 0;
   text-align: center;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+  background-color: #ffcb80;
+  background-image: linear-gradient(to bottom,
+                                    #fecb7f  0%, #ffe6bf  5%, #ffe7c1  10%, #ffdeaa 25%,
+                                    #ffd799 35%, #ffce83 45%, #ffbd59  50%, #ffa822 55%,
+                                    #ffa822 60%, #ffac2c 65%, #ffb23c  70%, #ffc367 80%,
+                                    #ffd79b 90%, #ffdfad 95%, #fec36f 100%);
+}
+.paypal a {
+  font-family: sans-serif;
+  font-size: 8pt;
+  font-weight: bold;
+  transform: skewX(-10deg);
+  color: rgba(0, 0, 120, .75);
+  text-decoration: none;
+  text-shadow: 0 0 3px rgba(0, 0, 120, .25);
 }
