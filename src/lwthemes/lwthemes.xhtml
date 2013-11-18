@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="../skin/"/>
     <link rel="shortcut icon" href="../skin/icon16.png"/>
     <script type="application/x-javascript" src="lwthemes.js"></script>
-    <!--script type="application/x-javascript" src="chrome://inspector/content/hooks.js"></script>
-    <script type="application/x-javascript">var iob = inspectObject;</script-->
   </head>
 
   <body onload="load();" onunload="unload();">
@@ -25,6 +23,7 @@
         Light Weight Themes
       </h1>
     </header>
+
     <section>
       <article id="template" class="theme left">
         <header>
@@ -37,14 +36,19 @@
           <h2 class="theme-title"><a title="&theme.link.tooltip;"></a></h2>
           <span class="theme-author">&by; </span>
         </header>
+
         <p class="theme-description"></p>
-        <button class="install" title="&theme.button.wear.tooltip;"
-                onmouseenter="setTheme(this, 'preview');"
-                onmouseleave="setTheme(this, 'reset');"
-                onclick="setTheme(this, 'wear');">&theme.button.wear.label;</button>
-        <button class="disable" title="&theme.button.stop.tooltip;"
-                onclick="setTheme(this, 'stop');">&theme.button.stop.label;</button>
+
+        <p>
+          <button class="enable" title="&theme.button.wear.tooltip;"
+                  onmouseenter="setTheme(this, 'preview');"
+                  onmouseleave="setTheme(this, 'reset');"
+                  onclick="setTheme(this, 'wear');">&theme.button.wear.label;</button>
+          <button class="disable" title="&theme.button.stop.tooltip;"
+                  onclick="setTheme(this, 'stop');">&theme.button.stop.label;</button>
+        </p>
       </article>
+
       <article id="no-themes" class="hidden">
         <p>
           &page.nothemes;. <a href="https://addons.mozilla.org/themes/">&page.getthemes;</a>
@@ -52,8 +56,10 @@
           <a href="http://loucypher.github.io/personas/">Solid Color Theme</a>.
         </p>
       </article>
+
       <div class="clear"></div>
     </section>
+
     <footer>
       <p>
         <a href="https://addons.mozilla.org/addon/lwthemes/">Light Weight Themes Manager</a>

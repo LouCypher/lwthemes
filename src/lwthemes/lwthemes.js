@@ -7,20 +7,18 @@
  *  - LouCypher (original code)
  */
 
-const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
+var lwt = {};
+Components.utils.import("resource://gre/modules/LightweightThemeManager.jsm", lwt );
+lwt = lwt.LightweightThemeManager;
 
-Cu.import("resource://gre/modules/Services.jsm");
-Cu.import("resource://gre/modules/AddonManager.jsm");
-Cu.import("resource://gre/modules/LightweightThemeManager.jsm");
-
-var { usedThemes: _themes, currentTheme: _currentTheme } = LightweightThemeManager;
+var { usedThemes: _themes, currentTheme: _currentTheme } = lwt;
 
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
 
 function jsBeautify(aJS) {
   try {
-    Cu.import("resource:///modules/devtools/Jsbeautify.jsm");
+    Components.utils.import("resource:///modules/devtools/Jsbeautify.jsm");
     return js_beautify(aJS, { indent_size: 2, indent_char: " " });
   } catch (ex) {
     return aJS;
@@ -42,6 +40,7 @@ function sort(aArray) {
  *  @param aNode Node that triggers the action
  *  @param aAction "wear"     Wear a theme
  *                 "stop"     Stop wearing a theme
+ *                 "dump"     Uninstall a theme
  *                 "preview"  Preview a theme
  *                 "reset"    Reset preview
  */
@@ -50,29 +49,37 @@ function setTheme(aNode, aAction) {
   while (themeBox && !themeBox.classList.contains("theme"))
     themeBox = themeBox.parentNode;
 
-  var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
+  var theme = lwt.parseTheme(themeBox.dataset.browsertheme);
 
   switch (aAction) {
     case "wear":
-      LightweightThemeManager.setLocalTheme(theme);
+      lwt.setLocalTheme(theme);
       if ($(".current"))
-        $(".current").classList.toggle("current");
-      themeBox.classList.toggle("current");
+        $(".current").classList.remove("current");
+      themeBox.classList.add("current");
       _currentTheme = theme;
-      break;
+      return;
 
     case "stop":
-      LightweightThemeManager.setLocalTheme();
-      $(".current").classList.remove("current");
+      lwt.setLocalTheme();
+      themeBox.classList.remove("current");
       _currentTheme = null;
-      break;
+      return;
+
+    case "dump":
+      lwt.forgetUsedTheme(theme.id);
+      if (themeBox.classList.contains("current")) {
+        themeBox.classList.remove("current");
+        _currentTheme = null;
+      }
+      return;
 
     case "preview":
-      LightweightThemeManager.previewTheme(theme);
-      break;
+      lwt.previewTheme(theme);
+      return;
 
     default:
-      LightweightThemeManager.resetPreview();
+      lwt.resetPreview();
   }
 }
 

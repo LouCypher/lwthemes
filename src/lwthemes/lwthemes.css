@@ -34,7 +34,7 @@ a:link, a:visited {
 }
 a:hover { text-decoration: underline }
 
-#template, .hidden, .current .install, .disable { display: none }
+#template, .hidden, .current .enable, .disable { display: none }
 
 .theme {
   background: #fafafa;
@@ -72,7 +72,7 @@ a:hover { text-decoration: underline }
   margin: .5em 0 .25em;
 }
 
-.install { background-color: #90dc98 }
+.enable { background-color: #90dc98 }
 .disable { background-color: #f88 }
 
 button {
@@ -84,7 +84,6 @@ button {
   margin: 0;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .3) 100%);
 }
-
 button:focus {
   padding: 3px 1em 1px;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, 0) 100%);
