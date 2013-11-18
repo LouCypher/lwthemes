@@ -44,7 +44,7 @@ function main(aWindow) {
     let menuitem = document.createElement("menuitem");
     menuitem.className = "lwthemes menuitem-iconic";
     menuitem.setAttribute("label", "Light Weight Themes");
-    menuitem.setAttribute("image", "chrome://mozapps/skin/extensions/category-themes.png");
+    menuitem.setAttribute("image", "chrome://lwthemes/skin/icon16.png");
     menuitem.addEventListener("command", lwThemes);
     return menuitem;
   }
