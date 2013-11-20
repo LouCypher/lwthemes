@@ -11,9 +11,15 @@
   <head>
     <meta charset="utf-8"/>
     <title>Light Weight Themes</title>
-    <link rel="stylesheet" href="../skin/"/>
+    <link rel="stylesheet" href="../skin/" type="text/css"/>
+    <link rel="stylesheet" href="../skin/light.css" title="Light" type="text/css"/>
+    <link rel="stylesheet alternate" href="../skin/dark.css" title="Dark" type="text/css"/>
     <link rel="shortcut icon" href="../skin/icon16.png"/>
     <script type="application/x-javascript" src="lwthemes.js"></script>
+    <script type="application/x-javascript" src="chrome://inspector/content/hooks.js"></script>
+    <script type="application/x-javascript">
+      const { inspectObject: iob, inspectDOMNode: idn, inspectDOMDocument: idd } = window;
+    </script>
   </head>
 
   <body onload="load();" onunload="unload();">
@@ -21,8 +27,10 @@
 
     <header class="header">
       <h1>
-        <!-- reserved for menu <span class="right">&#9776;</span> -->        
         Light Weight Themes
+        <!-- reserved for menu
+          <button class="menu right"">&#9776;</button>
+         -->
       </h1>
     </header>
 
@@ -40,7 +48,9 @@
         </header>
 
         <p class="theme-description"></p>
-
+        <p>
+          <a href="#" onclick="openAddonsManager(event);">&theme.link.addonsmgr;</a>
+        </p>
         <p>
           <button class="enable" title="&theme.button.wear.tooltip;"
                   onmouseenter="setTheme(this, 'preview');"

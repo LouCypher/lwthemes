@@ -154,6 +154,27 @@ function themeBox(aTheme) {
   return box;
 }
 
+function openAddonsManager(aEvent) {
+  aEvent.preventDefault();
+
+  var themeBox = aEvent.target;
+  while (themeBox && !themeBox.classList.contains("theme"))
+    themeBox = themeBox.parentNode;
+
+  var theme = lwt.parseTheme(themeBox.dataset.browsertheme);
+  var addonId = theme.id + "@personas.mozilla.org";
+  var view = "addons://detail/" + encodeURIComponent(addonId) + "/preferences";
+
+  var chromeWin = Application.windows[0]._window;
+  if ("toEM" in chromeWin) {
+    chromeWin.toEM(view);
+  } else if ("openAddonsMgr" in chromeWin) {
+    chromeWin.openAddonsMgr(view);
+  } else {
+    chromeWin.BrowserOpenAddonsMgr(view);
+  }
+}
+
 function load() {
   donation();
 

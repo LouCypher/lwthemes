@@ -1,0 +1,36 @@
+/*
+ *  This Source Code Form is subject to the terms of the Mozilla Public
+ *  License, v. 2.0. If a copy of the MPL was not distributed with this
+ *  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ *  Contributor(s):
+ *  - LouCypher (original code)
+ */
+
+body {
+  background: #fff;
+  color: #000;
+}
+
+.shadow { box-shadow: 0 -1px 6px rgba(0, 0, 0, .5) }
+
+a:link, a:visited { color: #3d6db5 }
+
+.theme {
+  background: #fafafa;
+  color: inherit;
+  border-color: #3d6db5;
+  outline-color: #3d6db5;
+}
+
+.current { border-color: #c63717 }
+
+.theme img { box-shadow: 0 0 1px #000 }
+
+.theme img:hover { box-shadow: 0 0 3px #000 }
+
+footer {
+  background-color: #ddd;
+  color: inherit;
+  box-shadow: 0 0 3px rgba(0, 0, 0, .5);
+}

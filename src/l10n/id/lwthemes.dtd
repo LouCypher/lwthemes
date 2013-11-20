@@ -1,7 +1,7 @@
 <!ENTITY page.nothemes              "Tidak ada tema yang diinstall">
 <!ENTITY page.getthemes             "Dapatkan tema">
-<!ENTITY page.solidcolortheme       "tema warna">
 <!ENTITY theme.link.tooltip         "Kunjungi beranda">
+<!ENTITY theme.link.addonsmgr       "Lihat di Pengelola Pengaya">
 <!ENTITY theme.button.wear.label    "Kenakan">
 <!ENTITY theme.button.wear.tooltip  "Kenakan tema ini">
 <!ENTITY theme.button.stop.label    "Tanggalkan">
