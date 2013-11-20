@@ -14,15 +14,16 @@ body {
   margin: 0;
 }
 
-.header {
-  top: 0;
-  padding: 0 1em;
+.shadow {
+  position: fixed;
+  height: 200px;
+  margin: -200px 0 0;
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, .5);
 }
-
-.header, footer {
-  position: absolute;
-  left: 0; right: 0;
-}
+.shadow, .header { top: 0 }
+.header { padding: 0 1em }
+.shadow, .header, footer { left: 0; right: 0; }
+.header, footer { position: absolute }
 
 section { margin: 6em 1em 1em }
 
