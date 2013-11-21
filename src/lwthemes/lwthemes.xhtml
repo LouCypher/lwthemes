@@ -22,9 +22,6 @@
     <link rel="shortcut icon" href="../skin/icon16.png"/>
     <script type="application/x-javascript" src="lwthemes.js"></script>
     <script type="application/x-javascript" src="chrome://inspector/content/hooks.js"></script>
-    <script type="application/x-javascript">
-      const { inspectObject: iob, inspectDOMNode: idn, inspectDOMDocument: idd } = window;
-    </script>
   </head>
 
   <body onload="load();" onunload="unload();">
@@ -62,6 +59,8 @@
                   onclick="setTheme(this, 'stop');">&cmd.disableAddon.label;</button>
           <button class="right" onclick="openAddonsManager(this);"
                   title="&addons.windowTitle;">&addon.details.label;</button>
+          <button class="right" onclick="jsonView(this);">JSON</button>
+          <button class="inspect right hidden" onclick="inspect(this);">Inspect</button>
         </p>
       </article>
 
@@ -104,5 +103,13 @@
         <span class="paypal right"><a title="via PayPal"></a></span>
       </p>
     </footer>
+
+    <div class="viewer hidden">
+      <textarea placeholder="JSON data" onkeypress="if (event.keyCode == 27) toggleViewer();">
+      </textarea>
+      <div class="clear"></div>
+      <button class="close right" onclick="toggleViewer();">X</button>
+    </div>
+
   </body>
 </html>

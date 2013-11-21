@@ -22,18 +22,18 @@ switch (navigator.language) {
  *  Light weight Theme Manager module
  *  http://dxr.mozilla.org/mozilla-central/source/toolkit/mozapps/extensions/LightweightThemeManager.jsm
  */
-var lwt = {};
-Components.utils.import("resource://gre/modules/LightweightThemeManager.jsm", lwt );
-lwt = lwt.LightweightThemeManager;
+var LWT = {};
+Components.utils.import("resource://gre/modules/LightweightThemeManager.jsm", LWT );
+LWT = LWT.LightweightThemeManager;
 
-var { usedThemes: _themes, currentTheme: _currentTheme } = lwt;
+var { usedThemes: _themes, currentTheme: _currentTheme } = LWT;
 
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
 
 function jsBeautify(aJS) {
   try {
-    Components.utils.import("resource:///modules/devtools/Jsbeautify.jsm");
+    var {js_beautify} = Components.utils.import("resource:///modules/devtools/Jsbeautify.jsm", {});
     return js_beautify(aJS, { indent_size: 2, indent_char: " " });
   } catch (ex) {
     return aJS;
@@ -60,6 +60,13 @@ function donation() {
                         "&item_name=Light%20Weight%20Themes%20Manager";
 }
 
+function getThemeBox(aNode) {
+  while (aNode && !aNode.hasAttribute("data-browsertheme"))
+    aNode = aNode.parentNode;
+
+  return aNode;
+}
+
 /**
  *  Set a theme
  *  @param aNode Node that triggers the action
@@ -70,15 +77,12 @@ function donation() {
  *                 "reset"    Reset preview
  */
 function setTheme(aNode, aAction) {
-  var themeBox = aNode;
-  while (themeBox && !themeBox.classList.contains("theme"))
-    themeBox = themeBox.parentNode;
-
-  var theme = lwt.parseTheme(themeBox.dataset.browsertheme);
+  var themeBox = getThemeBox(aNode);
+  var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
 
   switch (aAction) {
     case "wear":
-      lwt.setLocalTheme(theme);
+      LWT.setLocalTheme(theme);
       if ($(".current"))
         $(".current").classList.remove("current");
       themeBox.classList.add("current");
@@ -86,13 +90,13 @@ function setTheme(aNode, aAction) {
       return;
 
     case "stop":
-      lwt.setLocalTheme();
+      LWT.setLocalTheme();
       themeBox.classList.remove("current");
       _currentTheme = null;
       return;
 
     case "dump":
-      lwt.forgetUsedTheme(theme.id);
+      LWT.forgetUsedTheme(theme.id);
       if (themeBox.classList.contains("current")) {
         themeBox.classList.remove("current");
         _currentTheme = null;
@@ -100,11 +104,11 @@ function setTheme(aNode, aAction) {
       return;
 
     case "preview":
-      lwt.previewTheme(theme);
+      LWT.previewTheme(theme);
       return;
 
     default:
-      lwt.resetPreview();
+      LWT.resetPreview();
   }
 }
 
@@ -172,15 +176,15 @@ function themeBox(aTheme) {
 }
 
 function openAddonsManager(aNode) {
-  var themeBox = aNode;
-  while (themeBox && !themeBox.classList.contains("theme"))
-    themeBox = themeBox.parentNode;
-
-  var theme = lwt.parseTheme(themeBox.dataset.browsertheme);
+  var themeBox = getThemeBox(aNode);
+  var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
   var addonId = theme.id + "@personas.mozilla.org";
   var view = "addons://detail/" + encodeURIComponent(addonId) + "/preferences";
 
-  var chromeWin = Application.windows[0]._window;
+  var {Services} = Components.utils.import("resource://gre/modules/Services.jsm", {});
+  var chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
+                  Services.wm.getMostRecentWindow("mail:3pane");
+
   if ("toEM" in chromeWin) {
     chromeWin.toEM(view);
   } else if ("openAddonsMgr" in chromeWin) {
@@ -237,9 +241,38 @@ var _personas = {
   }
 }
 
+function inspect(aNode) {
+  var themeBox = getThemeBox(aNode);
+  var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
+  inspectObject(theme);
+}
+
+function toggleViewer() {
+  $(".viewer").classList.toggle("hidden");
+}
+
+function jsonView(aNode) {
+  var themeBox = getThemeBox(aNode);
+  var json = jsBeautify(themeBox.dataset.browsertheme);
+  var {Services} = Components.utils.import("resource://gre/modules/Services.jsm", {});
+  var chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
+                  Services.wm.getMostRecentWindow("mail:3pane");
+
+  if ("Scratchpad" in chromeWin) {
+    chromeWin.Scratchpad.ScratchpadManager.openScratchpad({text: json});
+    return;
+  }
+  $(".viewer textarea").value = json;
+  toggleViewer();
+  $(".viewer textarea").focus();
+}
+
 function load() {
   donation();
   _personas.init();
+
+  if (typeof inspectObject == "function")
+    $(".inspect").classList.remove("hidden");
 
   if (!_themes.length) {                        // If no installed themes
     $(".no-themes").classList.remove("hidden"); // show 'No themes installed"
