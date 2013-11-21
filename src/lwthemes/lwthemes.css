@@ -1,3 +1,6 @@
+@namespace url(http://www.w3.org/1999/xhtml);
+@namespace xul url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
 /*
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -6,6 +9,8 @@
  *  Contributor(s):
  *  - LouCypher (original code)
  */
+
+html.rtl { direction: rtl }
 
 body {
   font-family: serif;
@@ -29,11 +34,11 @@ h1, h2 { font-family: sans-serif }
 a:link, a:visited { text-decoration: none }
 a:hover { text-decoration: underline }
 
-.menu {
-  vertical-align: top;
-}
+.menu { vertical-align: top }
 
 #template, .hidden, .current .enable, .disable { display: none }
+
+.no-themes ul { line-height: 2em }
 
 .theme {
   font-size: 10pt;
@@ -43,7 +48,6 @@ a:hover { text-decoration: underline }
   outline: 1px solid transparent;
   margin: 0 1em 1em 0;
   padding: 10px;
-  text-align: left;
   word-wrap: break-word;
 }
 
@@ -76,13 +80,17 @@ button {
   margin: 0;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .3) 100%);
 }
-button:focus {
+button:active {
   padding: 3px 1em 1px;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
 .left { float: left }
 .right { float: right }
+
+.rtl .left { float: right }
+.rtl .right { float: left }
+
 .clear { clear: both }
 .bottom { bottom: 0 }
 
@@ -114,7 +122,10 @@ footer {
   font-size: 8pt;
   font-weight: bold;
   transform: skewX(-10deg);
-  color: rgba(0, 0, 120, .75);
+  color: rgba(0, 0, 120, .75) !important;
   text-decoration: none;
   text-shadow: 0 0 3px rgba(0, 0, 120, .25);
+}
+
+xul|button {
 }

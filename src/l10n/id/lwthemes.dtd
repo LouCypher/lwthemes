@@ -1,10 +1,6 @@
-<!ENTITY page.nothemes              "Tidak ada tema yang diinstall">
-<!ENTITY page.getthemes             "Dapatkan tema">
-<!ENTITY theme.link.tooltip         "Kunjungi beranda">
-<!ENTITY theme.link.addonsmgr       "Lihat di Pengelola Pengaya">
-<!ENTITY theme.button.wear.label    "Kenakan">
-<!ENTITY theme.button.wear.tooltip  "Kenakan tema ini">
-<!ENTITY theme.button.stop.label    "Tanggalkan">
-<!ENTITY theme.button.stop.tooltip  "Berhenti memakai tema ini">
-<!ENTITY by                         "oleh">
-<!ENTITY or                         "atau">
+<!ENTITY page.title             "Light Weight Themes">
+<!ENTITY page.nothemes.get      "Dapatkan tema">
+<!ENTITY page.nothemes.howto    "Cara membuat tema">
+<!ENTITY page.personas.create   "Buat tema">
+<!ENTITY page.personas.install  "Pasang Personas Plus">
+<!ENTITY page.personas.enable   "Aktifkan Personas Plus">

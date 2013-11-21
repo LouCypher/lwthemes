@@ -1,10 +1,6 @@
-<!ENTITY page.nothemes              "No themes installed">
-<!ENTITY page.getthemes             "Get themes">
-<!ENTITY theme.link.tooltip         "Visit home page">
-<!ENTITY theme.link.addonsmgr       "View in Add-ons Manager">
-<!ENTITY theme.button.wear.label    "Wear it">
-<!ENTITY theme.button.wear.tooltip  "Wear this theme">
-<!ENTITY theme.button.stop.label    "Take it off">
-<!ENTITY theme.button.stop.tooltip  "Stop wearing this theme">
-<!ENTITY by                         "by">
-<!ENTITY or                         "or">
+<!ENTITY page.title             "Light Weight Themes">
+<!ENTITY page.nothemes.get      "Get themes">
+<!ENTITY page.nothemes.howto    "How to create a theme">
+<!ENTITY page.personas.create   "Create a theme">
+<!ENTITY page.personas.install  "Install Personas Plus">
+<!ENTITY page.personas.enable   "Enable Personas Plus">

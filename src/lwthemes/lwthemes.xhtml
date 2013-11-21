@@ -1,4 +1,9 @@
-<!DOCTYPE html SYSTEM "chrome://lwthemes/locale/">
+<!DOCTYPE html [
+  <!ENTITY % lwthemesDTD SYSTEM "chrome://lwthemes/locale/">
+  %lwthemesDTD;
+  <!ENTITY % addonsDTD SYSTEM "chrome://mozapps/locale/extensions/extensions.dtd">
+  %addonsDTD;  
+]>
 <!--
     This Source Code Form is subject to the terms of the Mozilla Public
     License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,7 +15,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8"/>
-    <title>Light Weight Themes</title>
+    <title>&page.title;</title>
     <link rel="stylesheet" href="../skin/" type="text/css"/>
     <link rel="stylesheet" href="../skin/light.css" title="Light" type="text/css"/>
     <link rel="stylesheet alternate" href="../skin/dark.css" title="Dark" type="text/css"/>
@@ -38,34 +43,54 @@
       <article id="template" class="theme left">
         <header>
           <div class="image">
-            <a title="&theme.link.tooltip;">
+            <a title="&detail.homepage.label;">
               <img onmouseenter="setTheme(this, 'preview');"
                    onmouseleave="setTheme(this, 'reset');"/>
             </a>
           </div>
-          <h2 class="theme-title"><a title="&theme.link.tooltip;"></a></h2>
-          <span class="theme-author">&by; </span>
+          <h2 class="theme-title"><a title="&detail.homepage.label;"></a></h2>
+          <span class="theme-author">&addon.createdBy.label; </span>
         </header>
 
         <p class="theme-description"></p>
         <p>
-          <a href="#" onclick="openAddonsManager(event);">&theme.link.addonsmgr;</a>
-        </p>
-        <p>
-          <button class="enable" title="&theme.button.wear.tooltip;"
+          <button class="enable" title="&cmd.enableTheme.label;"
                   onmouseenter="setTheme(this, 'preview');"
                   onmouseleave="setTheme(this, 'reset');"
-                  onclick="setTheme(this, 'wear');">&theme.button.wear.label;</button>
-          <button class="disable" title="&theme.button.stop.tooltip;"
-                  onclick="setTheme(this, 'stop');">&theme.button.stop.label;</button>
+                  onclick="setTheme(this, 'wear');">&cmd.enableAddon.label;</button>
+          <button class="disable" title="&cmd.disableTheme.label;"
+                  onclick="setTheme(this, 'stop');">&cmd.disableAddon.label;</button>
+          <button class="right" onclick="openAddonsManager(this);"
+                  title="&addons.windowTitle;">&addon.details.label;</button>
         </p>
       </article>
 
-      <article id="no-themes" class="hidden">
-        <p>
-          &page.nothemes;. <a href="https://addons.mozilla.org/themes/">&page.getthemes;</a>
-          &or; <a href="http://loucypher.github.io/personas/">Solid Color Theme</a>.
-        </p>
+      <article class="no-themes hidden">
+        <p>&listEmpty.installed.label;.</p>
+        <ul>
+          <li><a href="https://addons.mozilla.org/themes/">&page.nothemes.get;</a></li>
+          <li>
+            <a href="https://addons.mozilla.org/developers/docs/themes">&page.nothemes.howto;</a>
+          </li>
+          <li class="personas-enabled hidden">
+            <a href="chrome://personas/content/customPersonaEditor.xul">&page.personas.create;</a>
+          </li>
+          <li class="personas-disabled hidden">
+            <a href="#" onclick="_personas.enable(this); return false;">&page.personas.enable;</a>
+            <span class="hidden">
+              <a href="#" onclick="Application.restart(); return false;">&addon.restartNow.label;</a>
+              |
+              <a href="#" onclick="_personas.disable(this); return false;">&addon.undoAction.label;</a>
+            </span>
+          </li>
+          <li class="personas-not-installed hidden">
+            <a href="https://addons.mozilla.org/addon/personas-plus/?src=external-addon-472283"
+               onclick="_personas.install(); return false;">
+              &page.personas.install;
+            </a>
+          </li>
+          <li><a href="http://loucypher.github.io/personas/">Solid Color Theme</a></li>
+        </ul>
       </article>
 
       <div class="clear"></div>

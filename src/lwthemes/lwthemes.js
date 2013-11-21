@@ -7,6 +7,21 @@
  *  - LouCypher (original code)
  */
 
+/**
+ *  Set document language and direction based on browser language
+ */
+document.documentElement.lang = navigator.language;
+switch (navigator.language) {
+  case "ar":    // Arabic
+  case "he":    // Hebrew
+  case "fa-IR": // Farsi
+    document.documentElement.classList.add("rtl");  // Right to left
+}
+
+/**
+ *  Light weight Theme Manager module
+ *  http://dxr.mozilla.org/mozilla-central/source/toolkit/mozapps/extensions/LightweightThemeManager.jsm
+ */
 var lwt = {};
 Components.utils.import("resource://gre/modules/LightweightThemeManager.jsm", lwt );
 lwt = lwt.LightweightThemeManager;
@@ -142,8 +157,10 @@ function themeBox(aTheme) {
     $(".theme-title a", box).href = $("header a", box).href = themeURL;
     $(".theme-title a", box).textContent = name;
   }
-  else
+  else {
     $(".theme-title", box).textContent = name;
+    $(".theme .image a", box).removeAttribute("title");
+  }
 
   if (author)
     $(".theme-author", box).textContent += author;
@@ -154,10 +171,8 @@ function themeBox(aTheme) {
   return box;
 }
 
-function openAddonsManager(aEvent) {
-  aEvent.preventDefault();
-
-  var themeBox = aEvent.target;
+function openAddonsManager(aNode) {
+  var themeBox = aNode;
   while (themeBox && !themeBox.classList.contains("theme"))
     themeBox = themeBox.parentNode;
 
@@ -175,11 +190,59 @@ function openAddonsManager(aEvent) {
   }
 }
 
+var _personas = {
+  ID: "personas@christopher.beard",
+  addon: null,
+  status: null,
+
+  install: function installPersonas() {
+    location.assign("https://addons.mozilla.org/firefox/downloads/latest/10900/" +
+                    "addon-10900-latest.xpi?src=external-addon-472283");
+  },
+
+  enable: function enablePersonas(aNode) {
+    this.addon.userDisabled = false;
+    aNode.classList.add("hidden");
+    aNode.nextSibling.nextSibling.classList.remove("hidden");
+  },
+
+  disable: function enablePersonas(aNode) {
+    this.addon.userDisabled = true;
+    aNode.parentNode.classList.add("hidden");
+    aNode.parentNode.previousSibling.previousSibling.classList.remove("hidden");
+  },
+
+  init: function checkForPersonas() {
+    var list;
+    var obj = Components.utils.import("resource://gre/modules/AddonManager.jsm", {});
+    var {getAddonByID} = obj.AddonManager;
+    getAddonByID(this.ID, function(personas) {
+      if (personas) {
+        _personas.addon = personas;
+        if (personas.isActive) {
+          _personas.status = "enabled";
+          list = $(".personas-enabled");
+        }
+        else {
+          _personas.status = "disabled";
+          list = $(".personas-disabled");
+        }
+      }
+      else {
+        _personas.status = "not installed";
+        list = $(".personas-not-installed");
+      }
+      list.classList.remove("hidden");
+    })
+  }
+}
+
 function load() {
   donation();
+  _personas.init();
 
   if (!_themes.length) {                        // If no installed themes
-    $("#no-themes").classList.remove("hidden"); // show 'No themes installed"
+    $(".no-themes").classList.remove("hidden"); // show 'No themes installed"
     $("footer").classList.add("bottom");
     return;
   }
