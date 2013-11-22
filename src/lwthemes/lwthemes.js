@@ -30,8 +30,11 @@ var { usedThemes: _themes, currentTheme: _currentTheme } = LWT;
 
 Components.utils.import("resource://gre/modules/Services.jsm");
 
-PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
-var prefs = Services.prefs.getBranch(PREF_ROOT);
+var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
+                 Services.wm.getMostRecentWindow("mail:3pane");
+
+const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
+const prefs = Services.prefs.getBranch(PREF_ROOT);
 
 var _style = prefs.getBoolPref("darkTheme") ? "Dark" : "Light";
 var _devMode = prefs.getBoolPref("devmode");
@@ -88,6 +91,20 @@ function getThemeBox(aNode) {
   return aNode;
 }
 
+function getEntityFromDTD(aChromeURL, aEntity, aDefVal) {
+  const XMLHttpRequest = Components.Constructor("@mozilla.org/xmlextras/xmlhttprequest;1",
+                                                "nsIXMLHttpRequest");
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", aChromeURL, false);
+  xhr.send(null);
+  try {
+    return xhr.responseText.match("ENTITY.*" + aEntity + "[^\>]+").toString()
+                           .match(/\".*/).toString().replace(/\"/g, "");
+  } catch (ex) {
+    return aDefVal;
+  }
+}
+
 function applyHeaderBg(aTheme) {
   $(".header").style.color = aTheme.textColor;
   $(".header").style.backgroundColor = aTheme.accentcolor;
@@ -106,6 +123,8 @@ function applyHeaderBg(aTheme) {
 function setTheme(aNode, aAction) {
   var themeBox = getThemeBox(aNode);
   var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
+  if (!theme)
+    theme = JSON.parse(themeBox.dataset.browsertheme);
 
   switch (aAction) {
     case "wear":
@@ -162,8 +181,10 @@ function getThemeURL(aTheme) {
  *  Generate boxes for installed themes
  */
 function themeBox(aTheme) {
-  const { id: id, name: name, author: author, description: description,
-          homepageURL: homepageURL, previewURL: previewURL } = aTheme;
+  const {
+    id: id, name: name, author: author, description: description,
+    homepageURL: homepageURL, previewURL: previewURL, headerURL: headerURL
+  } = aTheme;
 
   var themeData = JSON.stringify(aTheme);
 
@@ -173,13 +194,18 @@ function themeBox(aTheme) {
   if (_currentTheme && aTheme.id === _currentTheme.id)
     box.classList.add("current");
 
+  if (aTheme.id === "1")
+    box.classList.add("persona");
+
   if (/^solid\-color/.test(aTheme.id)) {
     $(".image", box).classList.add("solid-color");
     $(".image", box).style.backgroundColor = aTheme.accentcolor;
     $("img", box).src = "preview.png";
   }
-  else
+  else if (previewURL)
     $("img", box).src = previewURL.replace(/\?\d+/, "");
+  else
+    $("img", box).src = headerURL.replace(/\?\d+/, "");
 
   $("img", box).alt = name;
 
@@ -205,18 +231,18 @@ function themeBox(aTheme) {
 function openAddonsManager(aNode) {
   var themeBox = getThemeBox(aNode);
   var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
+  if (!theme)
+    theme = JSON.parse(themeBox.dataset.browsertheme);
+
   var addonId = theme.id + "@personas.mozilla.org";
   var view = "addons://detail/" + encodeURIComponent(addonId) + "/preferences";
 
-  var chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
-                  Services.wm.getMostRecentWindow("mail:3pane");
-
-  if ("toEM" in chromeWin) {
-    chromeWin.toEM(view);
-  } else if ("openAddonsMgr" in chromeWin) {
-    chromeWin.openAddonsMgr(view);
+  if ("toEM" in _chromeWin) {
+    _chromeWin.toEM(view);
+  } else if ("openAddonsMgr" in _chromeWin) {
+    _chromeWin.openAddonsMgr(view);
   } else {
-    chromeWin.BrowserOpenAddonsMgr(view);
+    _chromeWin.BrowserOpenAddonsMgr(view);
   }
 }
 
@@ -242,6 +268,21 @@ var _personas = {
     aNode.parentNode.previousSibling.previousSibling.classList.remove("hidden");
   },
 
+  edit: function editPersona() {
+    //location.assign("chrome://personas/content/customPersonaEditor.xul");
+    var browser = _chromeWin.gBrowser.mCurrentBrowser;
+    browser.addEventListener("load", function(aEvent) {
+      aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
+      var doc = aEvent.currentTarget.contentDocument;
+      var button = doc.querySelector("#form > hbox > button");
+      //console.log(button.label);
+      button.setAttribute("oncommand",
+                          "PersonaService.changeToPersona(PersonaService.customPersona); " +
+                          "history.back();")
+    }, true);
+    browser.loadURI("chrome://personas/content/customPersonaEditor.xul");
+  },
+
   init: function checkForPersonas() {
     var list;
     var obj = Components.utils.import("resource://gre/modules/AddonManager.jsm", {});
@@ -257,6 +298,10 @@ var _personas = {
           _personas.status = "disabled";
           list = $(".personas-disabled");
         }
+        var editLabel = getEntityFromDTD("chrome://personas/locale/", "contextEdit.label",
+                                         "Edit");
+        //console.log(editLabel);
+        $(".persona .edit").textContent = editLabel;
       }
       else {
         _personas.status = "not installed";
@@ -270,6 +315,8 @@ var _personas = {
 function inspect(aNode) {
   var themeBox = getThemeBox(aNode);
   var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
+  if (!theme)
+    theme = JSON.parse(themeBox.dataset.browsertheme);
   inspectObject(theme);
 }
 
@@ -280,12 +327,9 @@ function toggleViewer() {
 function jsonView(aNode) {
   var themeBox = getThemeBox(aNode);
   var json = jsBeautify(themeBox.dataset.browsertheme);
-  var chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
-                  Services.wm.getMostRecentWindow("mail:3pane");
-
   var viewOption = prefs.getIntPref("jsonview");
-  if (viewOption === 1 && "Scratchpad" in chromeWin) {
-    chromeWin.Scratchpad.ScratchpadManager.openScratchpad({text: json});
+  if (viewOption === 1 && "Scratchpad" in _chromeWin) {
+    _chromeWin.Scratchpad.ScratchpadManager.openScratchpad({text: json});
     return;
   }
 
