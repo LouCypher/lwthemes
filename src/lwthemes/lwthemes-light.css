@@ -7,6 +7,8 @@
  *  - LouCypher (original code)
  */
 
+@import url("chrome://lwthemes/skin/");
+
 body {
   background: #fff;
   color: #000;

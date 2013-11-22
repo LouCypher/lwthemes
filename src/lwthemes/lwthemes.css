@@ -14,13 +14,18 @@ body {
   margin: 0;
 }
 
+.header {
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  padding: 0 1em;
+}
+
 .shadow {
   position: fixed;
   height: 200px;
   margin: -200px 0 0;
 }
 .shadow, .header { top: 0 }
-.header { padding: 0 1em }
 .shadow, .header, footer { left: 0; right: 0; }
 .header, footer { position: absolute }
 
@@ -33,7 +38,9 @@ a:hover { text-decoration: underline }
 
 .menu { vertical-align: top }
 
-#template, .hidden, .current .enable, .disable { display: none }
+#template, .hidden, .current .enable, .disable, .inspect, .json { display: none }
+
+.current .disable, .devmode .inspect:not(.hidden), .devmode .json { display: inline-block }
 
 .no-themes ul { line-height: 2em }
 
@@ -47,8 +54,6 @@ a:hover { text-decoration: underline }
   padding: 10px;
   word-wrap: break-word;
 }
-
-.current .disable { display: inline-block }
 
 .theme img {
   max-width: 340px;
@@ -145,3 +150,4 @@ footer {
   font-family: monospace;
   font-size: 12pt;
 }
+

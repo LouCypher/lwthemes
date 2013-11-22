@@ -10,8 +10,39 @@
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 Cu.import("resource://gre/modules/Services.jsm");
 
+/**
+ * Start setting default preferences 
+ * http://starkravingfinkle.org/blog/2011/01/restartless-add-ons-%e2%80%93-default-preferences/
+ */
 const PREF_BRANCH = "extensions.lwthemes-manager@loucypher.";
+const PREFS = {
+  name: "chrome://json-inspector/locale/json-inspector.properties",
+  description: "chrome://json-inspector/locale/json-inspector.properties",
+  firstRun: true,
+  devmode: false,   // If true, show `Inspect` and `JSON` buttons
+  jsonview: 0,      // 0: view JSON data in `textarea` element, 1: use Scratchpad
+  darkTheme: false  // false: use `Light` theme, true: use `Dark` theme
+};
+
+let branch = Services.prefs.getDefaultBranch(PREF_BRANCH);
 let prefs = Services.prefs.getBranch(PREF_BRANCH);
+for (let [key, val] in Iterator(PREFS)) {
+  switch (typeof val) {
+    case "boolean":
+      branch.setBoolPref(key, val);
+      break;
+    case "number":
+      branch.setIntPref(key, val);
+      break;
+    case "string":
+      branch.setCharPref(key, val);
+      break;
+  }
+}
+/*
+ * End setting default preferences 
+ **/
+
 let RESOURCE_NAME;
 
 function log(aString) {
@@ -113,8 +144,6 @@ function shutdown(data, reason) {
  * Handle the add-on being installed
  */
 function install(data, reason) {
-  // Set default prefs value
-  Services.prefs.getDefaultBranch(PREF_BRANCH).setBoolPref("firstRun", true);
 }
 
 /**
@@ -122,5 +151,6 @@ function install(data, reason) {
  */
 function uninstall(data, reason) {
   if (reason == ADDON_UNINSTALL)
-    prefs.clearUserPref("firstRun"); // Remove prefs on uninstall
+    for (let [key] in Iterator(PREFS))
+      branch.clearUserPref(key); // Remove prefs on uninstall
 }

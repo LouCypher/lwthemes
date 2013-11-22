@@ -28,8 +28,30 @@ LWT = LWT.LightweightThemeManager;
 
 var { usedThemes: _themes, currentTheme: _currentTheme } = LWT;
 
+Components.utils.import("resource://gre/modules/Services.jsm");
+
+PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
+var prefs = Services.prefs.getBranch(PREF_ROOT);
+
+var _style = prefs.getBoolPref("darkTheme") ? "Dark" : "Light";
+var _devMode = prefs.getBoolPref("devmode");
+var _jsonView = prefs.getIntPref("jsonview");
+
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
+function $style(aName) aName === "Dark" ? document.styleSheets[1] : document.styleSheets[0];
+
+/**
+ *  Apply style
+ */
+if (_style === "Dark") {
+  $style("Dark").disabled = false;
+  $style("Light").disabled = true;
+}
+else {
+  $style("Light").disabled = false;
+  $style("Dark").disabled = true;
+}
 
 function jsBeautify(aJS) {
   try {
@@ -63,8 +85,13 @@ function donation() {
 function getThemeBox(aNode) {
   while (aNode && !aNode.hasAttribute("data-browsertheme"))
     aNode = aNode.parentNode;
-
   return aNode;
+}
+
+function applyHeaderBg(aTheme) {
+  $(".header").style.color = aTheme.textColor;
+  $(".header").style.backgroundColor = aTheme.accentcolor;
+  $(".header").style.backgroundImage = "url(" + aTheme.headerURL + ")";
 }
 
 /**
@@ -181,7 +208,6 @@ function openAddonsManager(aNode) {
   var addonId = theme.id + "@personas.mozilla.org";
   var view = "addons://detail/" + encodeURIComponent(addonId) + "/preferences";
 
-  var {Services} = Components.utils.import("resource://gre/modules/Services.jsm", {});
   var chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
                   Services.wm.getMostRecentWindow("mail:3pane");
 
@@ -254,24 +280,37 @@ function toggleViewer() {
 function jsonView(aNode) {
   var themeBox = getThemeBox(aNode);
   var json = jsBeautify(themeBox.dataset.browsertheme);
-  var {Services} = Components.utils.import("resource://gre/modules/Services.jsm", {});
   var chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
                   Services.wm.getMostRecentWindow("mail:3pane");
 
-  if ("Scratchpad" in chromeWin) {
+  var viewOption = prefs.getIntPref("jsonview");
+  if (viewOption === 1 && "Scratchpad" in chromeWin) {
     chromeWin.Scratchpad.ScratchpadManager.openScratchpad({text: json});
     return;
   }
+
   $(".viewer textarea").value = json;
   toggleViewer();
   $(".viewer textarea").focus();
+}
+
+function toggleDevMode() {
+  _devMode = !_devMode;
+  prefs.setBoolPref("devmode", _devMode);
+  if (_devMode)
+    document.documentElement.classList.add("devmode");
+  else
+    document.documentElement.classList.remove("devmode");
 }
 
 function load() {
   donation();
   _personas.init();
 
-  if (typeof inspectObject == "function")
+  if (_devMode)
+    document.documentElement.classList.add("devmode");
+
+  if (typeof inspectObject === "function")
     $(".inspect").classList.remove("hidden");
 
   if (!_themes.length) {                        // If no installed themes
@@ -291,4 +330,6 @@ function load() {
     $(".current").parentNode.insertBefore($(".current"), $("section").firstChild);
 }
 
-function unload() {}
+function unload() {
+  prefs.setBoolPref("darkTheme", !$style("Dark").disabled);
+}
