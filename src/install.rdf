@@ -8,7 +8,7 @@
     <em:unpack>false</em:unpack>
     <em:name>Light Weight Themes Manager</em:name>
     <em:description>Manage your installed light weight themes.</em:description>
-    <em:version>0.1a9</em:version>
+    <em:version>0.1a10</em:version>
     <em:creator>LouCypher</em:creator>
     <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
     <em:iconURL>chrome://lwthemes/skin/icon32.png</em:iconURL>
@@ -16,6 +16,26 @@
     <em:optionsURL>chrome://lwthemes/content/</em:optionsURL>
     <em:optionsType>3</em:optionsType>
     <em:contributor>David Vignoni (icon)</em:contributor>
+
+    <em:localized>
+      <Description>
+        <em:locale>en-US</em:locale>
+        <em:name>Light Weight Themes Manager</em:name>
+        <em:description>Manage your installed light weight themes.</em:description>
+        <em:creator>LouCypher</em:creator>
+        <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+      </Description>
+    </em:localized>
+
+    <em:localized>
+      <Description>
+        <em:locale>id</em:locale>
+        <em:name>Pengelola Tema Latar</em:name>
+        <em:description>Mengelola tema latar yang telah terpasang.</em:description>
+        <em:creator>LouCypher</em:creator>
+        <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+      </Description>
+    </em:localized>
 
     <em:targetApplication>
       <Description><!--Firefox-->
