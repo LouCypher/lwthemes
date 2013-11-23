@@ -39,9 +39,7 @@ a:hover { text-decoration: underline }
 .menu { vertical-align: top }
 
 #template, .hidden, .current .enable, .disable, .dev, .edit { display: none }
-.current .disable, .devmode .dev, .persona .edit {
-  display: inline-block
-}
+.current .disable, .devmode .dev:not(.hidden), .persona .edit { display: inline-block }
 
 .no-themes ul { line-height: 2em }
 
