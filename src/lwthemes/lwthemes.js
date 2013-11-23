@@ -18,17 +18,15 @@ switch (navigator.language) {
     document.documentElement.classList.add("rtl");  // Right to left
 }
 
-/**
- *  Light weight Theme Manager module
- *  http://dxr.mozilla.org/mozilla-central/source/toolkit/mozapps/extensions/LightweightThemeManager.jsm
- */
-var LWT = {};
-Components.utils.import("resource://gre/modules/LightweightThemeManager.jsm", LWT );
-LWT = LWT.LightweightThemeManager;
+function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
+function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
+function style(aName) aName === "Dark" ? document.styleSheets[1] : document.styleSheets[0];
+function jsm(aURL) Components.utils.import(aURL, {});
 
-var { usedThemes: _themes, currentTheme: _currentTheme } = LWT;
+const {LightweightThemeManager} = jsm("resource://gre/modules/LightweightThemeManager.jsm");
+var {usedThemes: _themes, currentTheme: _currentTheme} = LightweightThemeManager;
 
-Components.utils.import("resource://gre/modules/Services.jsm");
+const {Services} = jsm("resource://gre/modules/Services.jsm");
 
 var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
                  Services.wm.getMostRecentWindow("mail:3pane");
@@ -40,25 +38,21 @@ var _style = prefs.getBoolPref("darkTheme") ? "Dark" : "Light";
 var _devMode = prefs.getBoolPref("devmode");
 var _jsonView = prefs.getIntPref("jsonview");
 
-function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
-function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
-function $style(aName) aName === "Dark" ? document.styleSheets[1] : document.styleSheets[0];
-
 /**
  *  Apply style
  */
 if (_style === "Dark") {
-  $style("Dark").disabled = false;
-  $style("Light").disabled = true;
+  style("Dark").disabled = false;
+  style("Light").disabled = true;
 }
 else {
-  $style("Light").disabled = false;
-  $style("Dark").disabled = true;
+  style("Light").disabled = false;
+  style("Dark").disabled = true;
 }
 
 function jsBeautify(aJS) {
   try {
-    var {js_beautify} = Components.utils.import("resource:///modules/devtools/Jsbeautify.jsm", {});
+    const {js_beautify} = jsm("resource:///modules/devtools/Jsbeautify.jsm");
     return js_beautify(aJS, { indent_size: 2, indent_char: " " });
   } catch (ex) {
     return aJS;
@@ -105,10 +99,10 @@ function getEntityFromDTD(aChromeURL, aEntity, aDefVal) {
   }
 }
 
-function applyHeaderBg(aTheme) {
-  $(".header").style.color = aTheme.textColor;
-  $(".header").style.backgroundColor = aTheme.accentcolor;
-  $(".header").style.backgroundImage = "url(" + aTheme.headerURL + ")";
+function applyThemeToNode(aNode) {
+  aNode.style.color = _currentTheme.textColor;
+  aNode.style.backgroundColor = _currentTheme.accentcolor;
+  aNode.style.backgroundImage = "url(" + _currentTheme.headerURL + ")";
 }
 
 /**
@@ -122,40 +116,41 @@ function applyHeaderBg(aTheme) {
  */
 function setTheme(aNode, aAction) {
   var themeBox = getThemeBox(aNode);
-  var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
+  var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
   if (!theme)
     theme = JSON.parse(themeBox.dataset.browsertheme);
 
   switch (aAction) {
-    case "wear":
-      LWT.setLocalTheme(theme);
-      if ($(".current"))
-        $(".current").classList.remove("current");
-      themeBox.classList.add("current");
-      _currentTheme = theme;
+    case "preview":
+      LightweightThemeManager.previewTheme(theme);
+      return;
+
+    case "reset":
+      LightweightThemeManager.resetPreview();
       return;
 
     case "stop":
-      LWT.setLocalTheme();
+      LightweightThemeManager.setLocalTheme();
       themeBox.classList.remove("current");
       _currentTheme = null;
-      return;
+      break;
 
     case "dump":
-      LWT.forgetUsedTheme(theme.id);
+      LightweightThemeManager.forgetUsedTheme(theme.id);
       if (themeBox.classList.contains("current")) {
         themeBox.classList.remove("current");
         _currentTheme = null;
       }
-      return;
-
-    case "preview":
-      LWT.previewTheme(theme);
-      return;
+      break;
 
     default:
-      LWT.resetPreview();
+      LightweightThemeManager.setLocalTheme(theme);
+      if ($(".current"))
+        $(".current").classList.remove("current");
+      themeBox.classList.add("current");
+      _currentTheme = theme;
   }
+  _themes = LightweightThemeManager.usedThemes;
 }
 
 /**
@@ -199,7 +194,6 @@ function themeBox(aTheme) {
 
   if (/^solid\-color/.test(aTheme.id)) {
     $(".image", box).classList.add("solid-color");
-    $(".image", box).style.backgroundColor = aTheme.accentcolor;
     $("img", box).src = "preview.png";
   }
   else if (previewURL)
@@ -207,6 +201,8 @@ function themeBox(aTheme) {
   else
     $("img", box).src = headerURL.replace(/\?\d+/, "");
 
+  $("img", box).style.backgroundColor = aTheme.accentcolor;
+  $("img", box).style.color = aTheme.textcolor;
   $("img", box).alt = name;
 
   var themeURL = getThemeURL(aTheme);
@@ -230,7 +226,7 @@ function themeBox(aTheme) {
 
 function openAddonsManager(aNode) {
   var themeBox = getThemeBox(aNode);
-  var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
+  var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
   if (!theme)
     theme = JSON.parse(themeBox.dataset.browsertheme);
 
@@ -268,24 +264,36 @@ var _personas = {
     aNode.parentNode.previousSibling.previousSibling.classList.remove("hidden");
   },
 
-  edit: function editPersona() {
-    //location.assign("chrome://personas/content/customPersonaEditor.xul");
-    var browser = _chromeWin.gBrowser.mCurrentBrowser;
-    browser.addEventListener("load", function(aEvent) {
+  edit: function editPersona(aNode) {
+    var editorURL = "chrome://personas/content/customPersonaEditor.xul";
+    var browser = _chromeWin.gBrowser;
+    var container = browser.mTabContainer;
+    //console.log(container.localName);
+    container.addEventListener("TabClose", function(aEvent) {
       aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
-      var doc = aEvent.currentTarget.contentDocument;
-      var button = doc.querySelector("#form > hbox > button");
-      //console.log(button.label);
-      button.setAttribute("oncommand",
-                          "PersonaService.changeToPersona(PersonaService.customPersona); " +
-                          "history.back();")
+      //console.log(aEvent.currentTarget.localName);
+      if (browser.currentURI.spec === editorURL &&
+          LightweightThemeManager.currentTheme.id === "1") {
+        _currentTheme = LightweightThemeManager.currentTheme;  // Update _currentTheme
+        var themeBox = getThemeBox(aNode);
+        themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
+        $("img", themeBox).src = _currentTheme.headerURL;
+        $("img", themeBox).removeAttribute("style");
+        $("img", themeBox).alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
+        $("img", themeBox).style.color = _currentTheme.textcolor;
+        $("img", themeBox).style.backgroundColor = _currentTheme.accentcolor;
+        if (!themeBox.classList.contains("current")) {
+          $(".current").classList.remove("current");
+          themeBox.classList.add("current");
+        }
+      }
     }, true);
-    browser.loadURI("chrome://personas/content/customPersonaEditor.xul");
+    browser.selectedTab = browser.addTab(editorURL);
   },
 
   init: function checkForPersonas() {
     var list;
-    var obj = Components.utils.import("resource://gre/modules/AddonManager.jsm", {});
+    var obj = jsm("resource://gre/modules/AddonManager.jsm", {});
     var {getAddonByID} = obj.AddonManager;
     getAddonByID(this.ID, function(personas) {
       if (personas) {
@@ -314,7 +322,7 @@ var _personas = {
 
 function inspect(aNode) {
   var themeBox = getThemeBox(aNode);
-  var theme = LWT.parseTheme(themeBox.dataset.browsertheme);
+  var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
   if (!theme)
     theme = JSON.parse(themeBox.dataset.browsertheme);
   inspectObject(theme);
@@ -363,7 +371,7 @@ function load() {
     return;
   }
 
-  sort(_themes);
+  sort(_themes);  // Sort by name
 
   // Generate boxes for installed themes
   for (var i in _themes)
@@ -372,8 +380,10 @@ function load() {
   // Move current theme to top
   if (_currentTheme)
     $(".current").parentNode.insertBefore($(".current"), $("section").firstChild);
+
+  _themes = LightweightThemeManager.usedThemes; // Restore sort order
 }
 
 function unload() {
-  prefs.setBoolPref("darkTheme", !$style("Dark").disabled);
+  prefs.setBoolPref("darkTheme", !style("Dark").disabled);
 }

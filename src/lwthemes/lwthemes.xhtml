@@ -50,21 +50,19 @@
 
         <p class="theme-description"></p>
         <p>
-          <button class="enable" title="&cmd.enableTheme.label;"
+          <button class="enable left" title="&cmd.enableTheme.label;"
                   onmouseenter="setTheme(this, 'preview');"
                   onmouseleave="setTheme(this, 'reset');"
                   onclick="setTheme(this, 'wear');">&cmd.enableAddon.label;</button>
-          <button class="disable" title="&cmd.disableTheme.label;"
+          <button class="disable left" title="&cmd.disableTheme.label;"
                   onclick="setTheme(this, 'stop');">&cmd.disableAddon.label;</button>
-          <button class="edit" onclick="_personas.edit();">Edit</button>
+          <button class="edit left" onclick="_personas.edit(this);">Edit</button>
           <button class="more right" onclick="openAddonsManager(this);"
                   title="&addons.windowTitle;">&addon.details.label;</button>
         </p>
         <p>
-          <span class="dev right">
-            <button class="inspect hidden" onclick="inspect(this);">Inspect</button>
-            <button class="json" onclick="jsonView(this);">JSON</button>
-          </span>
+            <button class="dev json right" onclick="jsonView(this);">JSON</button>
+            <button class="dev inspect right hidden" onclick="inspect(this);">Inspect</button>
         </p>
       </article>
 
