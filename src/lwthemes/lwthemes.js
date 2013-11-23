@@ -105,6 +105,13 @@ function applyThemeToNode(aNode) {
   aNode.style.backgroundImage = "url(" + _currentTheme.headerURL + ")";
 }
 
+function showTotalThemes(aNumber) {
+  var text = "Total themes: " + aNumber;
+  console.log(document.title + "\n" + text);
+  Services.console.logStringMessage(document.title + "\n" + text);
+  _chromeWin.XULBrowserWindow.setOverLink(text);
+}
+
 /**
  *  Set a theme
  *  @param aNode Node that triggers the action
@@ -141,6 +148,7 @@ function setTheme(aNode, aAction) {
         themeBox.classList.remove("current");
         _currentTheme = null;
       }
+      showTotalThemes(_themes.length);
       break;
 
     default:
@@ -158,15 +166,16 @@ function setTheme(aNode, aAction) {
  */
 function getThemeURL(aTheme) {
   const { id: id, homepageURL: homepageURL, updateURL: updateURL } = aTheme;
+  const amoURL = "https://addons.mozilla.org/";
 
   if (homepageURL)
     return homepageURL;
 
   if (updateURL) {
     if (updateURL.match(/getpersonas.com/))
-      return "https://getpersonas.com/persona/" + id;
+      return amoURL + "persona/" + id;
     if (updateURL.match(/addons.mozilla.org/))
-      return "https://addons.mozilla.org/addon/" + id;
+      return amoURL + "addon/" + id;
   }
 
   return null;
@@ -382,6 +391,8 @@ function load() {
     $(".current").parentNode.insertBefore($(".current"), $("section").firstChild);
 
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
+
+  showTotalThemes(_themes.length);
 }
 
 function unload() {
