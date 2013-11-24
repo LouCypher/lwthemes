@@ -99,6 +99,10 @@ var _personas = {
         _personas.custom = LightweightThemeManager.currentTheme;
         _currentTheme = _personas.custom; // Update _currentTheme
         var themeBox = $(".persona");
+        if (!themeBox) {
+          location.reload();
+          return;
+        }
         var image = $("img", themeBox);
         themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
         image.src = _currentTheme.headerURL;
