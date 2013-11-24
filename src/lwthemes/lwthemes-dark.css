@@ -19,11 +19,19 @@ body {
 a:link, a:visited { color: #cdd8e4 }
 
 .theme {
-  background: #344150;
-  color: inherit;
   border-color: #3d6db5;
   outline-color: #3d6db5;
 }
+
+.theme, .menu {
+  background: #344150;
+  color: inherit;
+}
+
+.menu { box-shadow: 1px 3px 3px #000 }
+.rtl .menu { box-shadow: -1px 3px 3px #000 }
+
+.menu, .separator { border-top: 1px solid #fff }
 
 .current { border-color: #c63717 }
 

@@ -7,21 +7,21 @@
  *  - LouCypher (original code)
  */
 
-/**
- *  Set document language and direction based on browser language
- */
-document.documentElement.lang = navigator.language;
-switch (navigator.language) {
-  case "ar":    // Arabic
-  case "he":    // Hebrew
-  case "fa-IR": // Farsi
-    document.documentElement.classList.add("rtl");  // Right to left
-}
-
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
 function style(aName) aName === "Dark" ? document.styleSheets[1] : document.styleSheets[0];
 function jsm(aURL) Components.utils.import(aURL, {});
+
+/**
+ *  Set document language and direction based on browser language
+ */
+$("html").lang = navigator.language;
+switch (navigator.language) {
+  case "ar":    // Arabic
+  case "he":    // Hebrew
+  case "fa-IR": // Farsi
+    $("html").classList.add("rtl");  // Right to left
+}
 
 const {LightweightThemeManager} = jsm("resource://gre/modules/LightweightThemeManager.jsm");
 var {usedThemes: _themes, currentTheme: _currentTheme} = LightweightThemeManager;
@@ -34,13 +34,14 @@ var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
 const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
-var _style = prefs.getBoolPref("darkTheme") ? "Dark" : "Light";
 var _devMode = prefs.getBoolPref("devmode");
 var _jsonView = prefs.getIntPref("jsonview");
 
 /**
  *  Apply style
  */
+var _style = prefs.getBoolPref("darkTheme") ? "Dark" : "Light";
+
 if (_style === "Dark") {
   style("Dark").disabled = false;
   style("Light").disabled = true;
@@ -48,6 +49,19 @@ if (_style === "Dark") {
 else {
   style("Light").disabled = false;
   style("Dark").disabled = true;
+}
+
+function switchStyle(aName) {
+  if (aName === "Dark") {
+    style("Dark").disabled = false;
+    style("Light").disabled = true;
+  }
+  else {
+    style("Light").disabled = false;
+    style("Dark").disabled = true;
+  }
+  _style = aName;
+  prefs.setBoolPref("darkTheme", !style("Dark").disabled);
 }
 
 function jsBeautify(aJS) {
@@ -255,6 +269,7 @@ var _personas = {
   ID: "personas@christopher.beard",
   addon: null,
   status: null,
+  custom: null,
 
   install: function installPersonas() {
     location.assign("https://addons.mozilla.org/firefox/downloads/latest/10900/" +
@@ -307,6 +322,7 @@ var _personas = {
     getAddonByID(this.ID, function(personas) {
       if (personas) {
         _personas.addon = personas;
+
         if (personas.isActive) {
           _personas.status = "enabled";
           list = $(".personas-enabled");
@@ -315,8 +331,7 @@ var _personas = {
           _personas.status = "disabled";
           list = $(".personas-disabled");
         }
-        var editLabel = getEntityFromDTD("chrome://personas/locale/", "contextEdit.label",
-                                         "Edit");
+        var editLabel = getEntityFromDTD("chrome://personas/locale/", "contextEdit.label", "Edit");
         //console.log(editLabel);
         $(".persona .edit").textContent = editLabel;
       }
@@ -359,24 +374,38 @@ function toggleDevMode() {
   _devMode = !_devMode;
   prefs.setBoolPref("devmode", _devMode);
   if (_devMode)
-    document.documentElement.classList.add("devmode");
+    $("html").classList.add("devmode");
   else
-    document.documentElement.classList.remove("devmode");
+    $("html").classList.remove("devmode");
+}
+
+function toggleMenu() {
+  $(".menu").classList.toggle("open");
+  window.addEventListener("click", function closeMenu(aEvent) {
+    //console.log(aEvent.target);
+    if (!aEvent.target.classList.contains("dontclose")) {
+      aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
+      $(".menu").classList.remove("open");
+    }
+  }, true);
 }
 
 function load() {
   donation();
   _personas.init();
+  $(".pref-style[value=" + _style + "]").checked = true;
 
-  if (_devMode)
-    document.documentElement.classList.add("devmode");
+  if (_devMode) {
+    $("html").classList.add("devmode");
+    $("#pref-devmode").checked = true;
+  }
 
   if (typeof inspectObject === "function")
     $(".inspect").classList.remove("hidden");
 
   if (!_themes.length) {                        // If no installed themes
     $(".no-themes").classList.remove("hidden"); // show 'No themes installed"
-    $("footer").classList.add("bottom");
+    $("footer").classList.add("pos-bottom");
     return;
   }
 
@@ -390,11 +419,12 @@ function load() {
   if (_currentTheme)
     $(".current").parentNode.insertBefore($(".current"), $("section").firstChild);
 
+  /*if (_personas.status !== "enabled")
+    $(".persona .edit").classList.add("hidden");*/
+
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 
   showTotalThemes(_themes.length);
 }
 
-function unload() {
-  prefs.setBoolPref("darkTheme", !style("Dark").disabled);
-}
+function unload() {}

@@ -1,9 +1,4 @@
-<!DOCTYPE html [
-  <!ENTITY % lwthemesDTD SYSTEM "chrome://lwthemes/locale/">
-  %lwthemesDTD;
-  <!ENTITY % addonsDTD SYSTEM "chrome://mozapps/locale/extensions/extensions.dtd">
-  %addonsDTD;
-]>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
     This Source Code Form is subject to the terms of the Mozilla Public
     License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,6 +7,13 @@
     Contributor(s):
     - LouCypher (original code)
 -->
+
+<!DOCTYPE html [
+  <!ENTITY % lwthemesDTD SYSTEM "chrome://lwthemes/locale/">
+  %lwthemesDTD;
+  <!ENTITY % addonsDTD SYSTEM "chrome://mozapps/locale/extensions/extensions.dtd">
+  %addonsDTD;
+]>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8"/>
@@ -24,15 +26,36 @@
   </head>
 
   <body onload="load();" onunload="unload();">
-    <div class="shadow"></div>
+    <div class="shadow fixed pos-top pos-left pos-right"></div>
 
-    <header class="header">
-      <h1>
-        Light Weight Themes
-        <!-- reserved for menu
-          <button class="menu right"">&#9776;</button>
-         -->
-      </h1>
+    <header class="header pos-top pos-left pos-right">
+      <button class="menu-button fixed pos-top pos-right dontclose"
+              title="&detail.showPreferencesWin.label;" onclick="toggleMenu();">&#9776;</button>
+      <fieldset class="menu fixed pos-right dontclose">
+        <input id="pref-style-light" class="pref-style left dontclose" name="pref-style"
+               type="radio" value="Light" onchange="switchStyle(this.value);"/>
+        <label for="pref-style-light" class="dontclose">Light theme</label>
+        <div class="clear dontclose"></div>
+        <input id="pref-style-dark" class="pref-style left dontclose" name="pref-style"
+               type="radio" value="Dark" onchange="switchStyle(this.value);"/>
+        <label for="pref-style-dark" class="dontclose">Dark theme</label>
+        <div class="clear separator dontclose"></div>
+        <input id="pref-devmode" class="left dontclose" type="checkbox" onchange="toggleDevMode();"/>
+        <label for="pref-devmode" class="dontclose">Developer mode</label>
+        <div class="clear separator dontclose"></div>
+        <a href="https://addons.mozilla.org/themes/" class="dontclose">&page.nothemes.get;</a>
+        <a href="https://addons.mozilla.org/developers/docs/themes" class="dontclose">
+          Learn How to Create a Theme
+        </a>
+        <a href="https://addons.mozilla.org/developers/theme/submit" class="dontclose">
+          Submit a New Theme
+        </a>
+        <div class="clear separator dontclose"></div>
+        <a href="http://loucypher.github.io/personas" class="dontclose">
+          Solid Color Theme
+        </a>
+      </fieldset>
+      <h1>Light Weight Themes</h1>
     </header>
 
     <section>
@@ -50,19 +73,19 @@
 
         <p class="theme-description"></p>
         <p>
-          <button class="enable left" title="&cmd.enableTheme.label;"
+          <button class="button enable left" title="&cmd.enableTheme.label;"
                   onmouseenter="setTheme(this, 'preview');"
                   onmouseleave="setTheme(this, 'reset');"
                   onclick="setTheme(this, 'wear');">&cmd.enableAddon.label;</button>
-          <button class="disable left" title="&cmd.disableTheme.label;"
+          <button class="button disable left" title="&cmd.disableTheme.label;"
                   onclick="setTheme(this, 'stop');">&cmd.disableAddon.label;</button>
-          <button class="edit left" onclick="_personas.edit(this);">Edit</button>
-          <button class="more right" onclick="openAddonsManager(this);"
+          <button class="button edit left" onclick="_personas.edit(this);">Edit</button>
+          <button class="button more right" onclick="openAddonsManager(this);"
                   title="&addons.windowTitle;">&addon.details.label;</button>
         </p>
         <p>
-            <button class="dev json right" onclick="jsonView(this);">JSON</button>
-            <button class="dev inspect right hidden" onclick="inspect(this);">Inspect</button>
+            <button class="button dev json right" onclick="jsonView(this);">JSON</button>
+            <button class="button dev inspect right hidden" onclick="inspect(this);">Inspect</button>
         </p>
       </article>
 
@@ -97,7 +120,7 @@
       <div class="clear"></div>
     </section>
 
-    <footer>
+    <footer class="pos-left pos-right">
       <p>
         <a href="https://addons.mozilla.org/addon/lwthemes/">Light Weight Themes Manager</a>
         and <a href="http://loucypher.github.io/personas/">Solid Color Theme</a>
@@ -106,8 +129,9 @@
       </p>
     </footer>
 
-    <div class="viewer hidden">
-      <textarea placeholder="JSON data" onkeypress="if (event.keyCode == 27) toggleViewer();">
+    <div class="viewer fixed pos-top pos-left pos-right pos-bottom hidden">
+      <textarea class="fixed pos-top pos-left pos-right pos-bottom" placeholder="JSON data"
+                onkeypress="if (event.keyCode == 27) toggleViewer();">
       </textarea>
       <div class="clear"></div>
       <button class="close right" onclick="toggleViewer();">X</button>
