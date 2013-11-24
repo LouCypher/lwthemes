@@ -13,7 +13,8 @@
   <head>
     <meta charset="utf-8"/>
     <title>&page.title;</title>
-    <link rel="stylesheet" href="../skin/light.css" title="Light" type="text/css"/>
+    <link rel="stylesheet" href="../skin/" type="text/css"/>
+    <link rel="stylesheet alternate" href="../skin/light.css" title="Light" type="text/css"/>
     <link rel="stylesheet alternate" href="../skin/dark.css" title="Dark" type="text/css"/>
     <link rel="shortcut icon" href="../skin/icon16.png"/>
     <script type="application/x-javascript" src="lwthemes.js"></script>
@@ -29,32 +30,32 @@
       <fieldset class="menu fixed pos-right menuitem">
         <input id="pref-style-light" class="pref-style left menuitem" name="pref-style"
                type="radio" value="Light" onchange="switchStyle(this.value);"/>
-        <label for="pref-style-light" class="menuitem">Light theme</label>
+        <label for="pref-style-light" class="menuitem">&menu.skin.light;</label>
         <div class="clear menuitem"></div>
         <input id="pref-style-dark" class="pref-style left menuitem" name="pref-style"
                type="radio" value="Dark" onchange="switchStyle(this.value);"/>
-        <label for="pref-style-dark" class="menuitem">Dark theme</label>
+        <label for="pref-style-dark" class="menuitem">&menu.skin.dark;</label>
         <div class="clear separator menuitem"></div>
         <input id="pref-devmode" class="left menuitem" type="checkbox" onchange="toggleDevMode();"/>
-        <label for="pref-devmode" class="menuitem">Developer mode</label>
+        <label for="pref-devmode" class="menuitem">&menu.toggle.devmode;</label>
         <div class="clear separator menuitem"></div>
-        <a href="https://addons.mozilla.org/themes/" class="menuitem">&page.nothemes.get;</a>
+        <a href="https://addons.mozilla.org/themes/" class="menuitem">&menu.theme.get;</a>
         <a href="https://addons.mozilla.org/developers/docs/themes" class="menuitem">
-          Learn How to Create a Theme
+          &menu.theme.learn;
         </a>
         <a href="https://addons.mozilla.org/developers/theme/submit" class="menuitem">
-          Submit a New Theme
+          &menu.theme.submit;
         </a>
         <div class="clear separator menuitem"></div>
         <a href="http://loucypher.github.io/personas" class="menuitem">
           Solid Color Theme
         </a>
       </fieldset>
-      <h1>Light Weight Themes</h1>
+      <h1>&page.title;</h1>
       <span class="search absolute pos-top pos-right">
-        <input class="search-input" placeholder="Search for themes" tabindex="1"
+        <input class="search-input" placeholder="&search.placeholder.value;" tabindex="1"
                form="search" type="search" name="q" autocomplete="on"/>
-        <input class="search-button" value="Search" form="search" type="submit"
+        <input class="search-button" form="search" type="submit" value="&search.submit.value;"
                tabindex="2"/>
       </span>
     </header>
@@ -85,23 +86,25 @@
                   title="&addons.windowTitle;">&addon.details.label;</button>
         </p>
         <p>
-            <button class="button dev json right" onclick="jsonView(this);">JSON</button>
-            <button class="button dev inspect right hidden" onclick="inspect(this);">Inspect</button>
+            <button class="button dev json right" title="&button.json.tooltip;"
+                    onclick="jsonView(this);">JSON</button>
+            <button class="button dev inspect right hidden" title="&button.inspect.tooltip;"
+                    onclick="inspect(this);">Inspect</button>
         </p>
       </article>
 
       <article class="no-themes hidden">
         <p>&listEmpty.installed.label;.</p>
         <ul>
-          <li><a href="https://addons.mozilla.org/themes/">&page.nothemes.get;</a></li>
+          <li><a href="https://addons.mozilla.org/themes/">&menu.theme.get;</a></li>
           <li>
-            <a href="https://addons.mozilla.org/developers/docs/themes">&page.nothemes.howto;</a>
+            <a href="https://addons.mozilla.org/developers/docs/themes">&menu.theme.learn;</a>
           </li>
           <li class="personas-enabled hidden">
-            <a href="chrome://personas/content/customPersonaEditor.xul">&page.personas.create;</a>
+            <a href="chrome://personas/content/customPersonaEditor.xul">&menu.personas.create;</a>
           </li>
           <li class="personas-disabled hidden">
-            <a href="#" onclick="_personas.enable(this); return false;">&page.personas.enable;</a>
+            <a href="#" onclick="_personas.enable(this); return false;">&menu.personas.enable;</a>
             <span class="hidden">
               <a href="#" onclick="Application.restart(); return false;">&addon.restartNow.label;</a>
               |
@@ -111,7 +114,7 @@
           <li class="personas-not-installed hidden">
             <a href="https://addons.mozilla.org/addon/personas-plus/?src=external-addon-472283"
                onclick="_personas.install(); return false;">
-              &page.personas.install;
+              &menu.personas.install;
             </a>
           </li>
           <li><a href="http://loucypher.github.io/personas/">Solid Color Theme</a></li>

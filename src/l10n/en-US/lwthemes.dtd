@@ -1,6 +1,14 @@
-<!ENTITY page.title             "Light Weight Themes">
-<!ENTITY page.nothemes.get      "Get themes">
-<!ENTITY page.nothemes.howto    "How to create a theme">
-<!ENTITY page.personas.create   "Create a theme">
-<!ENTITY page.personas.install  "Install Personas Plus">
-<!ENTITY page.personas.enable   "Enable Personas Plus">
+<!ENTITY page.title               "Light Weight Themes">
+<!ENTITY menu.skin.light          "Light theme">
+<!ENTITY menu.skin.dark           "Dark theme">
+<!ENTITY menu.toggle.devmode      "Developer mode">
+<!ENTITY menu.theme.get           "Get Themes">
+<!ENTITY menu.theme.learn         "Learn How to Create a Theme">
+<!ENTITY menu.theme.submit        "Submit a New Theme">
+<!ENTITY menu.personas.install    "Install Personas Plus">
+<!ENTITY menu.personas.enable     "Enable Personas Plus">
+<!ENTITY menu.personas.create     "Create a theme">
+<!ENTITY search.placeholder.value "Search for themes">
+<!ENTITY search.submit.value      "Search">
+<!ENTITY button.json.tooltip      "View theme as JSON string">
+<!ENTITY button.inspect.tooltip   "Inspect theme object">

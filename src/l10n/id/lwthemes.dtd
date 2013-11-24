@@ -1,6 +1,14 @@
-<!ENTITY page.title             "Light Weight Themes">
-<!ENTITY page.nothemes.get      "Dapatkan tema">
-<!ENTITY page.nothemes.howto    "Cara membuat tema">
-<!ENTITY page.personas.create   "Buat tema">
-<!ENTITY page.personas.install  "Pasang Personas Plus">
-<!ENTITY page.personas.enable   "Aktifkan Personas Plus">
+<!ENTITY page.title               "Tema Latar">
+<!ENTITY menu.skin.light          "Tema Terang">
+<!ENTITY menu.skin.dark           "Tema Gelap">
+<!ENTITY menu.toggle.devmode      "Mode pengembang">
+<!ENTITY menu.theme.get           "Dapatkan tema">
+<!ENTITY menu.theme.learn         "Pelajari cara membuat tema">
+<!ENTITY menu.theme.submit        "Unggah tema">
+<!ENTITY menu.personas.install    "Pasang Personas Plus">
+<!ENTITY menu.personas.enable     "Aktifkan Personas Plus">
+<!ENTITY menu.personas.create     "Buat tema">
+<!ENTITY search.placeholder.value "Cari tema">
+<!ENTITY search.submit.value      "Cari">
+<!ENTITY button.json.tooltip      "Lihat tema sebagai text JSON">
+<!ENTITY button.inspect.tooltip   "Inspeksi obyek tema">

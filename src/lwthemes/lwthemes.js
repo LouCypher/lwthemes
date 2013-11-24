@@ -4,7 +4,7 @@
 
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
-function style(aName) aName === "Dark" ? document.styleSheets[1] : document.styleSheets[0];
+function style(aName) aName === "Dark" ? document.styleSheets[2] : document.styleSheets[1];
 function jsm(aURL) Components.utils.import(aURL, {});
 
 /**
@@ -407,8 +407,11 @@ function load() {
     $("html").classList.add("devmode");
   }
 
-  if (typeof inspectObject === "function")
+  if (typeof inspectObject === "function") {
     $(".inspect").classList.remove("hidden");
+    $(".inspect").textContent = getEntityFromDTD("view-source:chrome://inspector/locale/",
+                                                 "btnInspect.label", "Inspect");
+  }
 
   if (!_themes.length) {                        // If no installed themes
     $(".no-themes").classList.remove("hidden"); // show 'No themes installed"
