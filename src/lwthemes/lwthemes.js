@@ -116,6 +116,11 @@ var _personas = {
   },
 
   init: function checkForPersonas() {
+    if (Application.id === "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}") {  // SeaMonkey
+      this.status = "incompatible";
+      return;
+    }
+
     for (var i in _themes)
       if (_themes[i].id === "1")
         this.custom = _themes[i];
