@@ -24,7 +24,7 @@
     <div class="shadow fixed pos-top pos-left pos-right"></div>
 
     <header class="header absolute pos-top pos-left pos-right">
-      <button class="menu-button fixed pos-top pos-right"
+      <button class="menu-button fixed pos-top pos-right" tabindex="3"
               title="&detail.showPreferencesWin.label;" onclick="toggleMenu();">&#9776;</button>
       <fieldset class="menu fixed pos-right menuitem">
         <input id="pref-style-light" class="pref-style left menuitem" name="pref-style"
@@ -52,9 +52,10 @@
       </fieldset>
       <h1>Light Weight Themes</h1>
       <span class="search absolute pos-top pos-right">
-        <input class="search-input" placeholder="Search for themes" tabindex="0"
+        <input class="search-input" placeholder="Search for themes" tabindex="1"
                form="search" type="search" name="q" autocomplete="on"/>
-        <input class="search-button" value="Search" form="search" type="submit"/>
+        <input class="search-button" value="Search" form="search" type="submit"
+               tabindex="2"/>
       </span>
     </header>
 

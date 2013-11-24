@@ -422,6 +422,11 @@ function load() {
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 
   showTotalThemes(_themes.length);
+  window.addEventListener("keypress", function(aEvent) {
+    //console.log(aEvent.keyCode);
+    if (aEvent.keyCode === 27 && $(".open"))
+      $(".open").classList.remove("open");
+  });
 }
 
 function unload() {}
