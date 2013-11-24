@@ -4,7 +4,7 @@
 
 @import url("chrome://lwthemes/skin/");
 
-body {
+body, .viewer textarea {
   background-color: #131c26;
   color: #8fa1b2;
 }
@@ -12,7 +12,7 @@ body {
 a:link, a:visited { color: #cdd8e4 }
 
 .shadow, .header { box-shadow: 0 0 9px rgba(0, 0, 0, .75) }
-.header, .footer, .viewer {
+.header, .footer {
   background-color: #2e3740;
   color: inherit;
 }
@@ -23,13 +23,13 @@ a:link, a:visited { color: #cdd8e4 }
   outline-color: #3d6db5;
 }
 
-.theme, .menu {
+.theme, .menu, .viewer {
   background-color: #344150;
   color: inherit;
 }
 
 .menu { box-shadow: 1px 3px 3px rgba(0, 0, 0, .5) }
-.menu, .viewer { border-color: threedhighlight }
+.menu, .viewer, .viewer textarea { border-color: threedhighlight }
 .rtl .menu { box-shadow: -1px 3px 3px rgba(0, 0, 0, .5) }
 
 .menu, .separator { border-top: 1px solid #fff }

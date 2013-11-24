@@ -29,7 +29,7 @@ var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
 const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
-var _devMode = prefs.getBoolPref("devmode");
+var _devMode = false;
 var _jsonView = prefs.getIntPref("jsonview");
 
 /**
@@ -44,6 +44,92 @@ if (_style === "Dark") {
 else {
   style("Light").disabled = false;
   style("Dark").disabled = true;
+}
+
+var _personas = {
+  ID: "personas@christopher.beard",
+  addon: null,
+  status: null,
+  custom: null,
+
+  install: function installPersonas() {
+    location.assign("https://addons.mozilla.org/firefox/downloads/latest/10900/" +
+                    "addon-10900-latest.xpi?src=external-addon-472283");
+  },
+
+  enable: function enablePersonas(aNode) {
+    this.addon.userDisabled = false;
+    aNode.classList.add("hidden");
+    aNode.nextSibling.nextSibling.classList.remove("hidden");
+  },
+
+  disable: function enablePersonas(aNode) {
+    this.addon.userDisabled = true;
+    aNode.parentNode.classList.add("hidden");
+    aNode.parentNode.previousSibling.previousSibling.classList.remove("hidden");
+  },
+
+  edit: function editPersona(aNode) {
+    var editorURL = "chrome://personas/content/customPersonaEditor.xul";
+    var browser = _chromeWin.gBrowser;
+    var container = browser.mTabContainer;
+    //console.log(container.localName);
+    container.addEventListener("TabClose", function(aEvent) {
+      aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
+      //console.log(aEvent.currentTarget.localName);
+      if (browser.currentURI.spec === editorURL &&
+          LightweightThemeManager.currentTheme.id === "1") {
+        _personas.custom = LightweightThemeManager.currentTheme;
+        _currentTheme = _personas.custom; // Update _currentTheme
+        var themeBox = getThemeBox(aNode);
+        themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
+        $("img", themeBox).src = _currentTheme.headerURL;
+        $("img", themeBox).removeAttribute("style");
+        $("img", themeBox).alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
+        $("img", themeBox).style.color = _currentTheme.textcolor;
+        $("img", themeBox).style.backgroundColor = _currentTheme.accentcolor;
+        if (!themeBox.classList.contains("current")) {
+          $(".current").classList.remove("current");
+          themeBox.classList.add("current");
+        }
+      }
+    }, true);
+    browser.selectedTab = browser.addTab(editorURL);
+  },
+
+  init: function checkForPersonas() {
+    for (var i in _themes)
+      if (_themes[i].id === "1")
+        this.custom = _themes[i];
+
+    var list;
+    var obj = jsm("resource://gre/modules/AddonManager.jsm", {});
+    var {getAddonByID} = obj.AddonManager;
+
+    getAddonByID(this.ID, function(personas) {
+      if (personas) {
+        _personas.addon = personas;
+
+        if (personas.isActive) {
+          _personas.status = "enabled";
+          $("html").classList.add("personas");
+          list = $(".personas-enabled");
+        }
+        else {
+          _personas.status = "disabled";
+          list = $(".personas-disabled");
+        }
+        var editLabel = getEntityFromDTD("chrome://personas/locale/", "contextEdit.label", "Edit");
+        //console.log(editLabel);
+        $(".persona .edit").textContent = editLabel;
+      }
+      else {
+        _personas.status = "not installed";
+        list = $(".personas-not-installed");
+      }
+      list.classList.remove("hidden");
+    })
+  }
 }
 
 function switchStyle(aName) {
@@ -260,85 +346,6 @@ function openAddonsManager(aNode) {
   }
 }
 
-var _personas = {
-  ID: "personas@christopher.beard",
-  addon: null,
-  status: null,
-  custom: null,
-
-  install: function installPersonas() {
-    location.assign("https://addons.mozilla.org/firefox/downloads/latest/10900/" +
-                    "addon-10900-latest.xpi?src=external-addon-472283");
-  },
-
-  enable: function enablePersonas(aNode) {
-    this.addon.userDisabled = false;
-    aNode.classList.add("hidden");
-    aNode.nextSibling.nextSibling.classList.remove("hidden");
-  },
-
-  disable: function enablePersonas(aNode) {
-    this.addon.userDisabled = true;
-    aNode.parentNode.classList.add("hidden");
-    aNode.parentNode.previousSibling.previousSibling.classList.remove("hidden");
-  },
-
-  edit: function editPersona(aNode) {
-    var editorURL = "chrome://personas/content/customPersonaEditor.xul";
-    var browser = _chromeWin.gBrowser;
-    var container = browser.mTabContainer;
-    //console.log(container.localName);
-    container.addEventListener("TabClose", function(aEvent) {
-      aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
-      //console.log(aEvent.currentTarget.localName);
-      if (browser.currentURI.spec === editorURL &&
-          LightweightThemeManager.currentTheme.id === "1") {
-        _currentTheme = LightweightThemeManager.currentTheme;  // Update _currentTheme
-        var themeBox = getThemeBox(aNode);
-        themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
-        $("img", themeBox).src = _currentTheme.headerURL;
-        $("img", themeBox).removeAttribute("style");
-        $("img", themeBox).alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
-        $("img", themeBox).style.color = _currentTheme.textcolor;
-        $("img", themeBox).style.backgroundColor = _currentTheme.accentcolor;
-        if (!themeBox.classList.contains("current")) {
-          $(".current").classList.remove("current");
-          themeBox.classList.add("current");
-        }
-      }
-    }, true);
-    browser.selectedTab = browser.addTab(editorURL);
-  },
-
-  init: function checkForPersonas() {
-    var list;
-    var obj = jsm("resource://gre/modules/AddonManager.jsm", {});
-    var {getAddonByID} = obj.AddonManager;
-    getAddonByID(this.ID, function(personas) {
-      if (personas) {
-        _personas.addon = personas;
-
-        if (personas.isActive) {
-          _personas.status = "enabled";
-          list = $(".personas-enabled");
-        }
-        else {
-          _personas.status = "disabled";
-          list = $(".personas-disabled");
-        }
-        var editLabel = getEntityFromDTD("chrome://personas/locale/", "contextEdit.label", "Edit");
-        //console.log(editLabel);
-        $(".persona .edit").textContent = editLabel;
-      }
-      else {
-        _personas.status = "not installed";
-        list = $(".personas-not-installed");
-      }
-      list.classList.remove("hidden");
-    })
-  }
-}
-
 function inspect(aNode) {
   var themeBox = getThemeBox(aNode);
   var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
@@ -367,6 +374,7 @@ function jsonView(aNode) {
 
 function toggleDevMode() {
   _devMode = !_devMode;
+  $("#pref-devmode").setAttribute("checked", !_devMode);
   prefs.setBoolPref("devmode", _devMode);
   if (_devMode)
     $("html").classList.add("devmode");
@@ -390,11 +398,13 @@ function toggleMenu() {
 function load() {
   donation();
   _personas.init();
+
   $(".pref-style[value=" + _style + "]").checked = true;
 
-  if (_devMode) {
-    $("html").classList.add("devmode");
+  if (prefs.getBoolPref("devmode")) {
+    _devMode = true;
     $("#pref-devmode").checked = true;
+    $("html").classList.add("devmode");
   }
 
   if (typeof inspectObject === "function")
@@ -422,6 +432,8 @@ function load() {
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 
   showTotalThemes(_themes.length);
+  
+  // Press Esc key to close menu
   window.addEventListener("keypress", function(aEvent) {
     //console.log(aEvent.keyCode);
     if (aEvent.keyCode === 27 && $(".open"))

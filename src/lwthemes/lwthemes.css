@@ -29,7 +29,7 @@ body {
 .rtl .menu {
   text-align: right;
 }
-.menu, .viewer {
+.menu, .viewer, .viewer textarea {
   border-style: solid;
   border-width: 1px;
   outline: none;
@@ -71,7 +71,7 @@ a:link, a:visited { text-decoration: none }
 a:hover { text-decoration: underline }
 
 #template, .hidden, .current .enable, .disable, .dev, .edit, .menu:not(.open) { display: none }
-.current .disable, .devmode .dev:not(.hidden), .persona .edit:not(.hidden), .paypal, .paypal a {
+.current .disable, .devmode .dev:not(.hidden), .personas .persona .edit, .paypal, .paypal a {
   display: inline-block
 }
 .menu a, .menu label[for] { display: block }
