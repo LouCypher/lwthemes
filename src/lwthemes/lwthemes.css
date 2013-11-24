@@ -13,6 +13,7 @@ body {
   background-position: bottom right;
   background-repeat: no-repeat;
   padding: 0 1em;
+  height: 5em;
 }
 
 .shadow {
@@ -40,6 +41,7 @@ body {
   padding: 0 6px;
   height: 26px;
   z-index: 9;
+  font-weight: bold;
 }
 .rtl .menu-button {
   margin-right: 0;
@@ -62,6 +64,7 @@ body {
 }
 
 button, label[for] { cursor: pointer }
+input[disabled] + label[for] { color: grey }
 
 section { margin: 7em 1em 1em }
 
@@ -118,16 +121,10 @@ a:hover { text-decoration: underline }
 
 .pos-top { top: 0 }
 .pos-bottom { bottom: 0 }
-.pos-left { left: 0 }
-.pos-right { right: 0 }
-
-.left { float: left }
-.right { float: right }
-
-.rtl .pos-left { right: 0 }
-.rtl .pos-right { left: 0 }
-.rtl .left { float: right }
-.rtl .right { float: left }
+.pos-left, .rtl .pos-right { left: 0 }
+.pos-right, .rtl .pos-left { right: 0 }
+.left, .rtl .right { float: left }
+.right, .rtl .left { float: right }
 
 .separator { margin: .5em 0 }
 
@@ -154,8 +151,9 @@ a:hover { text-decoration: underline }
 
 .search {
   margin: 1.5em 10em;
-  padding: .5em 1em;
+  padding: .25em .5em;
 }
+
 .search input[name=q] {
   width: 200px;
   margin: 0;

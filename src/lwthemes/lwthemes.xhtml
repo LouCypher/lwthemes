@@ -27,37 +27,55 @@
     <header class="header absolute pos-top pos-left pos-right">
       <button class="menu-button fixed pos-top pos-right" tabindex="3"
               title="&detail.showPreferencesWin.label;" onclick="toggleMenu();">&#9776;</button>
-      <fieldset class="menu fixed pos-right menuitem">
+
+      <fieldset class="menu fixed pos-right">
         <input id="pref-style-light" class="pref-style left menuitem" name="pref-style"
                type="radio" value="Light" onchange="switchStyle(this.value);"/>
         <label for="pref-style-light" class="menuitem">&menu.skin.light;</label>
+
         <div class="clear menuitem"></div>
+
         <input id="pref-style-dark" class="pref-style left menuitem" name="pref-style"
                type="radio" value="Dark" onchange="switchStyle(this.value);"/>
         <label for="pref-style-dark" class="menuitem">&menu.skin.dark;</label>
+
         <div class="clear separator menuitem"></div>
-        <input id="pref-devmode" class="left menuitem" type="checkbox" onchange="toggleDevMode();"/>
+
+        <input id="pref-devmode" class="left menuitem"
+               type="checkbox" onchange="toggleDevMode();"/>
         <label for="pref-devmode" class="menuitem">&menu.toggle.devmode;</label>
+
         <div class="clear separator menuitem"></div>
+
         <a href="https://addons.mozilla.org/themes/" class="menuitem">&menu.theme.get;</a>
+
+        <a href="https://addons.mozilla.org/en-US/firefox/search/?cat=themes"
+           class="menuitem" onclick="onFocusSearch(); return false;">
+            &search.placeholder.value;
+        </a>
+
         <a href="https://addons.mozilla.org/developers/docs/themes" class="menuitem">
           &menu.theme.learn;
         </a>
+
         <a href="https://addons.mozilla.org/developers/theme/submit" class="menuitem">
           &menu.theme.submit;
         </a>
+
         <div class="clear separator menuitem"></div>
+
         <a href="http://loucypher.github.io/personas" class="menuitem">
           Solid Color Theme
         </a>
       </fieldset>
-      <h1>&page.title;</h1>
-      <span class="search absolute pos-top pos-right">
-        <input class="search-input" placeholder="&search.placeholder.value;" tabindex="1"
-               form="search" type="search" name="q" autocomplete="on"/>
-        <input class="search-button" form="search" type="submit" value="&search.submit.value;"
-               tabindex="2"/>
+
+      <span class="search right">
+        <input class="search-input" placeholder="&search.placeholder.value;"
+               form="search" type="search" name="q" autocomplete="on" tabindex="1"/>
+        <input class="search-button" form="search" type="submit"
+               value="&search.submit.value;" tabindex="2"/>
       </span>
+      <h1>&page.title;</h1>
     </header>
 
     <section>

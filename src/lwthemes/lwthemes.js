@@ -30,7 +30,6 @@ const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
 var _devMode = false;
-var _jsonView = prefs.getIntPref("jsonview");
 
 /**
  *  Apply style
@@ -322,8 +321,12 @@ function themeBox(aTheme) {
   if (author)
     $(".theme-author", box).textContent += author;
 
-  if (description)
+  if (description) {
     $(".theme-description", box).innerHTML = description;
+    /*var span = document.createElement("span");
+    span.innerHTML = description;
+    $(".theme-description", box).textContent = span.textContent;*/
+  }
 
   return box;
 }
@@ -384,15 +387,39 @@ function toggleDevMode() {
 
 function toggleMenu() {
   $(".menu").classList.toggle("open");
-  window.addEventListener("click", function closeMenu(aEvent) {
+  window.addEventListener("click", function(aEvent) {
     //console.log(aEvent.target);
     var classList = aEvent.target.classList;
     if (!(classList.contains("menu") || classList.contains("menuitem") ||
           classList.contains("menu-button"))) {
       aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
-      $(".menu").classList.remove("open");
+      closeMenu();
     }
   }, true);
+}
+
+function closeMenu() {
+  $(".menu").classList.remove("open");
+}
+
+function fixedHeader() {
+  $(".header").classList.add("fixed");
+}
+
+function unfixedHeader() {
+  $(".header").classList.remove("fixed");
+}
+
+function focusSearch() {
+  $(".search-input").focus();
+}
+
+function onFocusSearch() {
+  if (pageYOffset >= 55)
+    fixedHeader();
+
+  closeMenu();
+  focusSearch()
 }
 
 function load() {
@@ -435,12 +462,13 @@ function load() {
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 
   showTotalThemes(_themes.length);
-  
-  // Press Esc key to close menu
+
   window.addEventListener("keypress", function(aEvent) {
     //console.log(aEvent.keyCode);
-    if (aEvent.keyCode === 27 && $(".open"))
-      $(".open").classList.remove("open");
+    if (aEvent.keyCode === 27) {  // Esc key
+      closeMenu();
+      unfixedHeader();
+    }
   });
 }
 
