@@ -8,6 +8,7 @@
 <!ENTITY menu.personas.install    "Install Personas Plus">
 <!ENTITY menu.personas.enable     "Enable Personas Plus">
 <!ENTITY menu.personas.create     "Create a theme">
+<!ENTITY menu.personas.edit       "Edit custom theme">
 <!ENTITY search.placeholder.value "Search for themes">
 <!ENTITY search.submit.value      "Search">
 <!ENTITY button.json.tooltip      "View theme as JSON string">

@@ -7,17 +7,6 @@ function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
 function style(aName) aName === "Dark" ? document.styleSheets[2] : document.styleSheets[1];
 function jsm(aURL) Components.utils.import(aURL, {});
 
-/**
- *  Set document language and direction based on browser language
- */
-$("html").lang = navigator.language;
-switch (navigator.language) {
-  case "ar":    // Arabic
-  case "he":    // Hebrew
-  case "fa-IR": // Farsi
-    $("html").classList.add("rtl");  // Right to left
-}
-
 const {LightweightThemeManager} = jsm("resource://gre/modules/LightweightThemeManager.jsm");
 var {usedThemes: _themes, currentTheme: _currentTheme} = LightweightThemeManager;
 
@@ -30,6 +19,17 @@ const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
 var _devMode = false;
+
+/**
+ *  Set document language and direction based on browser language
+ */
+$("html").lang = Services.prefs.getCharPref("general.useragent.locale");
+switch ($("html").lang) {
+  case "ar":    // Arabic
+  case "he":    // Hebrew
+  case "fa-IR": // Farsi
+    $("html").classList.add("rtl");  // Right to left
+}
 
 /**
  *  Apply style
@@ -58,8 +58,10 @@ var _personas = {
 
   enable: function enablePersonas(aNode) {
     this.addon.userDisabled = false;
-    aNode.classList.add("hidden");
-    aNode.nextSibling.nextSibling.classList.remove("hidden");
+    if (aNode) {
+      aNode.classList.add("hidden");
+      aNode.nextSibling.nextSibling.classList.remove("hidden");
+    }
   },
 
   disable: function enablePersonas(aNode) {
@@ -80,17 +82,21 @@ var _personas = {
           LightweightThemeManager.currentTheme.id === "1") {
         _personas.custom = LightweightThemeManager.currentTheme;
         _currentTheme = _personas.custom; // Update _currentTheme
-        var themeBox = getThemeBox(aNode);
-        themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
-        $("img", themeBox).src = _currentTheme.headerURL;
-        $("img", themeBox).removeAttribute("style");
-        $("img", themeBox).alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
-        $("img", themeBox).style.color = _currentTheme.textcolor;
-        $("img", themeBox).style.backgroundColor = _currentTheme.accentcolor;
-        if (!themeBox.classList.contains("current")) {
-          $(".current").classList.remove("current");
-          themeBox.classList.add("current");
+        if (aNode) {
+          var themeBox = getThemeBox(aNode);
+          themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
+          $("img", themeBox).src = _currentTheme.headerURL;
+          $("img", themeBox).removeAttribute("style");
+          $("img", themeBox).alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
+          $("img", themeBox).style.color = _currentTheme.textcolor;
+          $("img", themeBox).style.backgroundColor = _currentTheme.accentcolor;
+          if (!themeBox.classList.contains("current")) {
+            $(".current").classList.remove("current");
+            themeBox.classList.add("current");
+          }
         }
+        else
+          location.reload();
       }
     }, true);
     browser.selectedTab = browser.addTab(editorURL);
@@ -101,7 +107,6 @@ var _personas = {
       if (_themes[i].id === "1")
         this.custom = _themes[i];
 
-    var list;
     var obj = jsm("resource://gre/modules/AddonManager.jsm", {});
     var {getAddonByID} = obj.AddonManager;
 
@@ -112,21 +117,25 @@ var _personas = {
         if (personas.isActive) {
           _personas.status = "enabled";
           $("html").classList.add("personas");
-          list = $(".personas-enabled");
+          $(".no-themes .personas-enabled").classList.remove("hidden");
+          $(".menu .personas-enabled").classList.remove("hidden");
         }
         else {
           _personas.status = "disabled";
-          list = $(".personas-disabled");
+          $(".no-themes .personas-disabled").classList.remove("hidden");
+          $(".menu .personas-disabled").classList.remove("hidden");
         }
-        var editLabel = getEntityFromDTD("chrome://personas/locale/", "contextEdit.label", "Edit");
+        var editLabel = getEntityFromDTD("chrome://personas/locale/personas.dtd",
+                                         "contextEdit.label", "Edit");
         //console.log(editLabel);
-        $(".persona .edit").textContent = editLabel;
+        //console.log($("#template .edit"));
+        $("#template .edit").textContent = editLabel;
       }
       else {
         _personas.status = "not installed";
-        list = $(".personas-not-installed");
+        $(".no-themes .personas-not-installed").classList.remove("hidden");
+        $(".menu .personas-not-installed").classList.remove("hidden");
       }
-      list.classList.remove("hidden");
     })
   }
 }
@@ -174,9 +183,13 @@ function donation() {
 }
 
 function getThemeBox(aNode) {
-  while (aNode && !aNode.hasAttribute("data-browsertheme"))
-    aNode = aNode.parentNode;
-  return aNode;
+  try {
+    while (aNode && !aNode.hasAttribute("data-browsertheme"))
+      aNode = aNode.parentNode;
+    return aNode;
+  } catch (ex) {
+    return null;
+  }
 }
 
 function getEntityFromDTD(aChromeURL, aEntity, aDefVal) {
@@ -332,12 +345,17 @@ function themeBox(aTheme) {
 }
 
 function openAddonsManager(aNode) {
+  var addonId;
   var themeBox = getThemeBox(aNode);
-  var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
-  if (!theme)
-    theme = JSON.parse(themeBox.dataset.browsertheme);
+  if (themeBox) {
+    var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
+    if (!theme)
+      theme = JSON.parse(themeBox.dataset.browsertheme);
+    addonId = theme.id + "@personas.mozilla.org";
+  }
+  else
+    addonId = aNode.dataset.addonId;
 
-  var addonId = theme.id + "@personas.mozilla.org";
   var view = "addons://detail/" + encodeURIComponent(addonId) + "/preferences";
 
   if ("toEM" in _chromeWin) {
@@ -455,9 +473,6 @@ function load() {
   // Move current theme to top
   if (_currentTheme)
     $(".current").parentNode.insertBefore($(".current"), $("section").firstChild);
-
-  /*if (_personas.status !== "enabled")
-    $(".persona .edit").classList.add("hidden");*/
 
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 

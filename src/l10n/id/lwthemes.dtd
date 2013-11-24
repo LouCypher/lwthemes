@@ -8,6 +8,7 @@
 <!ENTITY menu.personas.install    "Pasang Personas Plus">
 <!ENTITY menu.personas.enable     "Aktifkan Personas Plus">
 <!ENTITY menu.personas.create     "Buat tema">
+<!ENTITY menu.personas.edit       "Edit tema buatan sendiri">
 <!ENTITY search.placeholder.value "Cari tema">
 <!ENTITY search.submit.value      "Cari">
 <!ENTITY button.json.tooltip      "Lihat tema sebagai text JSON">

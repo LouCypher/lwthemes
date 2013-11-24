@@ -47,26 +47,36 @@
 
         <div class="clear separator menuitem"></div>
 
-        <a href="https://addons.mozilla.org/themes/" class="menuitem">&menu.theme.get;</a>
+        <a href="https://addons.mozilla.org/themes/">&menu.theme.get;</a>
 
         <a href="https://addons.mozilla.org/en-US/firefox/search/?cat=themes"
            class="menuitem" onclick="onFocusSearch(); return false;">
             &search.placeholder.value;
         </a>
 
-        <a href="https://addons.mozilla.org/developers/docs/themes" class="menuitem">
+        <a href="https://addons.mozilla.org/developers/docs/themes">
           &menu.theme.learn;
         </a>
 
-        <a href="https://addons.mozilla.org/developers/theme/submit" class="menuitem">
+        <a href="chrome://personas/content/customPersonaEditor.xul"
+           class="personas-enabled hidden"
+           onclick="_personas.edit(); return false;">&menu.personas.edit;</a>
+
+        <a href="https://addons.mozilla.org/developers/theme/submit">
           &menu.theme.submit;
         </a>
 
         <div class="clear separator menuitem"></div>
 
-        <a href="http://loucypher.github.io/personas" class="menuitem">
-          Solid Color Theme
-        </a>
+        <a href="#" class="personas-disabled hidden"
+           data-addon-id="personas@christopher.beard"
+           onclick="openAddonsManager(this); return false;">&menu.personas.enable;</a>
+
+        <a href="https://addons.mozilla.org/addon/personas-plus/?src=external-addon-472283"
+           class="personas-not-installed hidden"
+           onclick="_personas.install(); return false;">&menu.personas.install;</a>
+
+        <a href="http://loucypher.github.io/personas">Solid Color Theme</a>
       </fieldset>
 
       <span class="search right">
@@ -119,7 +129,8 @@
             <a href="https://addons.mozilla.org/developers/docs/themes">&menu.theme.learn;</a>
           </li>
           <li class="personas-enabled hidden">
-            <a href="chrome://personas/content/customPersonaEditor.xul">&menu.personas.create;</a>
+            <a href="chrome://personas/content/customPersonaEditor.xul"
+               onclick="_personas.edit(); return false;">&menu.personas.create;</a>
           </li>
           <li class="personas-disabled hidden">
             <a href="#" onclick="_personas.enable(this); return false;">&menu.personas.enable;</a>
