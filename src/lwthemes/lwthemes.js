@@ -72,8 +72,24 @@ var _personas = {
 
   edit: function editPersona(aNode) {
     var editorURL = "chrome://personas/content/customPersonaEditor.xul";
-    var browser = _chromeWin.gBrowser;
-    var container = browser.mTabContainer;
+    var browser, container, openTab;
+
+    if (Application.id === "{3550f703-e582-4d05-9a08-453d09bdfdc6}") {  // Thunderbird
+      var tabmail = _chromeWin.document.getElementById("tabmail");
+      browser = tabmail.selectedTab.browser;
+      container = tabmail.tabContainer;
+      openTab = function openTab(aURL) {
+        _chromeWin.openContentTab(aURL, "tab", "^(https?|chrome):");
+      }
+    }
+    else {
+      browser = _chromeWin.gBrowser;
+      container = browser.tabContainer;
+      openTab = function openTab(aURL) {
+        browser.selectedTab = browser.addTab(aURL);
+      }
+    }
+
     //console.log(container.localName);
     container.addEventListener("TabClose", function(aEvent) {
       aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
@@ -83,6 +99,7 @@ var _personas = {
         _personas.custom = LightweightThemeManager.currentTheme;
         _currentTheme = _personas.custom; // Update _currentTheme
         if (aNode) {
+          console.log(aNode);
           var themeBox = getThemeBox(aNode);
           themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
           $("img", themeBox).src = _currentTheme.headerURL;
@@ -99,7 +116,7 @@ var _personas = {
           location.reload();
       }
     }, true);
-    browser.selectedTab = browser.addTab(editorURL);
+    openTab(editorURL);
   },
 
   init: function checkForPersonas() {
@@ -216,7 +233,7 @@ function showTotalThemes(aNumber) {
   var text = "Total themes: " + aNumber;
   console.log(document.title + "\n" + text);
   Services.console.logStringMessage(document.title + "\n" + text);
-  _chromeWin.XULBrowserWindow.setOverLink(text);
+  _chromeWin.XULBrowserWindow && _chromeWin.XULBrowserWindow.setOverLink(text);
 }
 
 /**
