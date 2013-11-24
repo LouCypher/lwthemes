@@ -16,8 +16,8 @@ Cu.import("resource://gre/modules/Services.jsm");
  */
 const PREF_BRANCH = "extensions.lwthemes-manager@loucypher.";
 const PREFS = {
-  name: "chrome://json-inspector/locale/json-inspector.properties",
-  description: "chrome://json-inspector/locale/json-inspector.properties",
+  name: "chrome://lwthemes/locale/lwthemes.properties",
+  description: "chrome://lwthemes/locale/lwthemes.properties",
   firstRun: true,
   devmode: false,   // If true, show `Inspect` and `JSON` buttons
   jsonview: 0,      // 0: view JSON data in `textarea` element, 1: use Scratchpad
