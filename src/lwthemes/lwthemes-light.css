@@ -5,13 +5,18 @@
 @import url("chrome://lwthemes/skin/");
 
 body {
-  background: #fff;
+  background-color: #fff;
   color: #000;
 }
 
-.shadow { box-shadow: 0 -1px 6px rgba(0, 0, 0, .5) }
-
 a:link, a:visited { color: #3d6db5 }
+
+.shadow, .header { box-shadow: 0 0 9px rgba(0, 0, 0, .5) }
+.header, .footer, .viewer {
+  background-color: #ddd;
+  color: inherit;
+}
+.footer { box-shadow: 0 0 6px rgba(0, 0, 0, .5) }
 
 .theme {
   border-color: #3d6db5;
@@ -19,15 +24,13 @@ a:link, a:visited { color: #3d6db5 }
 }
 
 .theme, .menu {
-  background: #fafafa;
+  background-color: #fafafa;
   color: inherit;
 }
 
 .menu { box-shadow: 1px 3px 6px rgba(0, 0, 0, .5) }
-.rtl .menu {
-  box-shadow: -1px 3px 6px rgba(0, 0, 0, .5);
-  text-align: right;
-}
+.menu, .viewer { border-color: threedshadow }
+.rtl .menu { box-shadow: -1px 3px 6px rgba(0, 0, 0, .5) }
 
 .menu, .separator { border-top: 1px solid #000 }
 
@@ -36,9 +39,3 @@ a:link, a:visited { color: #3d6db5 }
 .theme img { box-shadow: 0 0 1px #000 }
 
 .theme img:hover { box-shadow: 0 0 3px #000 }
-
-footer {
-  background-color: #ddd;
-  color: inherit;
-  box-shadow: 0 0 3px rgba(0, 0, 0, .5);
-}

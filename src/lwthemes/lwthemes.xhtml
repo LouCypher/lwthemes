@@ -23,34 +23,39 @@
   <body onload="load();" onunload="unload();">
     <div class="shadow fixed pos-top pos-left pos-right"></div>
 
-    <header class="header pos-top pos-left pos-right">
-      <button class="menu-button fixed pos-top pos-right dontclose"
+    <header class="header absolute pos-top pos-left pos-right">
+      <button class="menu-button fixed pos-top pos-right"
               title="&detail.showPreferencesWin.label;" onclick="toggleMenu();">&#9776;</button>
-      <fieldset class="menu fixed pos-right dontclose">
-        <input id="pref-style-light" class="pref-style left dontclose" name="pref-style"
+      <fieldset class="menu fixed pos-right menuitem">
+        <input id="pref-style-light" class="pref-style left menuitem" name="pref-style"
                type="radio" value="Light" onchange="switchStyle(this.value);"/>
-        <label for="pref-style-light" class="dontclose">Light theme</label>
-        <div class="clear dontclose"></div>
-        <input id="pref-style-dark" class="pref-style left dontclose" name="pref-style"
+        <label for="pref-style-light" class="menuitem">Light theme</label>
+        <div class="clear menuitem"></div>
+        <input id="pref-style-dark" class="pref-style left menuitem" name="pref-style"
                type="radio" value="Dark" onchange="switchStyle(this.value);"/>
-        <label for="pref-style-dark" class="dontclose">Dark theme</label>
-        <div class="clear separator dontclose"></div>
-        <input id="pref-devmode" class="left dontclose" type="checkbox" onchange="toggleDevMode();"/>
-        <label for="pref-devmode" class="dontclose">Developer mode</label>
-        <div class="clear separator dontclose"></div>
-        <a href="https://addons.mozilla.org/themes/" class="dontclose">&page.nothemes.get;</a>
-        <a href="https://addons.mozilla.org/developers/docs/themes" class="dontclose">
+        <label for="pref-style-dark" class="menuitem">Dark theme</label>
+        <div class="clear separator menuitem"></div>
+        <input id="pref-devmode" class="left menuitem" type="checkbox" onchange="toggleDevMode();"/>
+        <label for="pref-devmode" class="menuitem">Developer mode</label>
+        <div class="clear separator menuitem"></div>
+        <a href="https://addons.mozilla.org/themes/" class="menuitem">&page.nothemes.get;</a>
+        <a href="https://addons.mozilla.org/developers/docs/themes" class="menuitem">
           Learn How to Create a Theme
         </a>
-        <a href="https://addons.mozilla.org/developers/theme/submit" class="dontclose">
+        <a href="https://addons.mozilla.org/developers/theme/submit" class="menuitem">
           Submit a New Theme
         </a>
-        <div class="clear separator dontclose"></div>
-        <a href="http://loucypher.github.io/personas" class="dontclose">
+        <div class="clear separator menuitem"></div>
+        <a href="http://loucypher.github.io/personas" class="menuitem">
           Solid Color Theme
         </a>
       </fieldset>
       <h1>Light Weight Themes</h1>
+      <span class="search absolute pos-top pos-right">
+        <input class="search-input" placeholder="Search for themes" tabindex="0"
+               form="search" type="search" name="q" autocomplete="on"/>
+        <input class="search-button" value="Search" form="search" type="submit"/>
+      </span>
     </header>
 
     <section>
@@ -115,7 +120,7 @@
       <div class="clear"></div>
     </section>
 
-    <footer class="pos-left pos-right">
+    <footer class="footer absolute pos-left pos-right">
       <p>
         <a href="https://addons.mozilla.org/addon/lwthemes/">Light Weight Themes Manager</a>
         and <a href="http://loucypher.github.io/personas/">Solid Color Theme</a>
@@ -131,6 +136,10 @@
       <div class="clear"></div>
       <button class="close right" onclick="toggleViewer();">X</button>
     </div>
+
+    <form id="search" class="hidden" action="https://addons.mozilla.org/search/" method="get">
+      <input type="hidden" name="cat" value="themes"/>
+    </form>
 
   </body>
 </html>

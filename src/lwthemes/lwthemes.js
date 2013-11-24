@@ -378,7 +378,9 @@ function toggleMenu() {
   $(".menu").classList.toggle("open");
   window.addEventListener("click", function closeMenu(aEvent) {
     //console.log(aEvent.target);
-    if (!aEvent.target.classList.contains("dontclose")) {
+    var classList = aEvent.target.classList;
+    if (!(classList.contains("menu") || classList.contains("menuitem") ||
+          classList.contains("menu-button"))) {
       aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
       $(".menu").classList.remove("open");
     }
