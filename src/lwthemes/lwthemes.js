@@ -70,7 +70,7 @@ var _personas = {
     aNode.parentNode.previousSibling.previousSibling.classList.remove("hidden");
   },
 
-  edit: function editPersona(aNode) {
+  edit: function editPersona() {
     var editorURL = "chrome://personas/content/customPersonaEditor.xul";
     var browser, container, openTab;
 
@@ -98,22 +98,18 @@ var _personas = {
           LightweightThemeManager.currentTheme.id === "1") {
         _personas.custom = LightweightThemeManager.currentTheme;
         _currentTheme = _personas.custom; // Update _currentTheme
-        if (aNode) {
-          console.log(aNode);
-          var themeBox = getThemeBox(aNode);
-          themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
-          $("img", themeBox).src = _currentTheme.headerURL;
-          $("img", themeBox).removeAttribute("style");
-          $("img", themeBox).alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
-          $("img", themeBox).style.color = _currentTheme.textcolor;
-          $("img", themeBox).style.backgroundColor = _currentTheme.accentcolor;
-          if (!themeBox.classList.contains("current")) {
-            $(".current").classList.remove("current");
-            themeBox.classList.add("current");
-          }
+        var themeBox = $(".persona");
+        var image = $("img", themeBox);
+        themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
+        image.src = _currentTheme.headerURL;
+        image.removeAttribute("style");
+        image.alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
+        image.style.color = _currentTheme.textcolor;
+        image.style.backgroundColor = _currentTheme.accentcolor;
+        if (!themeBox.classList.contains("current")) {
+          $(".current").classList.remove("current");
+          themeBox.classList.add("current");
         }
-        else
-          location.reload();
       }
     }, true);
     openTab(editorURL);
