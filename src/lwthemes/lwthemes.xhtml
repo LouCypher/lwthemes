@@ -29,15 +29,15 @@
               title="&detail.showPreferencesWin.label;" onclick="toggleMenu();">&#9776;</button>
 
       <fieldset class="menu fixed pos-right">
-        <input id="pref-style-light" class="pref-style left menuitem" name="pref-style"
-               type="radio" value="Light" onchange="switchStyle(this.value);"/>
-        <label for="pref-style-light" class="menuitem">&menu.skin.light;</label>
+        <input id="pref-skin-light" class="pref-skin left menuitem" name="pref-skin"
+               type="radio" value="Light" onchange="_skin.toggle();"/>
+        <label for="pref-skin-light" class="menuitem">&menu.skin.light;</label>
 
         <div class="clear menuitem"></div>
 
-        <input id="pref-style-dark" class="pref-style left menuitem" name="pref-style"
-               type="radio" value="Dark" onchange="switchStyle(this.value);"/>
-        <label for="pref-style-dark" class="menuitem">&menu.skin.dark;</label>
+        <input id="pref-skin-dark" class="pref-skin left menuitem" name="pref-skin"
+               type="radio" value="Dark" onchange="_skin.toggle();"/>
+        <label for="pref-skin-dark" class="menuitem">&menu.skin.dark;</label>
 
         <div class="clear separator menuitem"></div>
 

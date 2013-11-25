@@ -4,7 +4,6 @@
 
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
-function style(aName) aName === "Dark" ? document.styleSheets[2] : document.styleSheets[1];
 function jsm(aURL) Components.utils.import(aURL, {});
 
 const {LightweightThemeManager} = jsm("resource://gre/modules/LightweightThemeManager.jsm");
@@ -31,19 +30,49 @@ switch ($("html").lang) {
     $("html").classList.add("rtl");  // Right to left
 }
 
-/**
- *  Apply style
- */
-var _style = prefs.getBoolPref("darkTheme") ? "Dark" : "Light";
 
-if (_style === "Dark") {
-  style("Dark").disabled = false;
-  style("Light").disabled = true;
-}
-else {
-  style("Light").disabled = false;
-  style("Dark").disabled = true;
-}
+var _skin = {
+  light: $("link[title=Light]").sheet,  // Light
+  dark: $("link[title=Dark]").sheet,    // Dark
+
+  prefValue: prefs.getBoolPref("darkTheme"),
+
+  get selected() {
+    if (this.prefValue)
+      return "Dark";
+    else
+      return "Light";
+  },
+
+  set selected(aBoolean) {
+    this.prefValue = aBoolean;
+  },
+
+  toggleRadio: function toggleRadio() {
+    $("#pref-skin-light").checked = !this.prefValue;
+    $("#pref-skin-dark").checked = this.prefValue;
+  },
+
+  toggle: function toggleSkin() {
+    this.dark.disabled = this.light.disabled;
+    this.light.disabled = !this.light.disabled;
+    this.prefValue = !this.dark.disabled;
+    this.toggleRadio();
+    prefs.setBoolPref("darkTheme", this.prefValue);
+    //console.log(_skin.selected);
+  },
+
+  applyFromPref: function applyFromPref() {
+    this.dark.disabled = !this.prefValue;
+    this.light.disabled = this.prefValue;
+    this.toggleRadio();
+    //console.log(_skin.selected);
+  },
+
+  toString: function toString() {
+    return this.selected;
+  }
+};
 
 var _personas = {
   ID: "personas@christopher.beard",
@@ -160,19 +189,6 @@ var _personas = {
       }
     })
   }
-}
-
-function switchStyle(aName) {
-  if (aName === "Dark") {
-    style("Dark").disabled = false;
-    style("Light").disabled = true;
-  }
-  else {
-    style("Light").disabled = false;
-    style("Dark").disabled = true;
-  }
-  _style = aName;
-  prefs.setBoolPref("darkTheme", !style("Dark").disabled);
 }
 
 function jsBeautify(aJS) {
@@ -466,7 +482,7 @@ function load() {
   donation();
   _personas.init();
 
-  $(".pref-style[value=" + _style + "]").checked = true;
+  _skin.applyFromPref();
 
   if (prefs.getBoolPref("devmode")) {
     _devMode = true;
