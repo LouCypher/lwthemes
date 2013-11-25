@@ -15,6 +15,7 @@ const {Services} = jsm("resource://gre/modules/Services.jsm");
 var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
                  Services.wm.getMostRecentWindow("mail:3pane");
 
+const APP_ID = Application.id;
 const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
@@ -78,6 +79,7 @@ var _skin = {
 var _personas = {
   ID: "personas@christopher.beard",
   URL: "https://addons.mozilla.org/addon/personas-plus/",
+  EDITOR: "chrome://personas/content/customPersonaEditor.xul",
   addon: null,
   status: null,
   custom: null,
@@ -102,42 +104,45 @@ var _personas = {
   },
 
   edit: function editPersona() {
-    var editorURL = "chrome://personas/content/customPersonaEditor.xul";
-    var browser, container, openTab;
+    var container, openTab;
 
-    if (Application.id === "{3550f703-e582-4d05-9a08-453d09bdfdc6}") {  // Thunderbird
+    if (APP_ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}") {  // Thunderbird
       var tabmail = _chromeWin.document.getElementById("tabmail");
-      browser = tabmail.selectedTab.browser;
       container = tabmail.tabContainer;
       openTab = function openTab(aURL) {
         _chromeWin.openContentTab(aURL, "tab", "^(https?|chrome):");
       }
     }
     else {
-      browser = _chromeWin.gBrowser;
-      container = browser.tabContainer;
+      var gBrowser = _chromeWin.gBrowser;
+      container = gBrowser.tabContainer;
       openTab = function openTab(aURL) {
-        browser.selectedTab = browser.addTab(aURL);
+        gBrowser.selectedTab = gBrowser.addTab(aURL);
       }
     }
 
     //console.log(container.localName);
     container.addEventListener("TabClose", function(aEvent) {
-      aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
       //console.log(aEvent.currentTarget.localName);
-      if (browser.currentURI.spec === editorURL &&
+      var browser = gBrowser.getBrowserForTab(aEvent.target) || tabmail.selectedTab.browser;
+      //console.log(browser.currentURI.spec);
+      if (browser.currentURI.spec === _personas.EDITOR &&
           LightweightThemeManager.currentTheme.id === "1") {
-        _personas.custom = LightweightThemeManager.currentTheme;
-        _currentTheme = _personas.custom; // Update _currentTheme
-        applyThemeToNode($(".search"));
+
+        aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
 
         var themeBox = $(".persona");
         if (!themeBox) {
           location.reload();
           return;
         }
-        var image = $("img", themeBox);
+
+        _personas.custom = LightweightThemeManager.currentTheme;
+        _currentTheme = _personas.custom; // Update _currentTheme
+        applyThemeToNode($(".search"));
+
         themeBox.dataset.browsertheme = JSON.stringify(_currentTheme);
+        var image = $(".image", themeBox);
         image.src = _currentTheme.headerURL;
         image.removeAttribute("style");
         image.alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
@@ -149,11 +154,11 @@ var _personas = {
         }
       }
     }, true);
-    openTab(editorURL);
+    openTab(this.EDITOR);
   },
 
   init: function checkForPersonas() {
-    if (Application.id === "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}") {  // SeaMonkey
+    if (APP_ID === "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}") {  // SeaMonkey
       this.status = "incompatible";
       return;
     }
@@ -330,7 +335,7 @@ function getThemeURL(aTheme) {
 function themeBox(aTheme) {
   const {
     id: id, name: name, author: author, description: description,
-    homepageURL: homepageURL, previewURL: previewURL, headerURL: headerURL
+    previewURL: previewURL, headerURL: headerURL
   } = aTheme;
 
   var themeData = JSON.stringify(aTheme);
@@ -341,21 +346,22 @@ function themeBox(aTheme) {
   if (_currentTheme && aTheme.id === _currentTheme.id)
     box.classList.add("current");
 
-  if (aTheme.id === "1")
+  if (aTheme.id === "1") {
     box.classList.add("persona");
+  }
 
   if (/^solid\-color/.test(aTheme.id)) {
-    $(".image", box).classList.add("solid-color");
-    $("img", box).src = "preview.png";
+    $(".preview", box).classList.add("solid-color");
+    $(".image", box).src = "preview.png";
   }
   else if (previewURL)
-    $("img", box).src = previewURL.replace(/\?\d+/, "");
+    $(".image", box).src = previewURL.replace(/\?\d+/, "");
   else
-    $("img", box).src = headerURL.replace(/\?\d+/, "");
+    $(".image", box).src = headerURL.replace(/\?\d+/, "");
 
-  $("img", box).style.backgroundColor = aTheme.accentcolor;
-  $("img", box).style.color = aTheme.textcolor;
-  $("img", box).alt = name;
+  $(".image", box).style.backgroundColor = aTheme.accentcolor;
+  $(".image", box).style.color = aTheme.textcolor;
+  $(".image", box).alt = name;
 
   var themeURL = getThemeURL(aTheme);
   if (themeURL) {
@@ -364,7 +370,7 @@ function themeBox(aTheme) {
   }
   else {
     $(".theme-title", box).textContent = name;
-    $(".theme .image a", box).removeAttribute("title");
+    $(".theme .preview a", box).removeAttribute("title");
   }
 
   if (author)
@@ -456,15 +462,10 @@ function unfixedHeader() {
 }
 
 function focusSearch() {
-  $(".search-input").focus();
-}
-
-function onFocusSearch() {
+  closeMenu();
   if (pageYOffset >= 80)
     fixedHeader();
-
-  closeMenu();
-  focusSearch()
+  $(".search-input").focus();
 }
 
 function setFooterContent() {
@@ -493,11 +494,16 @@ function onclick(aEvent) {
 }
 
 function onkeypress(aEvent) {
-  //console.log(aEvent.keyCode);
+  //console.log(aEvent);
   if (aEvent.keyCode === 27) {  // Esc key
     closeMenu();
     unfixedHeader();
+    //inspectObject(aEvent);
   }
+
+  // Allow reload page by pressing F5 on Thunderbird
+  if (APP_ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}" && aEvent.keyCode === 116)
+    location.reload();
 }
 
 function onload() {

@@ -9,7 +9,7 @@ body, .viewer textarea {
   color: #8fa1b2;
 }
 
-a:link, a:visited { color: #cdd8e4 }
+a:link, a:visited, .menu a:hover, label[for]:hover { color: #cdd8e4 }
 
 .shadow, .header { box-shadow: 0 0 9px rgba(0, 0, 0, .75) }
 .header, .footer {
@@ -23,10 +23,8 @@ a:link, a:visited { color: #cdd8e4 }
   outline-color: #3d6db5;
 }
 
-.theme, .menu, .viewer {
-  background-color: #344150;
-  color: inherit;
-}
+.theme, .menu, .viewer { background-color: #344150 }
+.theme, .menu, .menu a, .viewer { color: inherit }
 
 .search { box-shadow: 0 0 2px #cdd8e4 }
 .search-input { border: 1px solid #cdd8e4 }
@@ -38,6 +36,6 @@ a:link, a:visited { color: #cdd8e4 }
 
 .current { border-color: #c63717 }
 
-.theme img.preview { box-shadow: 0 0 1px #000 }
+.theme .image { box-shadow: 0 0 1px #000 }
 
-.theme img.preview:hover { box-shadow: 0 0 3px #000 }
+.theme .image:hover { box-shadow: 0 0 3px #000 }

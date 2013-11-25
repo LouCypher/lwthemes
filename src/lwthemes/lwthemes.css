@@ -70,7 +70,7 @@ section { margin: 7em 1em 1em }
 
 h1, h2 { font-family: sans-serif }
 
-a:link, a:visited { text-decoration: none }
+a:link, a:visited, .menu a:hover { text-decoration: none }
 a:hover { text-decoration: underline }
 
 #template, .hidden, .current .enable, .disable, .dev, .edit, .menu:not(.open) { display: none }
@@ -95,14 +95,14 @@ a:hover { text-decoration: underline }
   word-wrap: break-word;
 }
 
-.theme img.preview {
+.theme .image {
   max-width: 340px;
   max-height: 50px;
   min-width: 149px;
   min-height: 50px;
 }
 
-.image {
+.preview {
   width: 340px;
   height: 50px;
 }

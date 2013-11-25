@@ -9,7 +9,7 @@ body, .viewer textarea {
   color: #000;
 }
 
-a:link, a:visited { color: #3d6db5 }
+a:link, a:visited, .menu a:hover, label[for]:hover { color: #3d6db5 }
 
 .shadow, .header { box-shadow: 0 0 9px rgba(0, 0, 0, .5) }
 .header, .footer {
@@ -23,10 +23,8 @@ a:link, a:visited { color: #3d6db5 }
   outline-color: #3d6db5;
 }
 
-.theme, .menu, .viewer {
-  background-color: #fafafa;
-  color: inherit;
-}
+.theme, .menu, .viewer { background-color: #fafafa }
+.theme, .menu, .menu a, .viewer { color: inherit }
 
 .search { box-shadow: 0 0 2px rgba(0, 0, 0, .5) }
 .search-input { border: 1px solid rgba(0, 0, 0, .5) }
@@ -38,6 +36,6 @@ a:link, a:visited { color: #3d6db5 }
 
 .current { border-color: #c63717 }
 
-.theme img.preview { box-shadow: 0 0 1px #000 }
+.theme .image { box-shadow: 0 0 1px #000 }
 
-.theme img.preview:hover { box-shadow: 0 0 3px #000 }
+.theme .image:hover { box-shadow: 0 0 3px #000 }

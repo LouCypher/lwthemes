@@ -28,12 +28,38 @@
       <button class="menu-button fixed pos-top pos-right" tabindex="3"
               title="&detail.showPreferencesWin.label;" onclick="toggleMenu();">&#9776;</button>
 
-      <fieldset class="menu fixed pos-right">
+      <div class="menu fixed pos-right">
+        <a href="https://addons.mozilla.org/themes/">&menu.theme.get;</a>
+
+        <a href="https://addons.mozilla.org/en-US/firefox/search/?cat=themes"
+           class="menuitem" onclick="focusSearch(); return false;">&search.placeholder.value;</a>
+
+        <a href="https://addons.mozilla.org/developers/docs/themes">&menu.theme.learn;</a>
+
+        <a href="chrome://personas/content/customPersonaEditor.xul"
+           class="personas-enabled hidden" onclick="_personas.edit(); return false;">
+          &menu.personas.edit;
+        </a>
+
+        <a href="https://addons.mozilla.org/developers/theme/submit">&menu.theme.submit;</a>
+
+        <div class="clear separator menuitem"></div>
+
+        <a href="#" class="personas-disabled hidden" data-addon-id="personas@christopher.beard"
+           onclick="openAddonsManager(this); return false;">&menu.personas.enable;</a>
+
+        <a href="https://addons.mozilla.org/addon/personas-plus/?src=external-addon-472283"
+           class="personas-not-installed hidden" onclick="_personas.install(); return false;">
+          &menu.personas.install;
+        </a>
+
+        <a href="http://loucypher.github.io/personas">Solid Color Theme</a>
+
+        <div class="clear separator menuitem"></div>
+
         <input id="pref-skin-light" class="pref-skin left menuitem" name="pref-skin"
                type="radio" value="Light" onchange="_skin.toggle();"/>
         <label for="pref-skin-light" class="menuitem">&menu.skin.light;</label>
-
-        <div class="clear menuitem"></div>
 
         <input id="pref-skin-dark" class="pref-skin left menuitem" name="pref-skin"
                type="radio" value="Dark" onchange="_skin.toggle();"/>
@@ -41,50 +67,16 @@
 
         <div class="clear separator menuitem"></div>
 
-        <input id="pref-devmode" class="left menuitem"
-               type="checkbox" onchange="toggleDevMode();"/>
+        <input id="pref-devmode" class="left menuitem" type="checkbox"
+               onchange="toggleDevMode();"/>
         <label for="pref-devmode" class="menuitem">&menu.toggle.devmode;</label>
 
         <div class="clear separator menuitem"></div>
 
-        <a href="https://addons.mozilla.org/themes/">&menu.theme.get;</a>
-
-        <a href="https://addons.mozilla.org/en-US/firefox/search/?cat=themes"
-           class="menuitem" onclick="onFocusSearch(); return false;">
-            &search.placeholder.value;
-        </a>
-
-        <a href="https://addons.mozilla.org/developers/docs/themes">
-          &menu.theme.learn;
-        </a>
-
-        <a href="chrome://personas/content/customPersonaEditor.xul"
-           class="personas-enabled hidden"
-           onclick="_personas.edit(); return false;">&menu.personas.edit;</a>
-
-        <a href="https://addons.mozilla.org/developers/theme/submit">
-          &menu.theme.submit;
-        </a>
-
-        <div class="clear separator menuitem"></div>
-
-        <a href="#" class="personas-disabled hidden"
-           data-addon-id="personas@christopher.beard"
-           onclick="openAddonsManager(this); return false;">&menu.personas.enable;</a>
-
-        <a href="https://addons.mozilla.org/addon/personas-plus/?src=external-addon-472283"
-           class="personas-not-installed hidden"
-           onclick="_personas.install(); return false;">&menu.personas.install;</a>
-
-        <a href="http://loucypher.github.io/personas">Solid Color Theme</a>
-
-        <div class="clear separator menuitem"></div>
-
-        <a href="#" class="menuitem"
-           data-addon-id="lwthemes-manager@loucypher"
+        <a href="#" class="menuitem" data-addon-id="lwthemes-manager@loucypher"
            onclick="openAddonsManager(this); return false;">About</a>
 
-      </fieldset>
+      </div>
 
       <span class="search right">
         <input class="search-input" placeholder="&search.placeholder.value;"
@@ -98,10 +90,10 @@
     <section>
       <article id="template" class="theme left">
         <header>
-          <div class="image">
+          <div class="preview">
             <a title="&detail.homepage.label;">
-              <img class="preview" onmouseenter="setTheme(this, 'preview');"
-                                   onmouseleave="setTheme(this, 'reset');"/>
+              <img class="image" onmouseenter="setTheme(this, 'preview');"
+                                 onmouseleave="setTheme(this, 'reset');"/>
             </a>
           </div>
           <h2 class="theme-title"><a title="&detail.homepage.label;"></a></h2>
