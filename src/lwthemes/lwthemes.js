@@ -194,7 +194,7 @@ var _personas = {
 function jsBeautify(aJS) {
   try {
     const {js_beautify} = jsm("resource:///modules/devtools/Jsbeautify.jsm");
-    return js_beautify(aJS, { indent_size: 2, indent_char: " " });
+    return js_beautify(aJS, {indent_size: 2, indent_char: " "});
   } catch (ex) {
     return aJS;
   }
@@ -248,6 +248,7 @@ function applyThemeToNode(aNode) {
   aNode.style.color = _currentTheme.textColor;
   aNode.style.backgroundColor = _currentTheme.accentcolor;
   aNode.style.backgroundImage = "url(" + _currentTheme.headerURL + ")";
+  aNode.style.backgroundPosition = "right center";
 }
 
 function showTotalThemes(aNumber) {
@@ -284,6 +285,7 @@ function setTheme(aNode, aAction) {
     case "stop":
       LightweightThemeManager.setLocalTheme();
       themeBox.classList.remove("current");
+      $(".search").removeAttribute("style");
       _currentTheme = null;
       break;
 
@@ -291,6 +293,7 @@ function setTheme(aNode, aAction) {
       LightweightThemeManager.forgetUsedTheme(theme.id);
       if (themeBox.classList.contains("current")) {
         themeBox.classList.remove("current");
+        $(".search").removeAttribute("style");
         _currentTheme = null;
       }
       showTotalThemes(_themes.length);
@@ -302,6 +305,7 @@ function setTheme(aNode, aAction) {
         $(".current").classList.remove("current");
       themeBox.classList.add("current");
       _currentTheme = theme;
+      applyThemeToNode($(".search"));
   }
   _themes = LightweightThemeManager.usedThemes;
 }
@@ -471,7 +475,7 @@ function focusSearch() {
 }
 
 function onFocusSearch() {
-  if (pageYOffset >= 55)
+  if (pageYOffset >= 80)
     fixedHeader();
 
   closeMenu();
@@ -509,8 +513,10 @@ function load() {
     $("section").insertBefore(themeBox(_themes[i]), $("#template"));
 
   // Move current theme to top
-  if (_currentTheme)
+  if (_currentTheme) {
     $(".current").parentNode.insertBefore($(".current"), $("section").firstChild);
+    applyThemeToNode($(".search"));
+  }
 
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 

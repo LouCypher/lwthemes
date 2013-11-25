@@ -10,6 +10,5 @@
 <!ENTITY menu.personas.create     "Buat tema">
 <!ENTITY menu.personas.edit       "Edit tema buatan sendiri">
 <!ENTITY search.placeholder.value "Cari tema">
-<!ENTITY search.submit.value      "Cari">
 <!ENTITY button.json.tooltip      "Lihat tema sebagai text JSON">
 <!ENTITY button.inspect.tooltip   "Inspeksi obyek tema">

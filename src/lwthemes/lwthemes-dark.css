@@ -29,6 +29,7 @@ a:link, a:visited { color: #cdd8e4 }
 }
 
 .search { box-shadow: 0 0 2px #cdd8e4 }
+.search-input { border: 1px solid #cdd8e4 }
 .menu { box-shadow: 1px 3px 3px rgba(0, 0, 0, .5) }
 .menu, .viewer, .viewer textarea { border-color: threedhighlight }
 .rtl .menu { box-shadow: -1px 3px 3px rgba(0, 0, 0, .5) }

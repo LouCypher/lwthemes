@@ -10,6 +10,5 @@
 <!ENTITY menu.personas.create     "Create a theme">
 <!ENTITY menu.personas.edit       "Edit custom theme">
 <!ENTITY search.placeholder.value "Search for themes">
-<!ENTITY search.submit.value      "Search">
 <!ENTITY button.json.tooltip      "View theme as JSON string">
 <!ENTITY button.inspect.tooltip   "Inspect theme object">
