@@ -9,6 +9,7 @@ function jsm(aURL) Components.utils.import(aURL, {});
 const {LightweightThemeManager} = jsm("resource://gre/modules/LightweightThemeManager.jsm");
 var {usedThemes: _themes, currentTheme: _currentTheme} = LightweightThemeManager;
 
+const {AddonManager} = jsm("resource://gre/modules/AddonManager.jsm");
 const {Services} = jsm("resource://gre/modules/Services.jsm");
 
 var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
@@ -26,7 +27,7 @@ $("html").lang = Services.prefs.getCharPref("general.useragent.locale");
 switch ($("html").lang) {
   case "ar":    // Arabic
   case "he":    // Hebrew
-  case "fa-IR": // Farsi
+  case "fa":    // Farsi
     $("html").classList.add("rtl");  // Right to left
 }
 
@@ -76,6 +77,7 @@ var _skin = {
 
 var _personas = {
   ID: "personas@christopher.beard",
+  URL: "https://addons.mozilla.org/addon/personas-plus/",
   addon: null,
   status: null,
   custom: null,
@@ -127,6 +129,8 @@ var _personas = {
           LightweightThemeManager.currentTheme.id === "1") {
         _personas.custom = LightweightThemeManager.currentTheme;
         _currentTheme = _personas.custom; // Update _currentTheme
+        applyThemeToNode($(".search"));
+
         var themeBox = $(".persona");
         if (!themeBox) {
           location.reload();
@@ -158,10 +162,7 @@ var _personas = {
       if (_themes[i].id === "1")
         this.custom = _themes[i];
 
-    var obj = jsm("resource://gre/modules/AddonManager.jsm", {});
-    var {getAddonByID} = obj.AddonManager;
-
-    getAddonByID(this.ID, function(personas) {
+    AddonManager.getAddonByID(this.ID, function(personas) {
       if (personas) {
         _personas.addon = personas;
 
@@ -208,16 +209,6 @@ function sort(aArray) {
     if (a > b) return 1;
     return 0;
   })
-}
-
-function donation() {
-  var gifts = ["beer", "coffee", "donut", "drink", "hot dog", "Ferrari"];
-  var num = parseInt(Math.random() * gifts.length);
-  $(".paypal a").textContent = "Buy me a " + gifts[num];
-  $(".paypal a").href = "https://www.paypal.com/cgi-bin/webscr" +
-                        "?cmd=_s-xclick&hosted_button_id=WDQL25BGYS3C2" +
-                        "&amount=3%2e14&currency_code=USD" +
-                        "&item_name=Light%20Weight%20Themes%20Manager";
 }
 
 function getThemeBox(aNode) {
@@ -319,6 +310,9 @@ function getThemeURL(aTheme) {
 
   if (homepageURL)
     return homepageURL;
+
+  if (id === "1")
+    return _personas.URL;
 
   if (updateURL) {
     if (updateURL.match(/getpersonas.com/))
@@ -447,15 +441,6 @@ function toggleDevMode() {
 
 function toggleMenu() {
   $(".menu").classList.toggle("open");
-  window.addEventListener("click", function(aEvent) {
-    //console.log(aEvent.target);
-    var classList = aEvent.target.classList;
-    if (!(classList.contains("menu") || classList.contains("menuitem") ||
-          classList.contains("menu-button"))) {
-      aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
-      closeMenu();
-    }
-  }, true);
 }
 
 function closeMenu() {
@@ -482,11 +467,43 @@ function onFocusSearch() {
   focusSearch()
 }
 
-function load() {
-  donation();
-  _personas.init();
+function setFooterContent() {
+  var gifts = ["beer", "coffee", "donut", "drink", "hot dog", "Ferrari"];
+  var num = parseInt(Math.random() * gifts.length);
+  $(".paypal a").textContent = "Buy me a " + gifts[num];
+  $(".paypal a").href = "https://www.paypal.com/cgi-bin/webscr" +
+                        "?cmd=_s-xclick&hosted_button_id=WDQL25BGYS3C2" +
+                        "&amount=3%2e14&currency_code=USD" +
+                        "&item_name=Light%20Weight%20Themes%20Manager";
 
+  AddonManager.getAddonByID("lwthemes-manager@loucypher", function(aAddon) {
+    $(".lwthemes-name").textContent = aAddon.name;
+    $(".lwthemes-creator").textContent = aAddon.creator;
+  })
+}
+
+function onclick(aEvent) {
+  //console.log(aEvent.target);
+  var classList = aEvent.target.classList;
+  if (!(classList.contains("menu") || classList.contains("menuitem") ||
+        classList.contains("menu-button"))) {
+    aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
+    closeMenu();
+  }
+}
+
+function onkeypress(aEvent) {
+  //console.log(aEvent.keyCode);
+  if (aEvent.keyCode === 27) {  // Esc key
+    closeMenu();
+    unfixedHeader();
+  }
+}
+
+function onload() {
+  _personas.init();
   _skin.applyFromPref();
+  setFooterContent();
 
   if (prefs.getBoolPref("devmode")) {
     _devMode = true;
@@ -521,14 +538,11 @@ function load() {
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 
   showTotalThemes(_themes.length);
-
-  window.addEventListener("keypress", function(aEvent) {
-    //console.log(aEvent.keyCode);
-    if (aEvent.keyCode === 27) {  // Esc key
-      closeMenu();
-      unfixedHeader();
-    }
-  });
 }
 
-function unload() {}
+function onunload() {}
+
+window.addEventListener("load", onload);
+window.addEventListener("unload", onunload);
+window.addEventListener("click", onclick);
+window.addEventListener("keypress", onkeypress);

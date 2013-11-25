@@ -21,7 +21,7 @@
     <script type="application/x-javascript" src="chrome://inspector/content/hooks.js"></script>
   </head>
 
-  <body onload="load();" onunload="unload();">
+  <body>
     <div class="shadow fixed pos-top pos-left pos-right"></div>
 
     <header class="header absolute pos-top pos-left pos-right">
@@ -77,6 +77,13 @@
            onclick="_personas.install(); return false;">&menu.personas.install;</a>
 
         <a href="http://loucypher.github.io/personas">Solid Color Theme</a>
+
+        <div class="clear separator menuitem"></div>
+
+        <a href="#" class="menuitem"
+           data-addon-id="lwthemes-manager@loucypher"
+           onclick="openAddonsManager(this); return false;">About</a>
+
       </fieldset>
 
       <span class="search right">
@@ -93,8 +100,8 @@
         <header>
           <div class="image">
             <a title="&detail.homepage.label;">
-              <img onmouseenter="setTheme(this, 'preview');"
-                   onmouseleave="setTheme(this, 'reset');"/>
+              <img class="preview" onmouseenter="setTheme(this, 'preview');"
+                                   onmouseleave="setTheme(this, 'reset');"/>
             </a>
           </div>
           <h2 class="theme-title"><a title="&detail.homepage.label;"></a></h2>
@@ -155,9 +162,9 @@
 
     <footer class="footer absolute pos-left pos-right">
       <p>
-        <a href="https://addons.mozilla.org/addon/lwthemes/">Light Weight Themes Manager</a>
-        and <a href="http://loucypher.github.io/personas/">Solid Color Theme</a>
-        by <a href="https://addons.mozilla.org/user/LouCypher/">Zulkarnain K</a>.
+        <a class="lwthemes-name" href="https://addons.mozilla.org/addon/lwthemes/"></a>
+        &addon.createdBy.label;
+        <a class="lwthemes-creator" href="https://addons.mozilla.org/user/LouCypher/"></a>.
         <span class="paypal right"><a title="via PayPal"></a></span>
       </p>
     </footer>

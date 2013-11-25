@@ -38,6 +38,6 @@ a:link, a:visited { color: #cdd8e4 }
 
 .current { border-color: #c63717 }
 
-.theme img { box-shadow: 0 0 1px #000 }
+.theme img.preview { box-shadow: 0 0 1px #000 }
 
-.theme img:hover { box-shadow: 0 0 3px #000 }
+.theme img.preview:hover { box-shadow: 0 0 3px #000 }

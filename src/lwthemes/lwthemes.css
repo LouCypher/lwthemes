@@ -95,7 +95,7 @@ a:hover { text-decoration: underline }
   word-wrap: break-word;
 }
 
-.theme img {
+.theme img.preview {
   max-width: 340px;
   max-height: 50px;
   min-width: 149px;
