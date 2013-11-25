@@ -58,7 +58,7 @@ var _skin = {
   toggle: function toggleSkin() {
     this.dark.disabled = this.light.disabled;
     this.light.disabled = !this.light.disabled;
-    this.prefValue = !this.dark.disabled;
+    this.selected = !this.dark.disabled;
     this.toggleRadio();
     prefs.setBoolPref("darkTheme", this.prefValue);
     //console.log(_skin.selected);
@@ -546,7 +546,12 @@ function onload() {
   showTotalThemes(_themes.length);
 }
 
-function onunload() {}
+function onunload() {
+  window.removeEventListener("keypress", onkeypress);
+  window.removeEventListener("click", onclick);
+  window.removeEventListener("load", onload);
+  window.removeEventListener("unload", onunload);
+}
 
 window.addEventListener("load", onload);
 window.addEventListener("unload", onunload);

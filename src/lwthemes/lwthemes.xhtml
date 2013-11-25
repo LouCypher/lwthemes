@@ -58,11 +58,11 @@
         <div class="clear separator menuitem"></div>
 
         <input id="pref-skin-light" class="pref-skin left menuitem" name="pref-skin"
-               type="radio" value="Light" onchange="_skin.toggle();"/>
+               type="radio" value="Light" checked="true" onclick="_skin.toggle();"/>
         <label for="pref-skin-light" class="menuitem">&menu.skin.light;</label>
 
         <input id="pref-skin-dark" class="pref-skin left menuitem" name="pref-skin"
-               type="radio" value="Dark" onchange="_skin.toggle();"/>
+               type="radio" value="Dark" onclick="_skin.toggle();"/>
         <label for="pref-skin-dark" class="menuitem">&menu.skin.dark;</label>
 
         <div class="clear separator menuitem"></div>
@@ -73,7 +73,7 @@
 
         <div class="clear separator menuitem"></div>
 
-        <a href="#" class="menuitem" data-addon-id="lwthemes-manager@loucypher"
+        <a href="#" data-addon-id="lwthemes-manager@loucypher"
            onclick="openAddonsManager(this); return false;">About</a>
 
       </div>
