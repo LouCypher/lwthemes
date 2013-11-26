@@ -73,13 +73,14 @@ h1, h2 { font-family: sans-serif }
 a:link, a:visited, .menu a:hover { text-decoration: none }
 a:hover { text-decoration: underline }
 
-#template, .hidden, .current .enable, .disable, .dev, .edit, .menu:not(.open),
-.viewer:not(.open), .compact .theme-title, .compact .theme-author,
+#template, .hidden, .no-themes, .private-browsing, .current .enable, .disable, .dev, .edit,
+.menu:not(.open), .viewer:not(.open), .compact .theme-title, .compact .theme-author,
 .compact .theme-description, .compact .button.more { display: none }
 
 .current .disable, .devmode .dev:not(.hidden), .personas .persona .edit,
 .paypal:not(.hidden), .paypal a { display: inline-block }
 
+.nothemes .no-themes, .privatebrowsing .private-browsing,
 .menu a:not(.hidden), .menu label[for] { display: block }
 
 .menu .left { margin: 3px .5em 0 0 }

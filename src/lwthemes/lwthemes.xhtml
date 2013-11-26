@@ -45,18 +45,6 @@
 
         <div class="clear separator menuitem"></div>
 
-        <a href="#" class="personas-disabled hidden" data-addon-id="personas@christopher.beard"
-           onclick="openAddonsManager(this); return false;">&menu.personas.enable;</a>
-
-        <a href="https://addons.mozilla.org/addon/personas-plus/?src=external-addon-472283"
-           class="personas-not-installed hidden" onclick="_personas.install(); return false;">
-          &menu.personas.install;
-        </a>
-
-        <a href="http://loucypher.github.io/personas">Solid Color Theme</a>
-
-        <div class="clear separator menuitem"></div>
-
         <input id="pref-skin-light" class="pref-skin left menuitem" name="pref-skin"
                type="radio" value="Light" checked="true" onchange="_skin.toggle();"/>
         <label for="pref-skin-light" class="menuitem">&menu.skin.light;</label>
@@ -74,6 +62,18 @@
         <input id="pref-devmode" class="left menuitem" type="checkbox"
                onchange="toggleDevMode();"/>
         <label for="pref-devmode" class="menuitem">&menu.toggle.devmode;</label>
+
+        <div class="clear separator menuitem"></div>
+
+        <a href="#" class="personas-disabled hidden" data-addon-id="personas@christopher.beard"
+           onclick="openAddonsManager(this); return false;">&menu.personas.enable;</a>
+
+        <a href="https://addons.mozilla.org/addon/personas-plus/?src=external-addon-472283"
+           class="personas-not-installed hidden" onclick="_personas.install(); return false;">
+          &menu.personas.install;
+        </a>
+
+        <a href="http://loucypher.github.io/personas">Solid Color Theme</a>
 
         <div class="clear separator menuitem"></div>
 
@@ -124,7 +124,7 @@
         </p>
       </article>
 
-      <article class="no-themes hidden">
+      <article class="no-themes">
         <p>&listEmpty.installed.label;.</p>
         <ul>
           <li><a href="https://addons.mozilla.org/themes/">&menu.theme.get;</a></li>
@@ -136,7 +136,9 @@
                onclick="_personas.edit(); return false;">&menu.personas.create;</a>
           </li>
           <li class="personas-disabled hidden">
-            <a href="#" onclick="_personas.enable(this); return false;">&menu.personas.enable;</a>
+            <a href="#" onclick="_personas.enable(this); return false;"
+               data-addon-id="personas@christopher.beard" data-need-restart="true">
+              &menu.personas.enable;</a>
             <span class="hidden">
               <a href="#" onclick="Application.restart(); return false;">&addon.restartNow.label;</a>
               |
@@ -153,12 +155,23 @@
         </ul>
       </article>
 
+      <article class="private-browsing">
+        <p>&page.privatebrowsing.p1;</p>
+        <p>&page.privatebrowsing.p2;</p>
+        <p>
+          <a href="https://addons.mozilla.org/addon/private-browsing-personas/?src=external-addon-472283"
+             onclick="addonInstallOrEnable(this); return false;" data-amo-id="434616"
+             data-addon-id="pbm-personas@dactyl.googlecode.com"></a>
+          <a href="" class="hidden">&page.reload;</a>
+        </p>
+      </article>
+
       <div class="clear"></div>
     </section>
 
     <footer class="footer absolute pos-left pos-right">
       <p>
-        <a class="lwthemes-name" href="https://addons.mozilla.org/addon/lwthemes/"></a>
+        <a class="lwthemes-name" href="https://addons.mozilla.org/addon/lwthemes/?src=external-self"></a>
         &addon.createdBy.label;
         <a class="lwthemes-creator" href="https://addons.mozilla.org/user/LouCypher/"></a>.
         <span class="paypal right hidden"><a title="via PayPal"></a></span>

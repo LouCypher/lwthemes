@@ -1,4 +1,8 @@
 <!ENTITY page.title               "Tema Latar">
+<!ENTITY page.privatebrowsing.p1  "Tema latar tidak dapat digunakan pada jendela pribadi.">
+<!ENTITY page.privatebrowsing.p2  "Untuk mengaktifkan tema latar pada jendela pribadi, ">
+<!ENTITY page.reload              "Muat ulang laman ini bila selesai">
+
 <!ENTITY menu.skin.light          "Tema Terang">
 <!ENTITY menu.skin.dark           "Tema Gelap">
 <!ENTITY menu.toggle.compact      "Tampilan minimal">
@@ -10,6 +14,8 @@
 <!ENTITY menu.personas.enable     "Aktifkan Personas Plus">
 <!ENTITY menu.personas.create     "Buat tema">
 <!ENTITY menu.personas.edit       "Edit tema buatan sendiri">
+
 <!ENTITY search.placeholder.value "Cari tema">
+
 <!ENTITY button.json.tooltip      "Lihat tema sebagai text JSON">
 <!ENTITY button.inspect.tooltip   "Inspeksi obyek tema">

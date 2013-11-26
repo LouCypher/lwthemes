@@ -21,6 +21,7 @@ const APP_ID = Application.id;
 const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
+const _strings = Services.strings.createBundle("chrome://lwthemes/locale/lwthemes.properties");
 var _devMode = prefs.getBoolPref("devmode");
 var _compact = prefs.getBoolPref("compactView");
 
@@ -79,6 +80,26 @@ var _skin = {
   }
 };
 
+function addonInstallOrEnable(aNode) {
+  AddonManager.getAddonByID(aNode.dataset.addonId, function(aAddon) {
+    if (aAddon && aAddon.userDisabled) {
+      aAddon.userDisabled = false;
+      if (aNode.dataset.needRestart == "true") {
+        aNode.classList.add("hidden");
+        aNode.nextSibling.nextSibling.classList.remove("hidden");
+      }
+      else
+        location.reload();
+      return;
+    }
+    var amoId = aNode.dataset.amoId;
+    location.assign("https://addons.mozilla.org/downloads/latest/" + amoId +
+                    "/addon-" + amoId + "-latest.xpi?src=external-addon-472283");
+    aNode.classList.add("hidden");
+    aNode.nextSibling.nextSibling.classList.remove("hidden");
+  });
+}
+
 var _personas = {
   ID: "personas@christopher.beard",
   URL: "https://addons.mozilla.org/addon/personas-plus/",
@@ -93,11 +114,7 @@ var _personas = {
   },
 
   enable: function enablePersonas(aNode) {
-    this.addon.userDisabled = false;
-    if (aNode) {
-      aNode.classList.add("hidden");
-      aNode.nextSibling.nextSibling.classList.remove("hidden");
-    }
+    addonInstallOrEnable(aNode);
   },
 
   disable: function enablePersonas(aNode) {
@@ -120,7 +137,7 @@ var _personas = {
       var gBrowser = _chromeWin.gBrowser;
       container = gBrowser.tabContainer;
       openTab = function openTab(aURL) {
-        gBrowser.selectedTab = gBrowser.addTab(aURL);
+        _chromeWin.switchToTabHavingURI(aURL, true);
       }
     }
 
@@ -198,6 +215,40 @@ var _personas = {
       }
     })
   }
+}
+
+function getString(aString, aArgs){ //get localised message
+  if (aArgs) {
+    aArgs = Array.prototype.slice.call(arguments, 1);
+    return _strings.formatStringFromName(aString, aArgs, aArgs.length);
+  }
+  else
+    return _strings.GetStringFromName(aString);
+}
+
+function privateWindow() {
+  try {
+    const {PrivateBrowsingUtils} = Cu.import("resource://gre/modules/PrivateBrowsingUtils.jsm", {});
+    return PrivateBrowsingUtils.isWindowPrivate(_chromeWin);
+  } catch (ex) {
+    return false;
+  }
+}
+
+function setPrivateWindow() {
+  $("html").classList.add("privatebrowsing");
+  $("footer").classList.add("pos-bottom");
+  AddonManager.getAddonByID("pbm-personas@dactyl.googlecode.com", function(aAddon) {
+    var name = "Private Browsing Personas";
+    var string = "needToInstallExtension";
+    var label = "installExtension";
+    if (aAddon) {
+      string = "needToEnableExtension"
+      label = "enableExtension";
+    }
+    $$(".private-browsing p")[1].textContent += getString(string, name);
+    $(".private-browsing a").textContent = getString(label, name);
+  })
 }
 
 function jsBeautify(aJS) {
@@ -538,9 +589,15 @@ function onload() {
   _skin.applyFromPref();
   setFooterContent();
 
-  if (_devMode) {
-    $("#pref-devmode").checked = true;
-    $("html").classList.add("devmode");
+  if (privateWindow() && !_chromeWin.document.documentElement.hasAttribute("lwtheme")) {
+    setPrivateWindow();
+    return;
+  }
+
+  if (!_themes.length) {                        // If no installed themes
+    $("html").classList.add("nothemes");        // show 'No themes installed"
+    $("footer").classList.add("pos-bottom");
+    return;
   }
 
   if (_compact) {
@@ -548,16 +605,15 @@ function onload() {
     $("html").classList.add("compact");
   }
 
+  if (_devMode) {
+    $("#pref-devmode").checked = true;
+    $("html").classList.add("devmode");
+  }
+
   if (typeof inspectObject === "function") {
     $(".inspect").classList.remove("hidden");
     $(".inspect").textContent = getEntityFromDTD("view-source:chrome://inspector/locale/",
                                                  "btnInspect.label", "Inspect");
-  }
-
-  if (!_themes.length) {                        // If no installed themes
-    $(".no-themes").classList.remove("hidden"); // show 'No themes installed"
-    $("footer").classList.add("pos-bottom");
-    return;
   }
 
   sort(_themes);  // Sort by name
