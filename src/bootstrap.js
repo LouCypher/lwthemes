@@ -14,9 +14,10 @@ const PREFS = {
   name: "chrome://lwthemes/locale/lwthemes.properties",
   description: "chrome://lwthemes/locale/lwthemes.properties",
   firstRun: true,
-  devmode: false,   // If true, show `Inspect` and `JSON` buttons
-  jsonview: 0,      // 0: view JSON data in `textarea` element, 1: use Scratchpad
-  darkTheme: false  // false: use `Light` theme, true: use `Dark` theme
+  devmode: false,     // If true, show `Inspect` and `JSON` buttons
+  jsonview: 0,        // 0: view JSON data in `textarea` element, 1: use Scratchpad
+  darkTheme: false,   // true: use `Dark` theme, false: use `Light` theme
+  compactView: false  // true: hide theme title, creator and description
 };
 
 let branch = Services.prefs.getDefaultBranch(PREF_BRANCH);

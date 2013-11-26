@@ -58,14 +58,18 @@
         <div class="clear separator menuitem"></div>
 
         <input id="pref-skin-light" class="pref-skin left menuitem" name="pref-skin"
-               type="radio" value="Light" checked="true" onclick="_skin.toggle();"/>
+               type="radio" value="Light" checked="true" onchange="_skin.toggle();"/>
         <label for="pref-skin-light" class="menuitem">&menu.skin.light;</label>
 
         <input id="pref-skin-dark" class="pref-skin left menuitem" name="pref-skin"
-               type="radio" value="Dark" onclick="_skin.toggle();"/>
+               type="radio" value="Dark" onchange="_skin.toggle();"/>
         <label for="pref-skin-dark" class="menuitem">&menu.skin.dark;</label>
 
         <div class="clear separator menuitem"></div>
+
+        <input id="pref-compact" class="left menuitem" type="checkbox"
+               onchange="toggleCompactView();"/>
+        <label for="pref-compact" class="menuitem">&menu.toggle.compact;</label>
 
         <input id="pref-devmode" class="left menuitem" type="checkbox"
                onchange="toggleDevMode();"/>

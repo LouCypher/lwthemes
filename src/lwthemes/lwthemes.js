@@ -22,6 +22,7 @@ const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
 var _devMode = prefs.getBoolPref("devmode");
+var _compact = prefs.getBoolPref("compactView");
 
 /**
  *  Set document language and direction based on browser language
@@ -458,6 +459,13 @@ function toggleDevMode() {
   $("html").classList.toggle("devmode");
 }
 
+function toggleCompactView() {
+  _compact = !_compact;
+  $("#pref-compact").setAttribute("checked", _compact);
+  prefs.setBoolPref("compactView", _compact);
+  $("html").classList.toggle("compact");
+}
+
 function toggleMenu() {
   $(".menu").classList.toggle("open");
 }
@@ -529,6 +537,11 @@ function onload() {
   if (_devMode) {
     $("#pref-devmode").checked = true;
     $("html").classList.add("devmode");
+  }
+
+  if (_compact) {
+    $("#pref-compact").checked = true;
+    $("html").classList.add("compact");
   }
 
   if (typeof inspectObject === "function") {

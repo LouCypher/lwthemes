@@ -1,6 +1,7 @@
 <!ENTITY page.title               "Tema Latar">
 <!ENTITY menu.skin.light          "Tema Terang">
 <!ENTITY menu.skin.dark           "Tema Gelap">
+<!ENTITY menu.toggle.compact      "Tampilan minimal">
 <!ENTITY menu.toggle.devmode      "Mode pengembang">
 <!ENTITY menu.theme.get           "Dapatkan tema">
 <!ENTITY menu.theme.learn         "Pelajari cara membuat tema">

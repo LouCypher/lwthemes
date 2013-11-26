@@ -1,6 +1,7 @@
 <!ENTITY page.title               "Light Weight Themes">
 <!ENTITY menu.skin.light          "Light theme">
 <!ENTITY menu.skin.dark           "Dark theme">
+<!ENTITY menu.toggle.compact      "Compact view">
 <!ENTITY menu.toggle.devmode      "Developer mode">
 <!ENTITY menu.theme.get           "Get themes">
 <!ENTITY menu.theme.learn         "Learn how to create a theme">
