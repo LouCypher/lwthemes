@@ -340,6 +340,18 @@ function getThemeURL(aTheme) {
   return null;
 }
 
+// https://developer.mozilla.org/en-US/docs/XUL/School_tutorial/DOM_Building_and_HTML_Insertion#Safely_Using_Remote_HTML
+/**
+ * Safely parse an HTML fragment, removing any executable
+ * JavaScript, and return a document fragment.
+ *
+ * @param {string} aHtmlString The HTML fragment to parse.
+ */
+function parseHTML(aHtmlString) {
+  var parser = Cc["@mozilla.org/parserutils;1"].getService(Ci.nsIParserUtils);
+  return parser.parseFragment(aHtmlString, 0, false, null, document.documentElement);
+}
+
 /**
  *  Generate boxes for installed themes
  */
@@ -388,10 +400,7 @@ function themeBox(aTheme) {
     $(".theme-author", box).textContent += author;
 
   if (description) {
-    $(".theme-description", box).innerHTML = description;
-    /*var span = document.createElement("span");
-    span.innerHTML = description;
-    $(".theme-description", box).textContent = span.textContent;*/
+    $(".theme-description", box).appendChild(parseHTML(description));
   }
 
   return box;
