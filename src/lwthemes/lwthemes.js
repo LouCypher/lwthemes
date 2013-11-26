@@ -2,9 +2,11 @@
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
  *  file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+const {Constructor: Ccnstr, classes: Cc, interfaces: Ci, utils: Cu} = Components;
+
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
-function jsm(aURL) Components.utils.import(aURL, {});
+function jsm(aURL) Cu.import(aURL, {});
 
 const {LightweightThemeManager} = jsm("resource://gre/modules/LightweightThemeManager.jsm");
 var {usedThemes: _themes, currentTheme: _currentTheme} = LightweightThemeManager;
@@ -19,19 +21,21 @@ const APP_ID = Application.id;
 const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
-var _devMode = false;
+var _devMode = prefs.getBoolPref("devmode");
 
 /**
  *  Set document language and direction based on browser language
  */
-$("html").lang = Services.prefs.getCharPref("general.useragent.locale");
+//$("html").lang = navigator.language;  // Doesn't return the right locale
+//$("html").lang = Services.prefs.getCharPref("general.useragent.locale");  // AMO doesn't like it
+$("html").lang = Services.urlFormatter.formatURL("%LOCALE%"); // The safest way
+//console.log($("html").lang);
 switch ($("html").lang) {
   case "ar":    // Arabic
   case "he":    // Hebrew
   case "fa":    // Farsi
     $("html").classList.add("rtl");  // Right to left
 }
-
 
 var _skin = {
   light: $("link[title=Light]").sheet,  // Light
@@ -227,8 +231,7 @@ function getThemeBox(aNode) {
 }
 
 function getEntityFromDTD(aChromeURL, aEntity, aDefVal) {
-  const XMLHttpRequest = Components.Constructor("@mozilla.org/xmlextras/xmlhttprequest;1",
-                                                "nsIXMLHttpRequest");
+  const XMLHttpRequest = Ccnstr("@mozilla.org/xmlextras/xmlhttprequest;1", "nsIXMLHttpRequest");
   var xhr = new XMLHttpRequest();
   xhr.open("GET", aChromeURL, false);
   xhr.send(null);
@@ -445,12 +448,9 @@ function jsonView(aNode) {
 
 function toggleDevMode() {
   _devMode = !_devMode;
-  $("#pref-devmode").setAttribute("checked", !_devMode);
+  $("#pref-devmode").setAttribute("checked", _devMode);
   prefs.setBoolPref("devmode", _devMode);
-  if (_devMode)
-    $("html").classList.add("devmode");
-  else
-    $("html").classList.remove("devmode");
+  $("html").classList.toggle("devmode");
 }
 
 function toggleMenu() {
@@ -477,6 +477,7 @@ function focusSearch() {
 }
 
 function setFooterContent() {
+  /*
   var gifts = ["beer", "coffee", "donut", "drink", "hot dog", "Ferrari"];
   var num = parseInt(Math.random() * gifts.length);
   $(".paypal a").textContent = "Buy me a " + gifts[num];
@@ -484,7 +485,7 @@ function setFooterContent() {
                         "?cmd=_s-xclick&hosted_button_id=WDQL25BGYS3C2" +
                         "&amount=3%2e14&currency_code=USD" +
                         "&item_name=Light%20Weight%20Themes%20Manager";
-
+*/
   AddonManager.getAddonByID("lwthemes-manager@loucypher", function(aAddon) {
     $(".lwthemes-name").textContent = aAddon.name;
     $(".lwthemes-creator").textContent = aAddon.creator;
@@ -520,8 +521,7 @@ function onload() {
   _skin.applyFromPref();
   setFooterContent();
 
-  if (prefs.getBoolPref("devmode")) {
-    _devMode = true;
+  if (_devMode) {
     $("#pref-devmode").checked = true;
     $("html").classList.add("devmode");
   }

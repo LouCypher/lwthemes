@@ -75,9 +75,8 @@ a:hover { text-decoration: underline }
 
 #template, .hidden, .current .enable, .disable, .dev, .edit,
 .menu:not(.open), .viewer:not(.open) { display: none }
-.current .disable, .devmode .dev:not(.hidden), .personas .persona .edit, .paypal, .paypal a {
-  display: inline-block
-}
+.current .disable, .devmode .dev:not(.hidden), .personas .persona .edit,
+.paypal:not(.hidden), .paypal a { display: inline-block }
 .menu a:not(.hidden), .menu label[for] { display: block }
 
 .menu .left { margin: 3px .5em 0 0 }
@@ -163,7 +162,6 @@ a:hover { text-decoration: underline }
 .search-input:hover { background-color: rgba(255, 255, 255, .9) }
 .search-input:focus { background-color: #fff }
 
-.paypal, .paypal a { display: inline-block }
 .paypal {
   width: 120px;
   height: 21px;

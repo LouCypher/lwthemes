@@ -90,11 +90,13 @@ function main(aWindow) {
   if (menuV)
     menuV.parentNode.insertBefore(addMenuItem(), menuV);
 
+/* For future use
   // Run lwThemes() on installation
   if (prefs.getBoolPref("firstRun")) {
     prefs.setBoolPref("firstRun", false);
     lwThemes();
   }
+*/
 
   unload(function() {
     let items = $$(".lwthemes");
