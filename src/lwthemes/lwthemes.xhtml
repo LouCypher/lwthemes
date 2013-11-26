@@ -74,7 +74,7 @@
         <div class="clear separator menuitem"></div>
 
         <a href="#" data-addon-id="lwthemes-manager@loucypher"
-           onclick="openAddonsManager(this); return false;">About</a>
+           onclick="openAddonsManager(this); return false;">&cmd.about.label;</a>
 
       </div>
 
@@ -161,9 +161,8 @@
       </p>
     </footer>
 
-    <div class="viewer fixed pos-top pos-left pos-right pos-bottom hidden">
-      <textarea class="fixed pos-top pos-left pos-right pos-bottom" placeholder="JSON data"
-                onkeypress="if (event.keyCode == 27) toggleViewer();">
+    <div class="viewer fixed pos-top pos-left pos-right pos-bottom">
+      <textarea class="fixed pos-top pos-left pos-right pos-bottom" placeholder="JSON data">
       </textarea>
       <div class="clear"></div>
       <button class="close right" onclick="toggleViewer();">X</button>

@@ -73,7 +73,8 @@ h1, h2 { font-family: sans-serif }
 a:link, a:visited, .menu a:hover { text-decoration: none }
 a:hover { text-decoration: underline }
 
-#template, .hidden, .current .enable, .disable, .dev, .edit, .menu:not(.open) { display: none }
+#template, .hidden, .current .enable, .disable, .dev, .edit,
+.menu:not(.open), .viewer:not(.open) { display: none }
 .current .disable, .devmode .dev:not(.hidden), .personas .persona .edit, .paypal, .paypal a {
   display: inline-block
 }

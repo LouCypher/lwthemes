@@ -240,10 +240,11 @@ function getEntityFromDTD(aChromeURL, aEntity, aDefVal) {
   }
 }
 
-function applyThemeToNode(aNode) {
-  aNode.style.color = _currentTheme.textColor;
-  aNode.style.backgroundColor = _currentTheme.accentcolor;
-  aNode.style.backgroundImage = "url(" + _currentTheme.headerURL + ")";
+function applyThemeToNode(aNode, aTheme) {
+  var theme = aTheme ? aTheme : _currentTheme;
+  aNode.style.color = theme.textColor;
+  aNode.style.backgroundColor = theme.accentcolor;
+  aNode.style.backgroundImage = "url(" + theme.headerURL + ")";
   aNode.style.backgroundPosition = "right center";
 }
 
@@ -272,10 +273,17 @@ function setTheme(aNode, aAction) {
   switch (aAction) {
     case "preview":
       LightweightThemeManager.previewTheme(theme);
+      if ($(".search").hasAttribute("style"))
+        $(".search").setAttribute("old-style", $(".search").getAttribute("style"));
+      applyThemeToNode($(".search"), theme);
       return;
 
     case "reset":
       LightweightThemeManager.resetPreview();
+      if ($(".search").hasAttribute("old-style"))
+        applyThemeToNode($(".search"));
+      else
+        $(".search").removeAttribute("style");
       return;
 
     case "stop":
@@ -418,7 +426,7 @@ function inspect(aNode) {
 }
 
 function toggleViewer() {
-  $(".viewer").classList.toggle("hidden");
+  $(".viewer").classList.toggle("open");
 }
 
 function jsonView(aNode) {
@@ -431,7 +439,7 @@ function jsonView(aNode) {
   }
 
   $(".viewer textarea").value = json;
-  toggleViewer();
+  $(".viewer").classList.add("open");
   $(".viewer textarea").focus();
 }
 
@@ -498,6 +506,7 @@ function onkeypress(aEvent) {
   if (aEvent.keyCode === 27) {  // Esc key
     closeMenu();
     unfixedHeader();
+    $(".viewer").classList.remove("open");
     //inspectObject(aEvent);
   }
 

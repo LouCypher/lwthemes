@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+    Contributor(s):
+    - LouCypher (original code)
+-->
+
+<!DOCTYPE vbox SYSTEM "chrome://mozapps/locale/extensions/about.dtd">
+
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <setting type="control" title="&contributors.label;"/>
+  <setting type="control" title="David Vignoni" desc="Icon">
+    <label class="text-link"
+           value="http://icon-king.com/"
+           href="http://icon-king.com/"
+           tooltiptext="&homepage.label;"/>
+  </setting>
+  <setting type="control" title="&translators.label;" first-row="true"/>
+</vbox>
