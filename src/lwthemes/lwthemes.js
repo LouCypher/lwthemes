@@ -382,6 +382,7 @@ function themeBox(aTheme) {
   $(".image", box).style.backgroundColor = aTheme.accentcolor;
   $(".image", box).style.color = aTheme.textcolor;
   $(".image", box).alt = name;
+  $(".image", box).title = _compact ? name : $(".preview a", box).title;
 
   var themeURL = getThemeURL(aTheme);
   if (themeURL) {
@@ -464,6 +465,9 @@ function toggleCompactView() {
   $("#pref-compact").setAttribute("checked", _compact);
   prefs.setBoolPref("compactView", _compact);
   $("html").classList.toggle("compact");
+  var previews = $$(".theme .image");
+  for (var i = 0; i < previews.length; i++)
+    previews[i].title = _compact ? previews[i].alt : previews[i].parentNode.title;
 }
 
 function toggleMenu() {
