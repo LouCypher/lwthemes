@@ -26,8 +26,6 @@ var _devMode = prefs.getBoolPref("devmode");
 /**
  *  Set document language and direction based on browser language
  */
-//$("html").lang = navigator.language;  // Doesn't return the right locale
-//$("html").lang = Services.prefs.getCharPref("general.useragent.locale");  // AMO doesn't like it
 $("html").lang = Services.urlFormatter.formatURL("%LOCALE%"); // The safest way
 //console.log($("html").lang);
 switch ($("html").lang) {
@@ -276,15 +274,13 @@ function setTheme(aNode, aAction) {
   switch (aAction) {
     case "preview":
       LightweightThemeManager.previewTheme(theme);
-      if ($(".search").hasAttribute("style"))
-        $(".search").setAttribute("old-style", $(".search").getAttribute("style"));
       applyThemeToNode($(".search"), theme);
       return;
 
     case "reset":
       LightweightThemeManager.resetPreview();
-      if ($(".search").hasAttribute("old-style"))
-        applyThemeToNode($(".search"));
+      if (_currentTheme)
+        applyThemeToNode($(".search"), _currentTheme);
       else
         $(".search").removeAttribute("style");
       return;
@@ -312,7 +308,7 @@ function setTheme(aNode, aAction) {
         $(".current").classList.remove("current");
       themeBox.classList.add("current");
       _currentTheme = theme;
-      applyThemeToNode($(".search"));
+      applyThemeToNode($(".search"), _currentTheme);
   }
   _themes = LightweightThemeManager.usedThemes;
 }
