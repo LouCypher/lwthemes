@@ -237,7 +237,6 @@ function privateWindow() {
 
 function setPrivateWindow() {
   $("html").classList.add("privatebrowsing");
-  $("footer").classList.add("pos-bottom");
   AddonManager.getAddonByID("pbm-personas@dactyl.googlecode.com", function(aAddon) {
     var name = "Private Browsing Personas";
     var string = "needToInstallExtension";
