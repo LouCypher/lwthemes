@@ -243,8 +243,14 @@ function setPrivateWindow() {
     var string = "needToInstallExtension";
     var label = "installExtension";
     if (aAddon) {
-      string = "needToEnableExtension"
-      label = "enableExtension";
+      if (aAddon.userDisabled) {
+        string = "needToEnableExtension"
+        label = "enableExtension";
+      }
+      else {
+        $("html").classList.remove("privatebrowsing");
+        return;
+      }
     }
     $$(".private-browsing p")[1].textContent += getString(string, name);
     $(".private-browsing a").textContent = getString(label, name);
@@ -589,10 +595,8 @@ function onload() {
   _skin.applyFromPref();
   setFooterContent();
 
-  if (privateWindow() && !_chromeWin.document.documentElement.hasAttribute("lwtheme")) {
+  if (privateWindow())
     setPrivateWindow();
-    return;
-  }
 
   if (!_themes.length) {                        // If no installed themes
     $("html").classList.add("nothemes");        // show 'No themes installed"
@@ -624,7 +628,7 @@ function onload() {
 
   // Move current theme to top
   if (_currentTheme) {
-    $(".current").parentNode.insertBefore($(".current"), $("section").firstChild);
+    $(".current").parentNode.insertBefore($(".current"), $(".theme"));
     applyThemeToNode($(".search"));
   }
 
@@ -634,6 +638,7 @@ function onload() {
 }
 
 function onunload() {
+  window.removeEventListener("blur", closeMenu);
   window.removeEventListener("keypress", onkeypress);
   window.removeEventListener("click", onclick);
   window.removeEventListener("load", onload);
@@ -644,3 +649,4 @@ window.addEventListener("load", onload);
 window.addEventListener("unload", onunload);
 window.addEventListener("click", onclick);
 window.addEventListener("keypress", onkeypress);
+window.addEventListener("blur", closeMenu);
