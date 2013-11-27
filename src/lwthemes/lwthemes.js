@@ -276,31 +276,6 @@ var BackupUtils = {
     return strYear + "-" + strMonth + "-" + strDate; // + strHour; // + strMin;
   },
 
-  backupThemes: function backupUtils_backupThemes() {
-    var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
-    fp.appendFilter("JSON", "*.JSON");
-    fp.init(window, "Export themes to JSON file", Ci.nsIFilePicker.modeSave);
-    fp.defaultString = "themes-" + this.getTimeString() + ".json";
-    fp.displayDirectory = this.lastDirectory.path;
-
-    var strData = JSON.stringify(_themes);
-    var res = fp.show();
-    if (res == Ci.nsIFilePicker.returnOK || res == Ci.nsIFilePicker.returnReplace) {
-      this.lastDirectory.path = fp.file.parent.QueryInterface(Ci.nsIFile);
-
-      var ostream = Cc["@mozilla.org/network/file-output-stream;1"].
-                    createInstance(Ci.nsIFileOutputStream);
-      ostream.init(fp.file, 0x02 | 0x08 | 0x20, 0664, 0);
-
-      var charset = "UTF-8";
-      var os = Cc["@mozilla.org/intl/converter-output-stream;1"].
-               createInstance(Ci.nsIConverterOutputStream);
-      os.init(ostream, charset, 4096, 0x0000);
-      os.writeString(strData);
-      os.close();
-    }
-  },
-
   readFile: function backupUtils_readFile(aFile) {
     var data = "";
     var fstream = Cc["@mozilla.org/network/file-input-stream;1"].
@@ -319,46 +294,73 @@ var BackupUtils = {
     return data;
   },
 
+  backupThemes: function backupUtils_backupThemes() {
+    var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+    fp.appendFilter("JSON", "*.JSON");
+    fp.init(window, getString("themesBackupPickerTitle"), Ci.nsIFilePicker.modeSave);
+    fp.defaultString = "themes-" + this.getTimeString() + ".json";
+    fp.displayDirectory = this.lastDirectory.path;
+    fp.open(function(aResult) {
+      if (aResult == Ci.nsIFilePicker.returnOK || aResult == Ci.nsIFilePicker.returnReplace) {
+        BackupUtils.lastDirectory.path = fp.file.parent.QueryInterface(Ci.nsIFile);
+
+        var ostream = Cc["@mozilla.org/network/file-output-stream;1"].
+                      createInstance(Ci.nsIFileOutputStream);
+        ostream.init(fp.file, 0x02 | 0x08 | 0x20, 0664, 0);
+
+        var strData = JSON.stringify(_themes);
+        var charset = "UTF-8";
+        var os = Cc["@mozilla.org/intl/converter-output-stream;1"].
+                 createInstance(Ci.nsIConverterOutputStream);
+        os.init(ostream, charset, 4096, 0x0000);
+        os.writeString(strData);
+        os.close();
+      }
+    });
+  },
+
   restoreThemes: function backupUtils_restoreThemes() {
     var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
-    fp.init(window, "Select themes JSON file", Ci.nsIFilePicker.modeOpen);
+    fp.init(window, getString("themesRestorePickerTitle"), Ci.nsIFilePicker.modeOpen);
     fp.appendFilter("JSON", "*.JSON");
     fp.appendFilters(Ci.nsIFilePicker.filterAll);
     fp.displayDirectory = this.lastDirectory.path;
-    if (fp.show() == Ci.nsIFilePicker.returnOK) {
-      if (fp.file && fp.file.exists()) {
-        this.lastDirectory.path = fp.file.parent.QueryInterface(Ci.nsIFile);
-        var data = this.readFile(fp.file);
-        var obj, test;
-        try {
-          obj = JSON.parse(data);
-          var test = LightweightThemeManager.parseTheme(JSON.stringify(obj[0]));
-          if (!test) {
+    fp.open(function(aResult) {
+      if (aResult == Ci.nsIFilePicker.returnOK) {
+        if (fp.file && fp.file.exists()) {
+          BackupUtils.lastDirectory.path = fp.file.parent.QueryInterface(Ci.nsIFile);
+          var data = BackupUtils.readFile(fp.file);
+          var obj, test;
+          try {
+            obj = JSON.parse(data);
+            var test = LightweightThemeManager.parseTheme(JSON.stringify(obj[0]));
+            if (!test) {
+              alert(getString("themesRestoreInvalidText"));
+              return;
+            }
+          } catch (ex) {
             alert(getString("themesRestoreInvalidText"));
             return;
           }
-        } catch (ex) {
-          alert(getString("themesRestoreInvalidText"));
-          return;
+
+          if (_themes.length) {
+            var warning = getString("themesRestoreWarningTitle");
+            var counter = warning + "\n\n" +
+                          getString("themesRestoreWarningCounter",
+                                    _themes.length, obj.length);
+            var message = counter + "\n\n" + getString("themesRestoreWarningText");
+            if (!confirm(message))
+              return;
+          }
+
+          while (obj.length)
+            LightweightThemeManager.themeChanged(obj.pop());
+
+          LightweightThemeManager.setLocalTheme();
+          location.reload();
         }
-
-        if (_themes.length) {
-          var warning = getString("themesRestoreWarningTitle");
-          var counter = warning + "\n\n" +
-                        getString("themesRestoreWarningCounter",
-                                  _themes.length, obj.length);
-          var message = counter + "\n\n" + getString("themesRestoreWarningText");
-          if (!confirm(message))
-            return;
-        }
-
-        while (obj.length)
-          LightweightThemeManager.themeChanged(obj.pop());
-
-        LightweightThemeManager.setLocalTheme();
-        location.reload();
       }
-    }
+    });
   }
 }
 
