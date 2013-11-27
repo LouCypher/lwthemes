@@ -5,5 +5,5 @@ locale  lwthemes  id          l10n/id/
 
 override chrome://lwthemes/content/lwthemes.xul chrome://lwthemes/content/lwthemes.xhtml
 override chrome://lwthemes/skin/lwthemes.css    chrome://lwthemes/content/lwthemes.css
-override chrome://lwthemes/skin/light.css        chrome://lwthemes/content/lwthemes-light.css
+override chrome://lwthemes/skin/light.css       chrome://lwthemes/content/lwthemes-light.css
 override chrome://lwthemes/skin/dark.css        chrome://lwthemes/content/lwthemes-dark.css

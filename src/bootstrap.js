@@ -70,7 +70,7 @@ function main(aWindow) {
   function addMenuItem() {
     let menuitem = document.createElement("menuitem");
     menuitem.className = "lwthemes menuitem-iconic";
-    menuitem.setAttribute("label", "Light Weight Themes");
+    menuitem.setAttribute("label", "Lightweight Themes");
     menuitem.setAttribute("image", "chrome://lwthemes/skin/icon16.png");
     menuitem.addEventListener("command", lwThemes);
     return menuitem;
