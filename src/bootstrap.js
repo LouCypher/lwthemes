@@ -6,7 +6,7 @@ const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 Cu.import("resource://gre/modules/Services.jsm");
 
 /**
- * Start setting default preferences 
+ * Start setting default preferences
  * http://starkravingfinkle.org/blog/2011/01/restartless-add-ons-%e2%80%93-default-preferences/
  */
 const PREF_BRANCH = "extensions.lwthemes-manager@loucypher.";
@@ -36,7 +36,7 @@ for (let [key, val] in Iterator(PREFS)) {
   }
 }
 /*
- * End setting default preferences 
+ * End setting default preferences
  **/
 
 let RESOURCE_NAME;

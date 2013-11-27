@@ -49,7 +49,7 @@ function watchWindows(callback) {
         || documentElement.getAttribute("windowtype") == "mail:3pane")
       callback(window);
   }
-  
+
   // Wait for the window to finish loading before running the callback
   function runOnLoad(window) {
     // Listen for one load event before checking the window type
@@ -58,7 +58,7 @@ function watchWindows(callback) {
       watcher(window);
     }, false);
   }
-  
+
   // Add functionality to existing windows
   let windows = Services.wm.getEnumerator(null);
   while (windows.hasMoreElements()) {
@@ -70,14 +70,14 @@ function watchWindows(callback) {
     else
       runOnLoad(window);
   }
-  
+
   // Watch for new browser windows opening then wait for it to load
   function windowWatcher(subject, topic) {
     if (topic == "domwindowopened")
       runOnLoad(subject);
   }
   Services.ww.registerNotification(windowWatcher);
-  
+
   // Make sure to stop watching for windows if we're unloading
   unload(function() Services.ww.unregisterNotification(windowWatcher));
 }
@@ -102,19 +102,19 @@ function unload(callback, container, callanyway) {
   let unloaders = unload.unloaders;
   if (unloaders == null)
     unloaders = unload.unloaders = [];
-  
+
   // Calling with no arguments runs all the unloader callbacks
   if (callback == null) {
     unloaders.slice().forEach(function(unloader) unloader());
     unloaders.length = 0;
     return;
   }
-  
+
   // The callback is bound to the lifetime of the container if we have one
   if (container != null) {
     // Remove the unloader when the container unloads
     container.addEventListener("unload", removeUnloader, false);
-    
+
     // Wrap the callback to additionally remove the unload listener
     let origCallback = callback;
     callback = function() {
@@ -122,7 +122,7 @@ function unload(callback, container, callanyway) {
       origCallback();
     }
   }
-  
+
   // This function originally wrapped callback() in a try/catch block
   // to supress errors, but it's more useful if those errors are
   // actually reported rather than silently eaten.
@@ -130,7 +130,7 @@ function unload(callback, container, callanyway) {
     callback();
   }
   unloaders.push(unloader);
-  
+
   // Provide a way to remove the unloader
   function removeUnloader() {
     // If callanyway = true, call the unloader before its container
