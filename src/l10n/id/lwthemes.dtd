@@ -22,3 +22,5 @@
 
 <!ENTITY button.json.tooltip      "Lihat tema sebagai text JSON">
 <!ENTITY button.inspect.tooltip   "Inspeksi obyek tema">
+
+<!ENTITY options.button.open      "Buka">

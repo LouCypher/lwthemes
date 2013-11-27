@@ -22,3 +22,5 @@
 
 <!ENTITY button.json.tooltip      "View theme as JSON string">
 <!ENTITY button.inspect.tooltip   "Inspect theme object">
+
+<!ENTITY options.button.open      "Open">

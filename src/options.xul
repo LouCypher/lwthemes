@@ -5,15 +5,32 @@
     file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<!DOCTYPE vbox SYSTEM "chrome://mozapps/locale/extensions/about.dtd">
+<!DOCTYPE vbox [
+  <!ENTITY % aboutDTD SYSTEM "chrome://mozapps/locale/extensions/about.dtd">
+  %aboutDTD;
+  <!ENTITY % lwthemesDTD SYSTEM "chrome://lwthemes/locale/">
+  %lwthemesDTD;
+]>
 
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <setting type="control" title="&contributors.label;"/>
+  <setting type="control">
+    <button label="&options.button.open;"
+            oncommand="openURL('chrome://lwthemes/content/');"/>
+  </setting>
+
+  <setting type="control" title="&contributors.label;" first-row="true"/>
   <setting type="control" title="David Vignoni" desc="Icon">
     <label class="text-link"
            value="http://icon-king.com/"
            href="http://icon-king.com/"
            tooltiptext="&homepage.label;"/>
   </setting>
+
   <setting type="control" title="&translators.label;" first-row="true"/>
+
+  <setting type="control" title="Solid Color Theme" first-row="true">
+    <label class="text-link"
+           value="http://loucypher.github.io/personas/"
+           href="http://loucypher.github.io/personas/"/>
+  </setting>
 </vbox>
