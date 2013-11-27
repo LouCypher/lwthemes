@@ -1,4 +1,4 @@
-# Light Weight Themes Manager
+# Lightweight Themes Manager
 
 Firefox extension.
 
