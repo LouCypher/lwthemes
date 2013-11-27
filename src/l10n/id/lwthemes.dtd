@@ -10,6 +10,9 @@
 <!ENTITY menu.theme.get           "Dapatkan tema">
 <!ENTITY menu.theme.learn         "Pelajari cara membuat tema">
 <!ENTITY menu.theme.submit        "Unggah tema">
+<!ENTITY menu.theme.backup        "Buat cadangan…">
+<!ENTITY menu.theme.restore       "Kembalikan…">
+<!ENTITY menu.theme.restore.from  "Kembalikan tema dari cadangan">
 <!ENTITY menu.personas.install    "Pasang Personas Plus">
 <!ENTITY menu.personas.enable     "Aktifkan Personas Plus">
 <!ENTITY menu.personas.create     "Buat tema">

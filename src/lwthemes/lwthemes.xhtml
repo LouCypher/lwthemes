@@ -45,6 +45,11 @@
 
         <div class="clear separator menuitem"></div>
 
+        <a href="#" onclick="BackupUtils.backupThemes(); return false">&menu.theme.backup;</a>
+        <a href="#" onclick="BackupUtils.restoreThemes(); return false">&menu.theme.restore;</a>
+
+        <div class="clear separator menuitem"></div>
+
         <input id="pref-skin-light" class="pref-skin left menuitem" name="pref-skin"
                type="radio" value="Light" checked="true" onchange="_skin.toggle();"/>
         <label for="pref-skin-light" class="menuitem">&menu.skin.light;</label>
@@ -139,6 +144,11 @@
         <p>&listEmpty.installed.label;.</p>
         <ul>
           <li><a href="https://addons.mozilla.org/themes/">&menu.theme.get;</a></li>
+          <li>
+            <a href="#" onclick="BackupUtils.restoreThemes(); return false;">
+              &menu.theme.restore.from;
+            </a>
+          </li>
           <li>
             <a href="https://addons.mozilla.org/developers/docs/themes">&menu.theme.learn;</a>
           </li>

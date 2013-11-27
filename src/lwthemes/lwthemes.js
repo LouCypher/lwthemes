@@ -217,6 +217,151 @@ var _personas = {
   }
 }
 
+/**
+ *  Backup and restore installed themes
+ */
+var BackupUtils = {
+  lastDirectory: {
+  //http://hg.mozilla.org/mozilla-central/file/5eb1c89fc2bc/browser/base/content/browser.js#l1752
+    PREF: "lastDir",
+    _lastDir: null,
+
+    get path() {
+      if (!this._lastDir || !this._lastDir.exists()) {
+        try {
+          this._lastDir = prefs.getComplexValue(this.PREF, Ci.nsILocalFile);
+          if (!this._lastDir.exists())
+            this._lastDir = null;
+        }
+        catch(e) {}
+      }
+      return this._lastDir;
+    },
+
+    set path(val) {
+      try {
+        if (!val || !val.isDirectory())
+          return;
+      } catch(e) {
+        return;
+      }
+      this._lastDir = val.clone();
+
+      // Don't save the last open directory pref inside the Private Browsing mode
+      if (!privateWindow())
+        prefs.setComplexValue(this.PREF, Ci.nsILocalFile, this._lastDir);
+    },
+
+    reset: function() {
+      this._lastDir = null;
+    }
+  },
+
+  leadingZero: function backupUtils_leadingZero(aNum) {
+    var num = "0";
+    if (aNum.toString().length == 1)
+      num += aNum;
+    else
+      num = aNum;
+    return num;
+  },
+
+  getTimeString: function backupUtils_getTimeString() {
+    var DATE = new Date();
+    var strYear = DATE.getFullYear().toString();
+    var strMonth = this.leadingZero(DATE.getMonth() + 1);
+    var strDate = this.leadingZero(DATE.getDate());
+    //var strHour = this.leadingZero(DATE.getHours());
+    //var strMin = this.leadingZero(DATE.getMinutes());
+    return strYear + "-" + strMonth + "-" + strDate; // + strHour; // + strMin;
+  },
+
+  backupThemes: function backupUtils_backupThemes() {
+    var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+    fp.appendFilter("JSON", "*.JSON");
+    fp.init(window, "Export themes to JSON file", Ci.nsIFilePicker.modeSave);
+    fp.defaultString = "themes-" + this.getTimeString() + ".json";
+    fp.displayDirectory = this.lastDirectory.path;
+
+    var strData = JSON.stringify(_themes);
+    var res = fp.show();
+    if (res == Ci.nsIFilePicker.returnOK || res == Ci.nsIFilePicker.returnReplace) {
+      this.lastDirectory.path = fp.file.parent.QueryInterface(Ci.nsIFile);
+
+      var ostream = Cc["@mozilla.org/network/file-output-stream;1"].
+                    createInstance(Ci.nsIFileOutputStream);
+      ostream.init(fp.file, 0x02 | 0x08 | 0x20, 0664, 0);
+
+      var charset = "UTF-8";
+      var os = Cc["@mozilla.org/intl/converter-output-stream;1"].
+               createInstance(Ci.nsIConverterOutputStream);
+      os.init(ostream, charset, 4096, 0x0000);
+      os.writeString(strData);
+      os.close();
+    }
+  },
+
+  readFile: function backupUtils_readFile(aFile) {
+    var data = "";
+    var fstream = Cc["@mozilla.org/network/file-input-stream;1"].
+                  createInstance(Ci.nsIFileInputStream);
+    fstream.init(aFile, -1, 0, 0);
+    var charset = "UTF-8";
+    const replacementChar = Ci.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER;
+    var is = Cc["@mozilla.org/intl/converter-input-stream;1"].
+             createInstance(Ci.nsIConverterInputStream);
+    is.init(fstream, charset, 1024, replacementChar);
+    var str = {};
+    while (is.readString(4096, str) != 0)
+      data += str.value;
+
+    is.close();
+    return data;
+  },
+
+  restoreThemes: function backupUtils_restoreThemes() {
+    var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+    fp.init(window, "Select themes JSON file", Ci.nsIFilePicker.modeOpen);
+    fp.appendFilter("JSON", "*.JSON");
+    fp.appendFilters(Ci.nsIFilePicker.filterAll);
+    fp.displayDirectory = this.lastDirectory.path;
+    if (fp.show() == Ci.nsIFilePicker.returnOK) {
+      if (fp.file && fp.file.exists()) {
+        this.lastDirectory.path = fp.file.parent.QueryInterface(Ci.nsIFile);
+        var data = this.readFile(fp.file);
+        var obj, test;
+        try {
+          obj = JSON.parse(data);
+          var test = LightweightThemeManager.parseTheme(JSON.stringify(obj[0]));
+          if (!test) {
+            alert(getString("themesRestoreInvalidText"));
+            return;
+          }
+        } catch (ex) {
+          alert(getString("themesRestoreInvalidText"));
+          return;
+        }
+
+        if (_themes.length) {
+          var warning = getString("themesRestoreWarningTitle");
+          var counter = warning + "\n\n" +
+                        getString("themesRestoreWarningCounter",
+                                  _themes.length, obj.length);
+          var message = counter + "\n\n" + getString("themesRestoreWarningText");
+          if (!confirm(message))
+            return;
+        }
+
+        while (obj.length)
+          LightweightThemeManager.themeChanged(obj.pop());
+
+        LightweightThemeManager.setLocalTheme();
+        location.reload();
+      }
+    }
+  }
+}
+
 function getString(aString, aArgs){ //get localised message
   if (aArgs) {
     aArgs = Array.prototype.slice.call(arguments, 1);
@@ -637,7 +782,6 @@ function onload() {
 }
 
 function onunload() {
-  window.removeEventListener("blur", closeMenu);
   window.removeEventListener("keypress", onkeypress);
   window.removeEventListener("click", onclick);
   window.removeEventListener("load", onload);
@@ -648,4 +792,3 @@ window.addEventListener("load", onload);
 window.addEventListener("unload", onunload);
 window.addEventListener("click", onclick);
 window.addEventListener("keypress", onkeypress);
-window.addEventListener("blur", closeMenu);

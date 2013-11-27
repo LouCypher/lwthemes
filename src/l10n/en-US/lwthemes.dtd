@@ -10,6 +10,9 @@
 <!ENTITY menu.theme.get           "Get themes">
 <!ENTITY menu.theme.learn         "Learn how to create a theme">
 <!ENTITY menu.theme.submit        "Submit a new theme">
+<!ENTITY menu.theme.backup        "Backup…">
+<!ENTITY menu.theme.restore       "Restore…">
+<!ENTITY menu.theme.restore.from  "Restore themes from backup">
 <!ENTITY menu.personas.install    "Install Personas Plus">
 <!ENTITY menu.personas.enable     "Enable Personas Plus">
 <!ENTITY menu.personas.create     "Create a theme">
