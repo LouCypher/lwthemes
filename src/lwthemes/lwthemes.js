@@ -221,9 +221,6 @@ var _personas = {
  *  Backup and restore installed themes
  */
 var BackupUtils = {
-  COMMAND_BACKUP: Ci.nsIFilePicker.modeSave,
-  COMMAND_RESTORE: Ci.nsIFilePicker.modeOpen,
-
   lastDirectory: {
   //http://hg.mozilla.org/mozilla-central/file/5eb1c89fc2bc/browser/base/content/browser.js#l1752
     PREF: "lastDir",
@@ -304,14 +301,14 @@ var BackupUtils = {
     fp.displayDirectory = this.lastDirectory.path;
     fp.appendFilter("JSON", "*.JSON");
 
-    if (aCommand === this.COMMAND_BACKUP) {
-      fp.init(window, getString("themesBackupPickerTitle"), this.COMMAND_BACKUP);
+    if (aCommand === "backup") {
+      fp.init(window, getString("themesBackupPickerTitle"), Ci.nsIFilePicker.modeSave);
       fp.defaultString = "themes-" + this.getTimeString() + ".json";
       callback = this.backupThemes;
     }
 
-    else if (aCommand === this.COMMAND_RESTORE) {
-      fp.init(window, getString("themesRestorePickerTitle"), this.COMMAND_RESTORE);
+    else if (aCommand === "restore") {
+      fp.init(window, getString("themesRestorePickerTitle"), Ci.nsIFilePicker.modeOpen);
       fp.appendFilters(Ci.nsIFilePicker.filterAll);
       callback = this.restoreThemes;
     }
@@ -365,7 +362,7 @@ var BackupUtils = {
           return;
         }
 
-        if (_themes.length) {
+        if (_themes.length > 1) {
           var warning = getString("themesRestoreWarningTitle");
           var counter = warning + "\n\n" +
                         getString("themesRestoreWarningCounter",
@@ -374,13 +371,16 @@ var BackupUtils = {
           if (!confirm(message))
             return;
           Services.prefs.setCharPref("lightweightThemes.usedThemes", "");
+
+          while (obj.length)
+            LightweightThemeManager.themeChanged(obj.pop());
+
+          LightweightThemeManager.setLocalTheme();
+          location.reload();
         }
 
-        while (obj.length)
-          LightweightThemeManager.themeChanged(obj.pop());
-
-        LightweightThemeManager.setLocalTheme();
-        location.reload();
+        else {
+        }
       }
     }
   }
@@ -469,15 +469,15 @@ function getEntityFromDTD(aChromeURL, aEntity, aDefVal) {
 
 function applyThemeToNode(aNode, aTheme) {
   var theme = aTheme ? aTheme : _currentTheme;
-  aNode.style.color = theme.textColor;
+  aNode.style.color = theme.textcolor;
   aNode.style.backgroundColor = theme.accentcolor;
   aNode.style.backgroundImage = "url(" + theme.headerURL + ")";
   aNode.style.backgroundPosition = "right center";
 }
 
 function showTotalThemes(aNumber) {
-  var text = "Total themes: " + aNumber;
-  console.log(document.title + "\n" + text);
+  var text = getString("themesTotal", aNumber);
+  console.log(text);
   Services.console.logStringMessage(document.title + "\n" + text);
   _chromeWin.XULBrowserWindow && _chromeWin.XULBrowserWindow.setOverLink(text);
 }
