@@ -99,7 +99,17 @@ function main(aWindow) {
   }
 */
 
+  // Apply style to show theme preview
+  const styleSheetService = Cc["@mozilla.org/content/style-sheet-service;1"].
+                            getService(Ci.nsIStyleSheetService);
+  let cssURI = Services.io.newURI("chrome://lwthemes/skin/addons.css", null, null);
+  styleSheetService.loadAndRegisterSheet(cssURI, styleSheetService.USER_SHEET);
+
   unload(function() {
+    // Unapply style
+    styleSheetService.unregisterSheet(cssURI, styleSheetService.USER_SHEET);
+
+    // Remove all elements added by this extension
     let items = $$(".lwthemes");
     if (items.length)
       for (let i = 0; i < items.length; i++)
