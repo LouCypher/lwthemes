@@ -519,22 +519,27 @@ function setTheme(aNode, aAction) {
       break;
 
     case "dump":
+      var remove = confirm(getString("themeRemoveConfirmation"));
+      if (!remove)
+        return;
+
       LightweightThemeManager.forgetUsedTheme(theme.id);
       if (themeBox.classList.contains("current")) {
-        themeBox.classList.remove("current");
         $(".search").removeAttribute("style");
         _currentTheme = null;
       }
+      themeBox.parentNode.removeChild(themeBox);
+      console.log(getString("themeRemoved", theme.name));
       showTotalThemes(_themes.length);
       break;
 
     default:
       LightweightThemeManager.setLocalTheme(theme);
-      if ($(".current"))
-        $(".current").classList.remove("current");
       themeBox.classList.add("current");
       _currentTheme = theme;
       applyThemeToNode($(".search"), _currentTheme);
+      if ($(".current"))
+        $(".current").classList.remove("current");
   }
   _themes = LightweightThemeManager.usedThemes;
 }

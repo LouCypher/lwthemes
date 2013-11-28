@@ -98,6 +98,8 @@ a:hover { text-decoration: underline }
   word-wrap: break-word;
 }
 
+.theme header { margin: 0 0 1em }
+
 .theme .image {
   max-width: 340px;
   max-height: 50px;
@@ -115,8 +117,10 @@ a:hover { text-decoration: underline }
   margin: .5em 0 .25em;
 }
 
+.buttons { margin: .25em 0 0 }
 .enable { background-color: #90dc98 }
-.disable { background-color: #f88 }
+.disable { background-color: #f6e97d }
+.remove { background-color: #f88 }
 
 .absolute { position: absolute }
 .fixed { position: fixed }
@@ -190,5 +194,5 @@ a:hover { text-decoration: underline }
   text-shadow: 0 0 3px rgba(0, 0, 120, .25);
 }
 
-.yellow { background: yellow }
+.yellow { background-color: yellow }
 

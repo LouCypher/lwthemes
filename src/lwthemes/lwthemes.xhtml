@@ -125,22 +125,25 @@
         </header>
 
         <p class="theme-description"></p>
-        <p>
-          <button class="button enable left" title="&cmd.enableTheme.label;"
+        <p class="buttons">
+          <button class="button enable" title="&cmd.enableTheme.label;"
                   onmouseenter="setTheme(this, 'preview');"
                   onmouseleave="setTheme(this, 'reset');"
                   onclick="setTheme(this, 'wear');">&cmd.enableAddon.label;</button>
-          <button class="button disable left" title="&cmd.disableTheme.label;"
+          <button class="button disable" title="&cmd.disableTheme.label;"
                   onclick="setTheme(this, 'stop');">&cmd.disableAddon.label;</button>
-          <button class="button edit left" onclick="_personas.edit();">Edit</button>
-          <button class="button more right" onclick="openAddonsManager(this);"
+
+          <button class="button remove"
+                  onclick="setTheme(this, 'dump');">&cmd.uninstallAddon.label;</button>
+          <button class="button more" onclick="openAddonsManager(this);"
                   title="&addons.windowTitle;">&addon.details.label;</button>
         </p>
-        <p>
-            <button class="button dev json right" title="&button.json.tooltip;"
-                    onclick="jsonView(this);">JSON</button>
-            <button class="button dev inspect right hidden" title="&button.inspect.tooltip;"
-                    onclick="inspect(this);">Inspect</button>
+        <p class="buttons">
+          <button class="button edit" onclick="_personas.edit();">Edit</button>
+          <button class="button dev inspect hidden" title="&button.inspect.tooltip;"
+                  onclick="inspect(this);">Inspect</button>
+          <button class="button dev json " title="&button.json.tooltip;"
+                  onclick="jsonView(this);">JSON</button>
         </p>
       </article>
 
