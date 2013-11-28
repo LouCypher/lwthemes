@@ -221,6 +221,9 @@ var _personas = {
  *  Backup and restore installed themes
  */
 var BackupUtils = {
+  COMMAND_BACKUP: Ci.nsIFilePicker.modeSave,
+  COMMAND_RESTORE: Ci.nsIFilePicker.modeOpen,
+
   lastDirectory: {
   //http://hg.mozilla.org/mozilla-central/file/5eb1c89fc2bc/browser/base/content/browser.js#l1752
     PREF: "lastDir",
@@ -295,74 +298,91 @@ var BackupUtils = {
     return data;
   },
 
-  backupThemes: function backupUtils_backupThemes() {
+  filePicker: function backupUtils_filePicker(aCommand) {
+    var callback;
     var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
-    fp.appendFilter("JSON", "*.JSON");
-    fp.init(window, getString("themesBackupPickerTitle"), Ci.nsIFilePicker.modeSave);
-    fp.defaultString = "themes-" + this.getTimeString() + ".json";
     fp.displayDirectory = this.lastDirectory.path;
-    fp.open(function(aResult) {
-      if (aResult == Ci.nsIFilePicker.returnOK || aResult == Ci.nsIFilePicker.returnReplace) {
-        BackupUtils.lastDirectory.path = fp.file.parent.QueryInterface(Ci.nsIFile);
+    fp.appendFilter("JSON", "*.JSON");
 
-        var ostream = Cc["@mozilla.org/network/file-output-stream;1"].
-                      createInstance(Ci.nsIFileOutputStream);
-        ostream.init(fp.file, 0x02 | 0x08 | 0x20, 0664, 0);
+    if (aCommand === this.COMMAND_BACKUP) {
+      fp.init(window, getString("themesBackupPickerTitle"), this.COMMAND_BACKUP);
+      fp.defaultString = "themes-" + this.getTimeString() + ".json";
+      callback = this.backupThemes;
+    }
 
-        var strData = JSON.stringify(_themes);
-        var charset = "UTF-8";
-        var os = Cc["@mozilla.org/intl/converter-output-stream;1"].
-                 createInstance(Ci.nsIConverterOutputStream);
-        os.init(ostream, charset, 4096, 0x0000);
-        os.writeString(strData);
-        os.close();
-      }
-    });
+    else if (aCommand === this.COMMAND_RESTORE) {
+      fp.init(window, getString("themesRestorePickerTitle"), this.COMMAND_RESTORE);
+      fp.appendFilters(Ci.nsIFilePicker.filterAll);
+      callback = this.restoreThemes;
+    }
+
+    else
+      return;
+
+    try {
+      callback(fp.show(), fp.file);
+    }
+    catch (ex) {
+      fp.open(function(result) {
+        callback(result, fp.file);
+      });
+    }
   },
 
-  restoreThemes: function backupUtils_restoreThemes() {
-    var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
-    fp.init(window, getString("themesRestorePickerTitle"), Ci.nsIFilePicker.modeOpen);
-    fp.appendFilter("JSON", "*.JSON");
-    fp.appendFilters(Ci.nsIFilePicker.filterAll);
-    fp.displayDirectory = this.lastDirectory.path;
-    fp.open(function(aResult) {
-      if (aResult == Ci.nsIFilePicker.returnOK) {
-        if (fp.file && fp.file.exists()) {
-          BackupUtils.lastDirectory.path = fp.file.parent.QueryInterface(Ci.nsIFile);
-          var data = BackupUtils.readFile(fp.file);
-          var obj, test;
-          try {
-            obj = JSON.parse(data);
-            var test = LightweightThemeManager.parseTheme(JSON.stringify(obj[0]));
-            if (!test) {
-              alert(getString("themesRestoreInvalidText"));
-              return;
-            }
-          } catch (ex) {
+  backupThemes: function backupUtils_backupThemes(aResult, aFile) {
+    if (aResult == Ci.nsIFilePicker.returnOK || aResult == Ci.nsIFilePicker.returnReplace) {
+      BackupUtils.lastDirectory.path = aFile.parent.QueryInterface(Ci.nsIFile);
+
+      var ostream = Cc["@mozilla.org/network/file-output-stream;1"].
+                    createInstance(Ci.nsIFileOutputStream);
+      ostream.init(aFile, 0x02 | 0x08 | 0x20, 0664, 0);
+
+      var strData = JSON.stringify(_themes);
+      var charset = "UTF-8";
+      var os = Cc["@mozilla.org/intl/converter-output-stream;1"].
+               createInstance(Ci.nsIConverterOutputStream);
+      os.init(ostream, charset, 4096, 0x0000);
+      os.writeString(strData);
+      os.close();
+    }
+  },
+
+  restoreThemes: function backupUtils_restoreThemes(aResult, aFile) {
+    if (aResult == Ci.nsIFilePicker.returnOK) {
+      if (aFile && aFile.exists()) {
+        BackupUtils.lastDirectory.path = aFile.parent.QueryInterface(Ci.nsIFile);
+        var data = BackupUtils.readFile(aFile);
+        var obj, test;
+        try {
+          obj = JSON.parse(data);
+          var test = LightweightThemeManager.parseTheme(JSON.stringify(obj[0]));
+          if (!test) {
             alert(getString("themesRestoreInvalidText"));
             return;
           }
-
-          if (_themes.length) {
-            var warning = getString("themesRestoreWarningTitle");
-            var counter = warning + "\n\n" +
-                          getString("themesRestoreWarningCounter",
-                                    _themes.length, obj.length);
-            var message = counter + "\n\n" + getString("themesRestoreWarningText");
-            if (!confirm(message))
-              return;
-            Services.prefs.setCharPref("lightweightThemes.usedThemes", "");
-          }
-
-          while (obj.length)
-            LightweightThemeManager.themeChanged(obj.pop());
-
-          LightweightThemeManager.setLocalTheme();
-          location.reload();
+        } catch (ex) {
+          alert(getString("themesRestoreInvalidText"));
+          return;
         }
+
+        if (_themes.length) {
+          var warning = getString("themesRestoreWarningTitle");
+          var counter = warning + "\n\n" +
+                        getString("themesRestoreWarningCounter",
+                                  _themes.length, obj.length);
+          var message = counter + "\n\n" + getString("themesRestoreWarningText");
+          if (!confirm(message))
+            return;
+          Services.prefs.setCharPref("lightweightThemes.usedThemes", "");
+        }
+
+        while (obj.length)
+          LightweightThemeManager.themeChanged(obj.pop());
+
+        LightweightThemeManager.setLocalTheme();
+        location.reload();
       }
-    });
+    }
   }
 }
 

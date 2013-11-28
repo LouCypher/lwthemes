@@ -45,8 +45,12 @@
 
         <div class="clear separator menuitem"></div>
 
-        <a href="#" onclick="BackupUtils.backupThemes(); return false">&menu.theme.backup;</a>
-        <a href="#" onclick="BackupUtils.restoreThemes(); return false">&menu.theme.restore;</a>
+        <a href="#" onclick="BackupUtils.filePicker(BackupUtils.COMMAND_BACKUP); return false">
+          &menu.theme.backup;
+        </a>
+        <a href="#" onclick="BackupUtils.filePicker(BackupUtils.COMMAND_RESTORE); return false">
+          &menu.theme.restore;
+        </a>
 
         <div class="clear separator menuitem"></div>
 
@@ -145,7 +149,8 @@
         <ul>
           <li><a href="https://addons.mozilla.org/themes/">&menu.theme.get;</a></li>
           <li>
-            <a href="#" onclick="BackupUtils.restoreThemes(); return false;">
+            <a href="#"
+               onclick="BackupUtils.filePicker(BackupUtils.COMMAND_RESTORE); return false;">
               &menu.theme.restore.from;
             </a>
           </li>
