@@ -233,7 +233,7 @@ var BackupUtils = {
           if (!this._lastDir.exists())
             this._lastDir = null;
         }
-        catch(e) {}
+        catch (ex) {}
       }
       return this._lastDir;
     },
@@ -242,7 +242,8 @@ var BackupUtils = {
       try {
         if (!val || !val.isDirectory())
           return;
-      } catch(e) {
+      }
+      catch (ex) {
         return;
       }
       this._lastDir = val.clone();
@@ -351,6 +352,7 @@ var BackupUtils = {
             var message = counter + "\n\n" + getString("themesRestoreWarningText");
             if (!confirm(message))
               return;
+            Services.prefs.setCharPref("lightweightThemes.usedThemes", "");
           }
 
           while (obj.length)
