@@ -165,7 +165,7 @@ var _personas = {
         var image = $(".image", themeBox);
         image.src = _currentTheme.headerURL;
         image.removeAttribute("style");
-        image.alt = $(".theme-title", themeBox).textContent = _currentTheme.name;
+        image.alt = $(".theme-title a", themeBox).textContent = _currentTheme.name;
         image.style.color = _currentTheme.textcolor;
         image.style.backgroundColor = _currentTheme.accentcolor;
         if (!themeBox.classList.contains("current")) {
@@ -690,9 +690,8 @@ function addThemeBox(aTheme) {
   if (_currentTheme && aTheme.id === _currentTheme.id)
     box.classList.add("current");
 
-  if (id === "1") {
+  if (id === "1")
     box.classList.add("persona");
-  }
 
   if (/^solid\-color/.test(aTheme.id)) {
     $(".preview", box).classList.add("solid-color");
@@ -886,7 +885,7 @@ function onload() {
 
   if (typeof inspectObject === "function") {
     $(".inspect").classList.remove("hidden");
-    $(".inspect").textContent = getEntityFromDTD("view-source:chrome://inspector/locale/",
+    $(".inspect").textContent = getEntityFromDTD("chrome://inspector/locale/",
                                                  "btnInspect.label", "Inspect");
   }
 
