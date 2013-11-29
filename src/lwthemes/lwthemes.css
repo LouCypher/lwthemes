@@ -65,7 +65,7 @@ body {
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
-button, label[for] { cursor: pointer }
+button, label[for], input:not([type=search]) { cursor: pointer }
 input[disabled] + label[for] { color: grey }
 
 section { margin: 7em 1em 1em }
