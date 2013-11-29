@@ -11,19 +11,26 @@ body, .viewer textarea {
 
 a:link, a:visited, .menu a:hover, label[for]:hover { color: #cdd8e4 }
 
-.shadow, .header { box-shadow: 0 0 9px rgba(0, 0, 0, .75) }
+.shadow, .header, .footer { box-shadow: 0 0 9px #000 }
 .header, .footer {
   background-color: #2e3740;
   color: inherit;
 }
-.footer { box-shadow: 0 0 6px rgba(0, 0, 0, .75) }
 
 .theme {
   border-color: #3d6db5;
   outline-color: #3d6db5;
+  background-color: rgba(61, 109, 181, .25);
 }
 
-.theme, .menu, .viewer { background-color: #344150 }
+.current {
+  border-color: #c63717;
+  outline-color: #c63717;
+  background-color: rgba(198, 55, 23, .25);
+  /*box-shadow: 0 0 6px rgba(198, 55, 23, .75);*/
+}
+
+.menu, .viewer { background-color: #344150 }
 .theme, .menu, .menu a, .viewer { color: inherit }
 
 .search { box-shadow: 0 0 2px #cdd8e4 }
@@ -33,8 +40,6 @@ a:link, a:visited, .menu a:hover, label[for]:hover { color: #cdd8e4 }
 .rtl .menu { box-shadow: -1px 3px 3px rgba(0, 0, 0, .5) }
 
 .menu, .separator { border-top: 1px solid #fff }
-
-.current { border-color: #c63717 }
 
 .theme .image { box-shadow: 0 0 1px #000 }
 
