@@ -27,4 +27,7 @@
 <!ENTITY button.save.label        "Save">
 <!ENTITY button.save.tooltip      "Save this theme to a file">
 
+<!ENTITY addon.translator         "Translated by">
+<!ENTITY addon.translator.link    "(NOTE TO TRANSLATOR: IF YOU HAVE A HOME PAGE, YOU CAN ENTER THE LINK HERE)">
+
 <!ENTITY options.button.open      "Open">

@@ -27,4 +27,7 @@
 <!ENTITY button.save.label        "Simpan">
 <!ENTITY button.save.tooltip      "Simpan tema ini ke file">
 
+<!ENTITY addon.translator         "Diterjemahkan oleh">
+<!ENTITY addon.translator.link    "">
+
 <!ENTITY options.button.open      "Buka">

@@ -171,6 +171,8 @@ a:hover { text-decoration: underline }
 .search-input:hover { background-color: rgba(255, 255, 255, .9) }
 .search-input:focus { background-color: #fff }
 
+.footer .translator { margin: 0 1em }
+
 .paypal {
   width: 120px;
   height: 21px;

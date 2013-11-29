@@ -830,6 +830,10 @@ function setFooterContent() {
   AddonManager.getAddonByID("lwthemes-manager@loucypher", function(aAddon) {
     $(".lwthemes-name").textContent = aAddon.name;
     $(".lwthemes-creator").textContent = aAddon.creator;
+    if (aAddon.translators) {
+      $(".translator").classList.remove("hidden");
+      $(".translator a").textContent = aAddon.translators;
+    }
   })
 }
 
