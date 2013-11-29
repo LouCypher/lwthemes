@@ -229,7 +229,7 @@ var BackupUtils = {
     get path() {
       if (!this._lastDir || !this._lastDir.exists()) {
         try {
-          this._lastDir = prefs.getComplexValue(this.PREF, Ci.nsILocalFile);
+          this._lastDir = prefs.getComplexValue(this.PREF, Ci.nsIFile);
           if (!this._lastDir.exists())
             this._lastDir = null;
         }
@@ -250,12 +250,18 @@ var BackupUtils = {
 
       // Don't save the last open directory pref inside the Private Browsing mode
       if (!privateWindow())
-        prefs.setComplexValue(this.PREF, Ci.nsILocalFile, this._lastDir);
+        prefs.setComplexValue(this.PREF, Ci.nsIFile, this._lastDir);
     },
 
     reset: function() {
       this._lastDir = null;
     }
+  },
+
+  setCustomPersonasPref: function backupUtils_setCustomPersonasPref(aTheme) {
+    var str = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+    str.data = JSON.stringify(aTheme);
+    Services.prefs.setComplexValue("extensions.personas.custom", Ci.nsISupportsString, str);
   },
 
   leadingZero: function backupUtils_leadingZero(aNum) {
@@ -317,13 +323,16 @@ var BackupUtils = {
       var themeBox = getThemeBox(aNode);
       var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
       if (!theme)
-        theme = JSON.parse(themeBox.dataset.browsertheme);
+        theme = JSON.parse(themeBox.dataset.browsertheme);  // Custom Personas
 
       var filename = theme.name.replace(/(\/|\\|\:|\*|\?|\"|\<|\>|\|)/g, "")
                                .replace(/\s/g, "-")
-                               .toLowerCase()
+                               .toLowerCase();
       fp.init(window, getString("themeSavePickerTitle"), Ci.nsIFilePicker.modeSave);
-      fp.defaultString = filename + ".theme.json";
+      if (theme.id === "1")
+        fp.defaultString = "custom-personas-" + filename + ".theme.json";  // Custom Personas
+      else
+        fp.defaultString = filename + ".theme.json";
       callback = this.backupThemes;
     }
 
@@ -374,6 +383,8 @@ var BackupUtils = {
           obj = JSON.parse(data);
           if (obj.length)
             theme = LightweightThemeManager.parseTheme(JSON.stringify(obj[0]));
+          else if ("id" in obj && obj.id === "1") // Custom Personas
+            theme = obj;
           else
             theme = LightweightThemeManager.parseTheme(data);
           if (!theme) {
@@ -388,6 +399,10 @@ var BackupUtils = {
         if (!obj.length) {
           // Install individual theme from a file
           LightweightThemeManager.themeChanged(theme);
+          if (theme.id === "1") {
+            BackupUtils.setCustomPersonasPref(theme);
+            _personas.custom = theme;
+          }
 
           var exists = $("[data-theme-id='" + theme.id + "']");
           if (exists)
@@ -425,8 +440,14 @@ var BackupUtils = {
           Services.prefs.setCharPref("lightweightThemes.usedThemes", "");
         }
 
-        while (obj.length)
-          LightweightThemeManager.themeChanged(obj.pop());  // Install all themes from file
+        while (obj.length) {
+          theme = obj.pop();
+          LightweightThemeManager.themeChanged(theme);  // Install all themes from file
+          if (theme.id === "1") { // Custom Personas
+            BackupUtils.setCustomPersonasPref(theme);
+            _personas.custom = theme;
+          }
+        }
 
         LightweightThemeManager.setLocalTheme();
         location.reload();
@@ -573,6 +594,11 @@ function setTheme(aNode, aAction) {
         return;
 
       LightweightThemeManager.forgetUsedTheme(theme.id);
+      if (theme.id === "1") { // Custom Personas
+        Services.prefs.clearUserPref("extensions.personas.custom");
+        _personas.custom = null;
+      }
+
       if (themeBox.classList.contains("current")) {
         $(".search").removeAttribute("style");
         _currentTheme = null;
