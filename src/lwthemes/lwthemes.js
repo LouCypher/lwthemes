@@ -272,9 +272,9 @@ var BackupUtils = {
     var strYear = DATE.getFullYear().toString();
     var strMonth = this.leadingZero(DATE.getMonth() + 1);
     var strDate = this.leadingZero(DATE.getDate());
-    //var strHour = this.leadingZero(DATE.getHours());
-    //var strMin = this.leadingZero(DATE.getMinutes());
-    return strYear + "-" + strMonth + "-" + strDate; // + strHour; // + strMin;
+    var strHour = this.leadingZero(DATE.getHours());
+    var strMin = this.leadingZero(DATE.getMinutes());
+    return strYear + "-" + strMonth + "-" + strDate + "-" + strHour + strMin;
   },
 
   readFile: function backupUtils_readFile(aFile) {
