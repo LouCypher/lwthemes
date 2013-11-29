@@ -13,6 +13,7 @@
 <!ENTITY menu.theme.backup        "Backup…">
 <!ENTITY menu.theme.restore       "Restore…">
 <!ENTITY menu.theme.restore.from  "Restore themes from backup">
+<!ENTITY menu.theme.install.from  "Install theme from file…">
 <!ENTITY menu.personas.install    "Install Personas Plus">
 <!ENTITY menu.personas.enable     "Enable Personas Plus">
 <!ENTITY menu.personas.create     "Create a theme">
@@ -21,6 +22,9 @@
 <!ENTITY search.placeholder.value "Search for themes">
 
 <!ENTITY button.json.tooltip      "View theme as JSON string">
+<!ENTITY button.inspect.label     "Inspect">
 <!ENTITY button.inspect.tooltip   "Inspect theme object">
+<!ENTITY button.save.label        "Save">
+<!ENTITY button.save.tooltip      "Save this theme to a file">
 
 <!ENTITY options.button.open      "Open">

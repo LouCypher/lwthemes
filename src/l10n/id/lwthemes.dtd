@@ -13,6 +13,7 @@
 <!ENTITY menu.theme.backup        "Buat cadangan…">
 <!ENTITY menu.theme.restore       "Kembalikan…">
 <!ENTITY menu.theme.restore.from  "Kembalikan tema dari cadangan">
+<!ENTITY menu.theme.install.from  "Pasang tema dari file">
 <!ENTITY menu.personas.install    "Pasang Personas Plus">
 <!ENTITY menu.personas.enable     "Aktifkan Personas Plus">
 <!ENTITY menu.personas.create     "Buat tema">
@@ -21,6 +22,9 @@
 <!ENTITY search.placeholder.value "Cari tema">
 
 <!ENTITY button.json.tooltip      "Lihat tema sebagai text JSON">
+<!ENTITY button.inspect.label     "Inspeksi">
 <!ENTITY button.inspect.tooltip   "Inspeksi obyek tema">
+<!ENTITY button.save.label        "Simpan">
+<!ENTITY button.save.tooltip      "Simpan tema ini ke file">
 
 <!ENTITY options.button.open      "Buka">

@@ -34,6 +34,10 @@
         <a href="https://addons.mozilla.org/en-US/firefox/search/?cat=themes"
            class="menuitem" onclick="focusSearch(); return false;">&search.placeholder.value;</a>
 
+        <a href="#" onclick="BackupUtils.filePicker('restore'); return false">
+          &menu.theme.install.from;
+        </a>
+
         <a href="https://addons.mozilla.org/developers/docs/themes">&menu.theme.learn;</a>
 
         <a href="chrome://personas/content/customPersonaEditor.xul"
@@ -48,6 +52,7 @@
         <a href="#" onclick="BackupUtils.filePicker('backup'); return false">
           &menu.theme.backup;
         </a>
+
         <a href="#" onclick="BackupUtils.filePicker('restore'); return false">
           &menu.theme.restore;
         </a>
@@ -133,15 +138,17 @@
           <button class="button disable" title="&cmd.disableTheme.label;"
                   onclick="setTheme(this, 'stop');">&cmd.disableAddon.label;</button>
 
-          <button class="button remove"
-                  onclick="setTheme(this, 'dump');">&cmd.uninstallAddon.label;</button>
-          <button class="button more" onclick="openAddonsManager(this);"
+          <button class="button more right" onclick="openAddonsManager(this);"
                   title="&addons.windowTitle;">&addon.details.label;</button>
+          <button class="button save right" title="&button.save.tooltip;"
+                  onclick="BackupUtils.filePicker('save', this);">&button.save.label;</button>
+          <button class="button remove right"
+                  onclick="setTheme(this, 'dump');">&cmd.uninstallAddon.label;</button>
         </p>
         <p class="buttons">
           <button class="button edit" onclick="_personas.edit();">Edit</button>
           <button class="button dev inspect hidden" title="&button.inspect.tooltip;"
-                  onclick="inspect(this);">Inspect</button>
+                  onclick="inspect(this);">&button.inspect.label;</button>
           <button class="button dev json " title="&button.json.tooltip;"
                   onclick="jsonView(this);">JSON</button>
         </p>
@@ -151,19 +158,28 @@
         <p>&listEmpty.installed.label;.</p>
         <ul>
           <li><a href="https://addons.mozilla.org/themes/">&menu.theme.get;</a></li>
+
           <li>
-            <a href="#"
-               onclick="BackupUtils.filePicker('restore'); return false;">
+            <a href="#" onclick="BackupUtils.filePicker('restore'); return false">
+              &menu.theme.install.from;
+            </a>
+          </li>
+
+          <li>
+            <a href="#" onclick="BackupUtils.filePicker('restore'); return false;">
               &menu.theme.restore.from;
             </a>
           </li>
+
           <li>
             <a href="https://addons.mozilla.org/developers/docs/themes">&menu.theme.learn;</a>
           </li>
+
           <li class="personas-enabled hidden">
             <a href="chrome://personas/content/customPersonaEditor.xul"
                onclick="_personas.edit(); return false;">&menu.personas.create;</a>
           </li>
+
           <li class="personas-disabled hidden">
             <a href="#" onclick="_personas.enable(this); return false;"
                data-addon-id="personas@christopher.beard" data-need-restart="true">
@@ -174,12 +190,14 @@
               <a href="#" onclick="_personas.disable(this); return false;">&addon.undoAction.label;</a>
             </span>
           </li>
+
           <li class="personas-not-installed hidden">
             <a href="https://addons.mozilla.org/addon/personas-plus/?src=external-addon-472283"
                onclick="_personas.install(); return false;">
               &menu.personas.install;
             </a>
           </li>
+
           <li><a href="http://loucypher.github.io/personas/">Solid Color Theme</a></li>
         </ul>
       </article>

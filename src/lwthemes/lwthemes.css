@@ -57,6 +57,8 @@ body {
   padding: 2px 1em;
   margin: 0;
 }
+.button.right { margin: 0 0 0 .25em }
+.rtl .button.right { margin: 0 .25em 0 0 }
 .menu-button:active { padding: 1px 6px }
 .button:active { padding: 3px 1em 1px }
 .button:active, .menu-button:active {

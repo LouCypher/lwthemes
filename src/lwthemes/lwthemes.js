@@ -295,8 +295,8 @@ var BackupUtils = {
     return data;
   },
 
-  filePicker: function backupUtils_filePicker(aCommand) {
-    var callback;
+  filePicker: function backupUtils_filePicker(aCommand, aNode) {
+    var callback, extra;
     var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.displayDirectory = this.lastDirectory.path;
     fp.appendFilter("JSON", "*.JSON");
@@ -313,20 +313,38 @@ var BackupUtils = {
       callback = this.restoreThemes;
     }
 
+    else if (aCommand === "save") {
+      var themeBox = getThemeBox(aNode);
+      var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
+      var filename = theme.name.replace(/(\/|\\|\:|\*|\?|\"|\<|\>|\|)/g, "")
+                               .replace(/\s/g, "-")
+                               .toLowerCase()
+      fp.init(window, getString("themeSavePickerTitle"), Ci.nsIFilePicker.modeSave);
+      fp.defaultString = filename + ".theme.json";
+      callback = this.backupThemes;
+    }
+
     else
       return;
 
+    extra = aNode ? aNode : null;
     try {
-      callback(fp.show(), fp.file);
+      callback(fp.show(), fp.file, extra);
     }
     catch (ex) {
       fp.open(function(result) {
-        callback(result, fp.file);
+        callback(result, fp.file, extra);
       });
     }
   },
 
-  backupThemes: function backupUtils_backupThemes(aResult, aFile) {
+  backupThemes: function backupUtils_backupThemes(aResult, aFile, aNode) {
+    var strData, theme;
+    if (aNode)
+      strData = jsBeautify(getThemeBox(aNode).dataset.browsertheme);
+    else
+      strData = JSON.stringify(_themes);
+
     if (aResult == Ci.nsIFilePicker.returnOK || aResult == Ci.nsIFilePicker.returnReplace) {
       BackupUtils.lastDirectory.path = aFile.parent.QueryInterface(Ci.nsIFile);
 
@@ -334,7 +352,6 @@ var BackupUtils = {
                     createInstance(Ci.nsIFileOutputStream);
       ostream.init(aFile, 0x02 | 0x08 | 0x20, 0664, 0);
 
-      var strData = JSON.stringify(_themes);
       var charset = "UTF-8";
       var os = Cc["@mozilla.org/intl/converter-output-stream;1"].
                createInstance(Ci.nsIConverterOutputStream);
@@ -349,11 +366,14 @@ var BackupUtils = {
       if (aFile && aFile.exists()) {
         BackupUtils.lastDirectory.path = aFile.parent.QueryInterface(Ci.nsIFile);
         var data = BackupUtils.readFile(aFile);
-        var obj, test;
+        var obj, theme;
         try {
           obj = JSON.parse(data);
-          var test = LightweightThemeManager.parseTheme(JSON.stringify(obj[0]));
-          if (!test) {
+          if (obj.length)
+            theme = LightweightThemeManager.parseTheme(JSON.stringify(obj[0]));
+          else
+            theme = LightweightThemeManager.parseTheme(data);
+          if (!theme) {
             alert(getString("themesRestoreInvalidText"));
             return;
           }
@@ -362,25 +382,51 @@ var BackupUtils = {
           return;
         }
 
-        if (_themes.length > 1) {
+        if (!obj.length) {
+          // Install individual theme from a file
+          LightweightThemeManager.themeChanged(theme);
+
+          var exists = $("[data-theme-id='" + theme.id + "']");
+          if (exists)
+            exists.parentNode.removeChild(exists);
+
+          // Create new theme box
+          var themeBox = addThemeBox(theme);
+          themeBox.classList.add("current");
+
+          if ($(".current"))
+            $(".current").classList.remove("current");
+
+          var article = $(".theme") || $("#template");
+          article.parentNode.insertBefore(themeBox, article)
+          applyThemeToNode($(".search"), theme);
+          if ($(".nothemes"))
+            $(".nothemes").classList.remove("nothemes");
+
+          _themes = LightweightThemeManager.usedThemes;
+          _currentTheme = LightweightThemeManager.currentTheme;
+
+          return;
+        }
+
+        if (_themes.length) {
+          // Show warning
           var warning = getString("themesRestoreWarningTitle");
-          var counter = warning + "\n\n" +
-                        getString("themesRestoreWarningCounter",
-                                  _themes.length, obj.length);
+          var counter = warning + "\n\n" + getString("themesRestoreWarningCounter",
+                                                     _themes.length, obj.length);
           var message = counter + "\n\n" + getString("themesRestoreWarningText");
           if (!confirm(message))
             return;
+
+          // Removed all installed themes
           Services.prefs.setCharPref("lightweightThemes.usedThemes", "");
-
-          while (obj.length)
-            LightweightThemeManager.themeChanged(obj.pop());
-
-          LightweightThemeManager.setLocalTheme();
-          location.reload();
         }
 
-        else {
-        }
+        while (obj.length)
+          LightweightThemeManager.themeChanged(obj.pop());  // Install all themes from file
+
+        LightweightThemeManager.setLocalTheme();
+        location.reload();
       }
     }
   }
@@ -530,18 +576,23 @@ function setTheme(aNode, aAction) {
       }
       themeBox.parentNode.removeChild(themeBox);
       console.log(getString("themeRemoved", theme.name));
-      showTotalThemes(_themes.length);
+      _themes = LightweightThemeManager.usedThemes;
+      //console.log(_themes.length);
+      if (_themes.length)
+        showTotalThemes(_themes.length);
+      else
+        $("html").classList.add("nothemes");
       break;
 
     default:
       LightweightThemeManager.setLocalTheme(theme);
+      if ($(".current"))
+        $(".current").classList.remove("current");
       themeBox.classList.add("current");
       _currentTheme = theme;
       applyThemeToNode($(".search"), _currentTheme);
-      if ($(".current"))
-        $(".current").classList.remove("current");
+      _themes = LightweightThemeManager.usedThemes;
   }
-  _themes = LightweightThemeManager.usedThemes;
 }
 
 /**
@@ -582,7 +633,7 @@ function parseHTML(aHtmlString) {
 /**
  *  Generate boxes for installed themes
  */
-function themeBox(aTheme) {
+function addThemeBox(aTheme) {
   const {
     id: id, name: name, author: author, description: description,
     previewURL: previewURL, headerURL: headerURL
@@ -592,11 +643,12 @@ function themeBox(aTheme) {
 
   var box = $("#template").cloneNode(true); // Clone from template
   box.removeAttribute("id");
+  box.dataset.themeId = id;
   box.dataset.browsertheme = themeData;
   if (_currentTheme && aTheme.id === _currentTheme.id)
     box.classList.add("current");
 
-  if (aTheme.id === "1") {
+  if (id === "1") {
     box.classList.add("persona");
   }
 
@@ -773,7 +825,6 @@ function onload() {
 
   if (!_themes.length) {                        // If no installed themes
     $("html").classList.add("nothemes");        // show 'No themes installed"
-    $("footer").classList.add("pos-bottom");
     return;
   }
 
@@ -797,7 +848,7 @@ function onload() {
 
   // Generate boxes for installed themes
   for (var i in _themes)
-    $("section").insertBefore(themeBox(_themes[i]), $("#template"));
+    $("section").insertBefore(addThemeBox(_themes[i]), $("#template"));
 
   // Move current theme to top
   if (_currentTheme) {
