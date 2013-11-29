@@ -316,6 +316,9 @@ var BackupUtils = {
     else if (aCommand === "save") {
       var themeBox = getThemeBox(aNode);
       var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
+      if (!theme)
+        theme = JSON.parse(themeBox.dataset.browsertheme);
+
       var filename = theme.name.replace(/(\/|\\|\:|\*|\?|\"|\<|\>|\|)/g, "")
                                .replace(/\s/g, "-")
                                .toLowerCase()
