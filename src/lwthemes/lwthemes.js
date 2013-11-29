@@ -340,9 +340,7 @@ var BackupUtils = {
       if (!theme)
         theme = JSON.parse(themeBox.dataset.browsertheme);  // Custom Personas
 
-      var filename = theme.name.replace(/(\/|\\|\:|\*|\?|\"|\<|\>|\|)/g, "")
-                               .replace(/\s/g, "-")
-                               .toLowerCase();
+      var filename = formatFileName(theme.name);
       fp.init(window, getString("themeSavePickerTitle"), Ci.nsIFilePicker.modeSave);
       if (theme.id === "1")
         fp.defaultString = "custom-personas-" + filename + ".theme.json";  // Custom Personas
