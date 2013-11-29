@@ -303,13 +303,23 @@ var BackupUtils = {
 
   filePicker: function backupUtils_filePicker(aCommand, aNode) {
     var callback, extra;
+    var appname = Application.name.toLowerCase();
+    var channel;
+    try {
+      channel = Services.prefs.getCharPref("app.update.channel");
+    }
+    catch (ex) {
+      channel = "release";
+    }
+    channel = channel === "release" ? "" : channel;
     var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.displayDirectory = this.lastDirectory.path;
     fp.appendFilter("JSON", "*.JSON");
 
     if (aCommand === "backup") {
       fp.init(window, getString("themesBackupPickerTitle"), Ci.nsIFilePicker.modeSave);
-      fp.defaultString = "themes-" + this.getTimeString() + ".json";
+      fp.defaultString = "themes-" + appname + "-" + (channel ? channel : "") +
+                         "-" + this.getTimeString() + ".json";
       callback = this.backupThemes;
     }
 
