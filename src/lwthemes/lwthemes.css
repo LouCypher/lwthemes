@@ -57,11 +57,11 @@ body {
   padding: 2px 1em;
   margin: 0;
 }
-.button.right { margin: 0 0 0 .25em }
-.rtl .button.right { margin: 0 .25em 0 0 }
+.button.right, .rtl .button.left { margin: 0 0 0 .25em }
+.rtl .button.right, .button.left { margin: 0 .25em 0 0 }
 .menu-button:active { padding: 1px 6px }
 .button:active { padding: 3px 1em 1px }
-.button:active, .menu-button:active {
+.button:active, .menu-button:active, .menu-button.focus {
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
@@ -143,6 +143,7 @@ a:hover { text-decoration: underline }
   font-size: small;
   line-height: 1.5em;
 }
+.footer .translator { margin: 0 1em }
 
 .viewer, .viewer textarea { margin: auto }
 .viewer {
@@ -170,8 +171,6 @@ a:hover { text-decoration: underline }
 }
 .search-input:hover { background-color: rgba(255, 255, 255, .9) }
 .search-input:focus { background-color: #fff }
-
-.footer .translator { margin: 0 1em }
 
 .paypal {
   width: 120px;

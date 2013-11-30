@@ -602,7 +602,7 @@ function setTheme(aNode, aAction) {
       break;
 
     case "dump":
-      var remove = confirm(getString("themeRemoveConfirmation"));
+      var remove = confirm(getString("themeRemoveConfirmation", theme.name));
       if (!remove)
         return;
 
@@ -794,11 +794,13 @@ function toggleCompactView() {
 }
 
 function toggleMenu() {
+  $(".menu-button").classList.toggle("focus");
   $(".menu").classList.toggle("open");
 }
 
 function closeMenu() {
   $(".menu").classList.remove("open");
+  $(".menu-button").classList.remove("focus");
 }
 
 function fixedHeader() {
@@ -841,7 +843,7 @@ function onclick(aEvent) {
   var classList = aEvent.target.classList;
   if (!(classList.contains("menu") || classList.contains("menuitem") ||
         classList.contains("menu-button"))) {
-    aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
+    //aEvent.currentTarget.removeEventListener(aEvent.type, arguments.callee, true);
     closeMenu();
   }
 }
