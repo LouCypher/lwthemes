@@ -228,7 +228,9 @@
       <button class="close right" onclick="toggleViewer();">X</button>
     </div>
 
-    <form id="search" class="hidden" action="https://addons.mozilla.org/search/" method="get">
+    <form id="search" class="hidden"
+          action="https://addons.mozilla.org/search/" method="get"
+          onsubmit="formSubmit(event);">
       <input type="hidden" name="cat" value="themes"/>
     </form>
 

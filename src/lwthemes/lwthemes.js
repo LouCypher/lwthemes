@@ -862,6 +862,13 @@ function onkeypress(aEvent) {
     location.reload();
 }
 
+function formSubmit(aEvent) {
+  if (aEvent.target.q.value === "") {
+    aEvent.preventDefault();
+    location.assign("https://addons.mozilla.org/themes/");
+  }
+}
+
 function onload() {
   _personas.init();
   _skin.applyFromPref();
