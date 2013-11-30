@@ -909,6 +909,7 @@ function onload() {
 }
 
 function onunload() {
+  Services.strings.flushBundles();
   window.removeEventListener("keypress", onkeypress);
   window.removeEventListener("click", onclick);
   window.removeEventListener("load", onload);
