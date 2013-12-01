@@ -77,13 +77,18 @@ a:hover { text-decoration: underline }
 
 #template, .hidden, .no-themes, .private-browsing, .current .enable, .disable, .dev, .edit,
 .menu:not(.open), .viewer:not(.open), .compact .theme-title, .compact .theme-author,
-.persona .theme-author, .compact .theme-description, .compact .button.more { display: none }
-
-.current .disable, .devmode .dev:not(.hidden), .personas .persona .edit,
-.paypal:not(.hidden), .paypal a { display: inline-block }
-
+.persona .theme-author, .compact .theme-description, .compact .button.more, .update,
+.progress-overlay {
+  display: none
+}
+.current .disable, .devmode .dev:not(.hidden), .personas .persona .edit, .old .update,
+.paypal:not(.hidden), .paypal a {
+  display: inline-block
+}
 .nothemes .no-themes, .privatebrowsing .private-browsing,
-.menu a:not(.hidden), .menu label[for] { display: block }
+.menu a:not(.hidden), .menu label[for], .updating .progress-overlay {
+  display: block
+}
 
 .menu .left { margin: 3px .5em 0 0 }
 .rtl .menu .left { margin: 3px 0 0 .5em }
@@ -199,3 +204,19 @@ a:hover { text-decoration: underline }
 
 .yellow { background-color: yellow }
 
+.updating { overflow: hidden }
+.progress-overlay {
+  background-color: rgba(0, 0, 0, .8);
+  z-index: 99;
+}
+.progress {
+  font-family: sans-serif;
+  font-size: 10pt;
+  background: #036 url(nyan-loader.gif) no-repeat -10px 1em;
+  color: #fff;
+  width: 190px;
+  padding: 6em 0 .5em;
+  margin: 10em auto;
+  border-radius: 6px;
+  text-align: center;
+}

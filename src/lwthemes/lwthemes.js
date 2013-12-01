@@ -651,13 +651,55 @@ function getThemeURL(aTheme) {
     return _personas.URL;
 
   if (updateURL) {
-    if (updateURL.match(/getpersonas.com/))
+    if (updateURL.match(/getpersonas.com/) || updateURL.match(/\?src\=gp$/))
       return amoURL + "persona/" + id;
     if (updateURL.match(/addons.mozilla.org/))
       return amoURL + "addon/" + id;
   }
 
   return null;
+}
+
+function updateOldPersona(aNode) {
+  var update = confirm(getString("themeUpdateOld"));
+  if (!update)
+    return;
+
+  $("html").classList.add("updating");
+  var themeBox = getThemeBox(aNode);
+  var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
+  if (!theme)
+    theme = JSON.parse(themeBox.dataset.browsertheme);
+
+  const XMLHttpRequest = Ccnstr("@mozilla.org/xmlextras/xmlhttprequest;1", "nsIXMLHttpRequest");
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", theme.updateURL, true);
+  xhr.onload = function() {
+    if (xhr.status >= 400) {
+      Cu.reportError(xhr.statusText);
+      $("html").classList.remove("updating");
+      return;
+    }
+    //console.log(jsBeautify(xhr.responseText));
+    var newTheme = LightweightThemeManager.parseTheme(xhr.responseText, theme.updateURL);
+    if (!newTheme || newTheme.id != theme.id) {
+      console.log("quitting");
+      $("html").classList.remove("updating");
+      return;
+    }
+    newTheme.description = theme.description;
+    LightweightThemeManager.themeChanged(newTheme);
+    if (_currentTheme) {
+      if (_currentTheme.id != theme.id)
+        LightweightThemeManager.setLocalTheme(_currentTheme);
+    }
+    else
+      LightweightThemeManager.setLocalTheme();
+
+    //console.log(theme.updateURL);
+    location.reload();
+  }
+  xhr.send(null);
 }
 
 // https://developer.mozilla.org/en-US/docs/XUL/School_tutorial/DOM_Building_and_HTML_Insertion#Safely_Using_Remote_HTML
@@ -678,7 +720,7 @@ function parseHTML(aHtmlString) {
 function addThemeBox(aTheme) {
   const {
     id: id, name: name, author: author, description: description,
-    previewURL: previewURL, headerURL: headerURL
+    previewURL: previewURL, headerURL: headerURL, updateURL: updateURL
   } = aTheme;
 
   var themeData = JSON.stringify(aTheme);
@@ -711,6 +753,8 @@ function addThemeBox(aTheme) {
   if (themeURL) {
     $(".theme-title a", box).href = $("header a", box).href = themeURL;
     $(".theme-title a", box).textContent = name;
+    if (updateURL && updateURL.match(/getpersonas.com/))
+      box.classList.add("old");
   }
   else {
     $(".theme-title", box).textContent = name;

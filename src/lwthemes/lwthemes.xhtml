@@ -124,6 +124,9 @@
               <img class="image" onmouseenter="setTheme(this, 'preview');"
                                  onmouseleave="setTheme(this, 'reset');"/>
             </a>
+            <input class="update right" onclick="updateOldPersona(this);"
+                   type="image" src="chrome://global/skin/icons/warning-large.png"
+                   title="&button.update.tooltip;"/>
           </div>
           <h2 class="theme-title"><a title="&detail.homepage.label;"></a></h2>
           <span class="theme-author">&addon.createdBy.label; </span>
@@ -233,6 +236,12 @@
           onsubmit="formSubmit(event);">
       <input type="hidden" name="cat" value="themes"/>
     </form>
+
+    <div class="progress-overlay fixed pos-top pos-right pos-bottom pos-left">
+      <div class="progress">
+      &progress.update.label;
+      </div>
+    </div>
 
   </body>
 </html>

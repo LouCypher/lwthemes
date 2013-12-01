@@ -26,6 +26,8 @@
 <!ENTITY button.inspect.tooltip   "Inspeksi obyek tema">
 <!ENTITY button.save.label        "Simpan">
 <!ENTITY button.save.tooltip      "Simpan tema ini ke file">
+<!ENTITY button.update.tooltip    "Perbarui">
+<!ENTITY progress.update.label    "Memperbarui…">
 
 <!ENTITY addon.translator         "Diterjemahkan oleh">
 <!ENTITY addon.translator.link    "">
