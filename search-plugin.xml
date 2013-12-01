@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                   xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>Mozilla Themes</ShortName>
+  <Description>Lightweight Themes</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16">data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAACgElEQVQ4jaWTW0hTARjH/2fnrG1nnnmbk0xNHWSiSLpqlGCWEYS+9NKTdKGCsKgQtTKCXiKsDCG6oIkPBUZGIlEv4gyhtMyha5WOjencTWxt7qxdOmfn9KKSLX3x//h93//Hd+EDNihiveQLgLQUoEyqQB4IZPEx2BQRGBqciKwLuFWMA4xa1lRerS3L3ZaZoUpjJKJIwmQRxJ/mcff0iLO92YS7CYDWEhSlb2Ue15zet/cjTVAGwYtTRDYmHbtQbzwGjSYF+Zs8aGOOcAPd5uamCbSTy+Y7OtRU1u1+XXv2xHZBQkga6Ak4mAjGnV6c0WhgD6jBM/lQRN1orHKQM1ZHXqk5+ogAgNvF2HHofOX7nJ0UTXB+8H4pWGILrCwLvToDyUlyAMDsPAU1E4eSFjFmGAkaOqdyKQDQFG6+n1WUQadpFwEBcH/yoyC9GAXpKSvjWXunYO8wQlBKkfmkBi6bL5SaijB1LxuK8tqDpTIuCu+oGyIvhzpZn7DY2R4zdMEY+GAM9i4jbK4FS+M4OCoqgpYnJUlVKgoqLBlJBRCPAhBXALq2ari7TaArc0Ew3jjXgacrVxi6WeuoOqzNAReAb87+OyykCjkle+RgpxM64cILeHj1zYdLo2IFAEgAwPjyba/PFxIHewYc3deHdZ8HvlkgUyeYBS6I5w8GXVFWrF+OUQAgZYWWzotdabEAzt1wI9xfLSfA/1pl5sM/8KrT4PFYIsevfMXkKsAFK2IATi4HFz2uGOJLAJHH/Ox39HUYv4TmhbrLZpj+BpP4jyqUkTyKnNGH/HPkcP+Y913fzLOAXTx6zQbnv7VrPlNrIfYTMmh5H/paXPCtVbdh/QFUnwBXPNaKLAAAAABJRU5ErkJggg==</Image>
+  <moz:SearchForm>https://addons.mozilla.org/themes/</moz:SearchForm>
+  <Url type="text/html" method="GET" template="https://addons.mozilla.org/search/">
+    <Param name="q" value="{searchTerms}"/>
+    <Param name="cat" value="themes"/>
+  </Url>
+  <Url rel="self" method="GET" type="application/opensearchdescription+xml"
+       template="https://raw.github.com/LouCypher/lwthemes/master/search-plugin.xml"></Url>
+</OpenSearchDescription>
