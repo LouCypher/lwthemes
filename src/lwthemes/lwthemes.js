@@ -667,8 +667,8 @@ function updateOldPersona(aNode) {
   if (!update)
     return;
 
-  $("html").classList.add("updating");
   var themeBox = getThemeBox(aNode);
+  themeBox.classList.add("updating");
   var theme = LightweightThemeManager.parseTheme(themeBox.dataset.browsertheme);
   if (!theme)
     theme = JSON.parse(themeBox.dataset.browsertheme);
@@ -679,14 +679,14 @@ function updateOldPersona(aNode) {
   xhr.onload = function() {
     if (xhr.status >= 400) {
       Cu.reportError(xhr.statusText);
-      $("html").classList.remove("updating");
+      themeBox.classList.remove("updating");
       return;
     }
     //console.log(jsBeautify(xhr.responseText));
     var newTheme = LightweightThemeManager.parseTheme(xhr.responseText, theme.updateURL);
     if (!newTheme || newTheme.id != theme.id) {
       console.log("quitting");
-      $("html").classList.remove("updating");
+      themeBox.classList.remove("updating");
       return;
     }
     newTheme.description = theme.description;
@@ -699,7 +699,17 @@ function updateOldPersona(aNode) {
       LightweightThemeManager.setLocalTheme();
 
     //console.log(theme.updateURL);
-    location.reload();
+    var newBox = themeBox.parentNode.insertBefore(addThemeBox(newTheme), themeBox);
+    themeBox.parentNode.removeChild(themeBox);
+    _themes = LightweightThemeManager.usedThemes;
+  }
+  onerror = function() {
+    themeBox.classList.remove("updating");
+    Cu.reportError(xhr.statusText);
+  }
+  onabort = function() {
+    console.log("aborted");
+    themeBox.classList.remove("updating");
   }
   xhr.send(null);
 }

@@ -28,9 +28,9 @@
 <!ENTITY button.save.label        "Simpan">
 <!ENTITY button.save.tooltip      "Simpan tema ini ke file">
 <!ENTITY button.update.tooltip    "Perbarui">
-<!ENTITY progress.update.label    "Memperbarui…">
+<!ENTITY button.progress.tooltip  "Memperbarui…">
 
 <!ENTITY addon.translator         "Diterjemahkan oleh">
-<!ENTITY addon.translator.link    "">
+<!ENTITY addon.translator.link    "http://www.mozilla.web.id/">
 
 <!ENTITY options.button.open      "Buka">
