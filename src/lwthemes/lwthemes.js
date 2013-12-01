@@ -877,8 +877,8 @@ function installSearchEngine(aNode) {
         aNode.classList.add("hidden");
       }
     },
-     onError: function(aErrorCode) {
-        Cu.reportError(aErrorCode);
+    onError: function(aErrorCode) {
+      Cu.reportError(aErrorCode);
     }
   }
 
@@ -991,7 +991,7 @@ function onload() {
 
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 
-  if (checkForSearchEngine())
+  if (checkForSearchEngine() || APP_ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}")
     $(".search-engine").classList.add("hidden");
 
   showTotalThemes(_themes.length);
