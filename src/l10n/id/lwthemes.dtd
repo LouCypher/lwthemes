@@ -18,6 +18,7 @@
 <!ENTITY menu.personas.enable     "Aktifkan Personas Plus">
 <!ENTITY menu.personas.create     "Buat tema">
 <!ENTITY menu.personas.edit       "Edit tema buatan sendiri">
+<!ENTITY menu.search.install      "Pasang mesin pencari…">
 
 <!ENTITY search.placeholder.value "Cari tema">
 

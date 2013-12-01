@@ -857,6 +857,39 @@ function unfixedHeader() {
   $(".header").classList.remove("fixed");
 }
 
+function checkForSearchEngine() {
+  var browserSearchService = Cc["@mozilla.org/browser/search-service;1"]
+                             .getService(Ci.nsIBrowserSearchService);
+  var engine = browserSearchService.getEngineByName("Mozilla Themes");
+  if (engine)
+    return true;
+  return false;
+}
+
+function installSearchEngine(aNode) {
+  if (checkForSearchEngine())
+    return;
+
+  var searchCallback = {
+    onSuccess: function(aEngine) {
+      if (aEngine) {
+        console.log(getString("searchEngineInstallOK"));
+        aNode.classList.add("hidden");
+      }
+    },
+     onError: function(aErrorCode) {
+        Cu.reportError(aErrorCode);
+    }
+  }
+
+  var browserSearchService = Cc["@mozilla.org/browser/search-service;1"].
+                             getService(Ci.nsIBrowserSearchService);
+  var engineURL = "https://raw.github.com/LouCypher/lwthemes/master/search-plugin.xml";
+  var iconURL = "chrome://lwthemes/skin/icon16.png";
+  browserSearchService.addEngine(engineURL, Ci.nsISearchEngine.DATA_XML, iconURL, true,
+                                 searchCallback);
+}
+
 function focusSearch() {
   closeMenu();
   if (pageYOffset >= 80)
@@ -957,6 +990,9 @@ function onload() {
   }
 
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
+
+  if (checkForSearchEngine())
+    $(".search-engine").classList.add("hidden");
 
   showTotalThemes(_themes.length);
 }

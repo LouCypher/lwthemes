@@ -36,6 +36,11 @@
         <a href="https://addons.mozilla.org/en-US/firefox/search/?cat=themes"
            class="menuitem" onclick="focusSearch(); return false;">&search.placeholder.value;</a>
 
+        <a href="https://raw.github.com/LouCypher/lwthemes/master/search-plugin.xml"
+           class="search-engine" onclick="installSearchEngine(this); return false">
+          &menu.search.install;
+        </a>
+
         <a href="#" onclick="BackupUtils.filePicker('restore'); return false">
           &menu.theme.install.from;
         </a>

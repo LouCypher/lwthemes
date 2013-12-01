@@ -18,6 +18,7 @@
 <!ENTITY menu.personas.enable     "Enable Personas Plus">
 <!ENTITY menu.personas.create     "Create a theme">
 <!ENTITY menu.personas.edit       "Edit custom theme">
+<!ENTITY menu.search.install      "Install search engine…">
 
 <!ENTITY search.placeholder.value "Search for themes">
 
