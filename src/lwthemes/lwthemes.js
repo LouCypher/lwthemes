@@ -166,6 +166,8 @@ var _personas = {
         image.src = _currentTheme.headerURL;
         image.removeAttribute("style");
         image.alt = $(".theme-title a", themeBox).textContent = _currentTheme.name;
+        if (_compact)
+          image.title = _currentTheme.name;
         image.style.color = _currentTheme.textcolor;
         image.style.backgroundColor = _currentTheme.accentcolor;
         if (!themeBox.classList.contains("current")) {
