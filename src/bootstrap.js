@@ -111,24 +111,34 @@ function main(aWindow, reason) {
   if (menuT)
     menuT.parentNode.insertBefore(addMenuItem(), menuT.nextSibling);
 
+  // Thunderbird Tools menu in appmenu
+  let menuAT = $("#appmenu_taskPopup");
+  if (menuAT)
+    menuAT.insertBefore(addMenuItem(), $("#appmenu_sanitizeHistory"));
+
   // SeaMonkey View > Apply Theme menu
   let menuV = $("#menu_viewApplyTheme_Popup menuseparator");
   if (menuV)
     menuV.parentNode.insertBefore(addMenuItem(), menuV);
 
-/* For future use
-  // Run lwThemes() on installation
-  if (prefs.getBoolPref("firstRun")) {
-    prefs.setBoolPref("firstRun", false);
-    lwThemes();
-  }
-*/
+  // Personas Plus menu
+  let menuP = $("#personas-selector-menu");
+  if (menuP)
+    menuP.appendChild(addMenuItem());
 
   // Apply style to show theme preview
   const styleSheetService = Cc["@mozilla.org/content/style-sheet-service;1"].
                             getService(Ci.nsIStyleSheetService);
   let cssURI = Services.io.newURI("chrome://lwthemes/skin/addons.css", null, null);
   styleSheetService.loadAndRegisterSheet(cssURI, styleSheetService.USER_SHEET);
+
+/* For future use
+  // Run openLWT() on installation
+  if (prefs.getBoolPref("firstRun")) {
+    prefs.setBoolPref("firstRun", false);
+    openLWT();
+  }
+*/
 
   //log(reason);
   if (reason == ADDON_INSTALL || reason == ADDON_ENABLE)
