@@ -5,6 +5,8 @@
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 Cu.import("resource://gre/modules/Services.jsm");
 
+const THUNDERBIRD = (Services.appinfo.ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}");
+
 /**
  * Start setting default preferences
  * http://starkravingfinkle.org/blog/2011/01/restartless-add-ons-%e2%80%93-default-preferences/
@@ -51,20 +53,43 @@ function resProtocolHandler(aResourceName, aURI) {
              .setSubstitution(aResourceName, aURI, null)
 }
 
-function main(aWindow) {
+function main(aWindow, reason) {
   const {document} = aWindow;
+  const LWT_URL = "chrome://lwthemes/content/lwthemes.xul";
 
   function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
   function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
 
-  function lwThemes() {
-    let url = "chrome://lwthemes/content/";
-    if ("switchToTabHavingURI" in aWindow)
-      // Firefox/SeaMonkey
-      aWindow.switchToTabHavingURI(url, true);
+  function openLWT() {
+    if (THUNDERBIRD)
+      aWindow.openContentTab(LWT_URL, "tab", "^https?:");
     else
-      // Thunderbird
-      aWindow.openContentTab(url, "tab", "^https?:");
+      aWindow.switchToTabHavingURI(LWT_URL, true);
+  }
+
+  // Close LWT tab if exists
+  function closeLWT() {
+    if (THUNDERBIRD) {
+      let tabmail = $("#tabmail");
+      let tabs = tabmail.tabInfo;
+      for (let i = 0; i < tabs.length; i++) {
+        let browser = tabs[i].browser;
+        if (browser && browser.currentURI.spec === LWT_URL) {
+          tabmail.closeTab(i);
+          return;
+        }
+      }
+    }
+    else {
+      let {gBrowser} = aWindow;
+      let {tabs} = gBrowser;
+      for (let i = 0; i < tabs.length; i++) {
+        if (tabs[i].linkedBrowser.currentURI.spec === LWT_URL) {
+          gBrowser.removeTab(tabs[i]);
+          return;
+        }
+      }
+    }
   }
 
   function addMenuItem() {
@@ -72,7 +97,7 @@ function main(aWindow) {
     menuitem.className = "lwthemes menuitem-iconic";
     menuitem.setAttribute("label", "Lightweight Themes");
     menuitem.setAttribute("image", "chrome://lwthemes/skin/icon16.png");
-    menuitem.addEventListener("command", lwThemes);
+    menuitem.addEventListener("command", openLWT);
     return menuitem;
   }
 
@@ -105,9 +130,15 @@ function main(aWindow) {
   let cssURI = Services.io.newURI("chrome://lwthemes/skin/addons.css", null, null);
   styleSheetService.loadAndRegisterSheet(cssURI, styleSheetService.USER_SHEET);
 
+  //log(reason);
+  if (reason == ADDON_INSTALL || reason == ADDON_ENABLE)
+    openLWT();
+
   unload(function() {
     // Unapply style
     styleSheetService.unregisterSheet(cssURI, styleSheetService.USER_SHEET);
+
+    closeLWT();
 
     // Remove all elements added by this extension
     let items = $$(".lwthemes");
@@ -128,7 +159,7 @@ function startup(data, reason) {
   // Load module
   Cu.import("resource://" + RESOURCE_NAME + "/watchwindows.jsm");
 
-  watchWindows(main);
+  watchWindows(main, reason);
 }
 
 /**

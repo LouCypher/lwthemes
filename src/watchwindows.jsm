@@ -38,7 +38,7 @@ var EXPORTED_SYMBOLS = ["watchWindows", "unload"];
 
 Components.utils.import("resource://gre/modules/Services.jsm");
 
-function watchWindows(callback) {
+function watchWindows(callback, reason) {
   // This function originally wrapped callback() in a try/catch block
   // to supress errors, but it's more useful if those errors are
   // actually reported rather than silently eaten.
@@ -47,7 +47,7 @@ function watchWindows(callback) {
     let {documentElement} = window.document;
     if (documentElement.getAttribute("windowtype") == "navigator:browser"
         || documentElement.getAttribute("windowtype") == "mail:3pane")
-      callback(window);
+      callback(window, reason);
   }
 
   // Wait for the window to finish loading before running the callback
