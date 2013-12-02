@@ -4,34 +4,24 @@
 
 /*@import url("chrome://lwthemes/skin/");*/
 
-body, .viewer textarea {
-  background-color: #131c26;
-  color: #8fa1b2;
-}
-
+body, .viewer textarea { background-color: #131c26 }
+.header, .footer { background-color: #2e3740 }
+.menu, .viewer { background-color: #344150 }
 a:link, a:visited, .menu a:hover, label[for]:hover { color: #cdd8e4 }
+body, .header, .menu, .menu a, .footer, .viewer textarea { color: #8fa1b2 }
 
 .shadow, .header, .footer { box-shadow: 0 0 9px #000 }
-.header, .footer {
-  background-color: #2e3740;
-  color: inherit;
-}
-
 .theme {
   border-color: #3d6db5;
   outline-color: #3d6db5;
   background-color: rgba(61, 109, 181, .25);
 }
-
 .current {
   border-color: #c63717;
   outline-color: #c63717;
   background-color: rgba(198, 55, 23, .25);
   /*box-shadow: 0 0 6px rgba(198, 55, 23, .75);*/
 }
-
-.menu, .viewer { background-color: #344150 }
-.theme, .menu, .menu a, .viewer { color: inherit }
 
 .search { box-shadow: 0 0 2px #cdd8e4 }
 .search-input { border: 1px solid #cdd8e4 }
