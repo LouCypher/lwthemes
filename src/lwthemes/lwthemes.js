@@ -19,6 +19,7 @@ var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
 
 const AMO_URL = "https://addons.mozilla.org";
 const APP_ID = Application.id;
+const THUNDERBIRD = APP_ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
 const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
@@ -127,7 +128,7 @@ var _personas = {
   edit: function editPersona() {
     var container, openTab;
 
-    if (APP_ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}") {  // Thunderbird
+    if (THUNDERBIRD) {  // Thunderbird
       var tabmail = _chromeWin.document.getElementById("tabmail");
       container = tabmail.tabContainer;
       openTab = function openTab(aURL) {
@@ -934,8 +935,8 @@ function onclick(aEvent) {
 }
 
 function onkeypress(aEvent) {
-  //console.log(aEvent);
-  if (aEvent.keyCode === 27) {  // Esc key
+  //console.log(aEvent.keyCode);
+  if (aEvent.keyCode === aEvent.DOM_VK_ESCAPE) {  // Esc key
     closeMenu();
     unfixedHeader();
     $(".viewer").classList.remove("open");
@@ -943,7 +944,7 @@ function onkeypress(aEvent) {
   }
 
   // Allow reload page by pressing F5 on Thunderbird
-  if (APP_ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}" && aEvent.keyCode === 116)
+  if (THUNDERBIRD && aEvent.keyCode === aEvent.DOM_VK_F5)
     location.reload();
 }
 
@@ -997,7 +998,7 @@ function onload() {
 
   _themes = LightweightThemeManager.usedThemes; // Restore sort order
 
-  if (checkForSearchEngine() || APP_ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}")
+  if (checkForSearchEngine() || THUNDERBIRD)
     $(".search-engine").classList.add("hidden");
 
   showTotalThemes(_themes.length);
