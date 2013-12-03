@@ -511,12 +511,8 @@ function setPrivateWindow() {
 }
 
 function jsBeautify(aJS) {
-  try {
-    const {js_beautify} = jsm("resource:///modules/devtools/Jsbeautify.jsm");
-    return js_beautify(aJS, {indent_size: 2, indent_char: " "});
-  } catch (ex) {
-    return aJS;
-  }
+  const {js_beautify} = jsm("resource://lwthemes-manager/modules/Jsbeautify.jsm");
+  return js_beautify(aJS, {indent_size: 2, indent_char: " "});
 }
 
 function sort(aArray) {

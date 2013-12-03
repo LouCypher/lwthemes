@@ -179,8 +179,7 @@ function startup(data, reason) {
   resProtocolHandler(RESOURCE_NAME, data.resourceURI);
 
   // Load module
-  Cu.import("resource://" + RESOURCE_NAME + "/watchwindows.jsm");
-
+  Cu.import("resource://" + RESOURCE_NAME + "/modules/watchwindows.jsm");
   watchWindows(main, reason);
 }
 
@@ -195,7 +194,7 @@ function shutdown(data, reason) {
   unload();
 
   // Unload module
-  Cu.unload("resource://" + RESOURCE_NAME + "/watchwindows.jsm");
+  Cu.unload("resource://" + RESOURCE_NAME + "/modules/watchwindows.jsm");
 
   // Remove resource alias
   resProtocolHandler(RESOURCE_NAME, null);
