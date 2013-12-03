@@ -17,6 +17,7 @@ const {Services} = jsm("resource://gre/modules/Services.jsm");
 var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
                  Services.wm.getMostRecentWindow("mail:3pane");
 
+const AMO_URL = "https://addons.mozilla.org";
 const APP_ID = Application.id;
 const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
@@ -93,7 +94,7 @@ function addonInstallOrEnable(aNode) {
       return;
     }
     var amoId = aNode.dataset.amoId;
-    location.assign("https://addons.mozilla.org/downloads/latest/" + amoId +
+    location.assign(AMO_URL + "/downloads/latest/" + amoId +
                     "/addon-" + amoId + "-latest.xpi?src=external-addon-472283");
     aNode.classList.add("hidden");
     aNode.nextSibling.nextSibling.classList.remove("hidden");
@@ -102,14 +103,14 @@ function addonInstallOrEnable(aNode) {
 
 var _personas = {
   ID: "personas@christopher.beard",
-  URL: "https://addons.mozilla.org/addon/personas-plus/",
+  URL: AMO_URL + "/addon/personas-plus/",
   EDITOR: "chrome://personas/content/customPersonaEditor.xul",
   addon: null,
   status: null,
   custom: null,
 
   install: function installPersonas() {
-    location.assign("https://addons.mozilla.org/firefox/downloads/latest/10900/" +
+    location.assign(AMO_URL + "/firefox/downloads/latest/10900/" +
                     "addon-10900-latest.xpi?src=external-addon-472283");
   },
 
@@ -640,7 +641,6 @@ function setTheme(aNode, aAction) {
  */
 function getThemeURL(aTheme) {
   const { id: id, homepageURL: homepageURL, updateURL: updateURL } = aTheme;
-  const amoURL = "https://addons.mozilla.org/";
 
   if (homepageURL)
     return homepageURL;
@@ -650,9 +650,9 @@ function getThemeURL(aTheme) {
 
   if (updateURL) {
     if (updateURL.match(/getpersonas.com/) || updateURL.match(/\?src\=gp$/))
-      return amoURL + "persona/" + id;
+      return AMO_URL + "/persona/" + id;
     if (updateURL.match(/addons.mozilla.org/))
-      return amoURL + "addon/" + id;
+      return AMO_URL + "/addon/" + id;
   }
 
   return null;
@@ -950,7 +950,7 @@ function onkeypress(aEvent) {
 function formSubmit(aEvent) {
   if (aEvent.target.q.value === "") {
     aEvent.preventDefault();
-    location.assign("https://addons.mozilla.org/themes/");
+    location.assign(AMO_URL + "/themes/");
   }
 }
 
