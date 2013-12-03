@@ -67,7 +67,6 @@ function main(aWindow, reason) {
       aWindow.switchToTabHavingURI(LWT_URL, true);
   }
 
-  // Close LWT tab if exists
   function closeLWT() {
     if (THUNDERBIRD) {
       let tabmail = $("#tabmail");
@@ -80,12 +79,25 @@ function main(aWindow, reason) {
         }
       }
     }
+
     else {
+      let SessionStore = (Cc["@mozilla.org/browser/sessionstore;1"] ||
+                          Cc["@mozilla.org/suite/sessionstore;1"]).getService(Ci.nsISessionStore);
       let {gBrowser} = aWindow;
       let {tabs} = gBrowser;
       for (let i = 0; i < tabs.length; i++) {
         if (tabs[i].linkedBrowser.currentURI.spec === LWT_URL) {
           gBrowser.removeTab(tabs[i]);
+          if (SessionStore) {
+            SessionStore.forgetClosedTab(aWindow, 0); // Remove from undo close tabs list
+            if (!SessionStore.getClosedWindowCount()) {
+              let prefService = Services.prefs;
+              let prefName = "browser.sessionstore.max_tabs_undo";
+              let prefValue = prefService.getIntPref(prefName);
+              prefService.setIntPref(prefName, 0);
+              prefService.setIntPref(prefName, prefValue);
+            }
+          }
           return;
         }
       }
