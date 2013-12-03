@@ -210,7 +210,7 @@ function install(data, reason) {
  * Handle the add-on being uninstalled
  */
 function uninstall(data, reason) {
-  if (reason == ADDON_UNINSTALL)
+  if (reason != ADDON_UPGRADE || reason != ADDON_DOWNGRADE)
     for (let [key] in Iterator(PREFS))
       branch.clearUserPref(key); // Remove prefs on uninstall
 }
