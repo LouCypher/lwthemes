@@ -949,9 +949,22 @@ function onkeypress(aEvent) {
 }
 
 function formSubmit(aEvent) {
-  if (aEvent.target.q.value === "") {
+  var query = aEvent.target.q.value;
+  if (query === "") {
     aEvent.preventDefault();
     location.assign(AMO_URL + "/themes/");
+  }
+  else if (query.match(/^by:\w+/i)) {
+    aEvent.preventDefault();
+    var username = query.replace(/^by:/i, "").trim();
+    if (username.match(/\//)) {
+      var category = username.replace(/\s/g, "-").match(/\/.*/);
+      username = username.match(/\w+/);
+    }
+    if (category)
+      location.assign(AMO_URL + "/user/" + username + "/themes" + category);
+    else
+      location.assign(AMO_URL + "/user/" + username + "/themes");
   }
 }
 
