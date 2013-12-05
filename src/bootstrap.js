@@ -210,7 +210,9 @@ function install(data, reason) {
  * Handle the add-on being uninstalled
  */
 function uninstall(data, reason) {
-  if (reason != ADDON_UPGRADE || reason != ADDON_DOWNGRADE)
+//  This isn't working. Whatever the reason is, the prefs always reset
+/*  if (reason != ADDON_UPGRADE || reason != ADDON_DOWNGRADE)
     for (let [key] in Iterator(PREFS))
       branch.clearUserPref(key); // Remove prefs on uninstall
+*/
 }
