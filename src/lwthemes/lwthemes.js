@@ -18,12 +18,15 @@ var _chromeWin = Services.wm.getMostRecentWindow("navigator:browser") ||
                  Services.wm.getMostRecentWindow("mail:3pane");
 
 const AMO_URL = "https://addons.mozilla.org";
-const APP_ID = Application.id;
-const THUNDERBIRD = APP_ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
+
+const THUNDERBIRD = Application.id === "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
+const SEAMONKEY = Application.id === "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
+
 const PREF_ROOT = "extensions.lwthemes-manager@loucypher.";
 const prefs = Services.prefs.getBranch(PREF_ROOT);
 
 const _strings = Services.strings.createBundle("chrome://lwthemes/locale/lwthemes.properties");
+
 var _devMode = prefs.getBoolPref("devmode");
 var _compact = prefs.getBoolPref("compactView");
 
@@ -182,7 +185,7 @@ var _personas = {
   },
 
   init: function checkForPersonas() {
-    if (APP_ID === "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}") {  // SeaMonkey
+    if (SEAMONKEY) {
       this.status = "incompatible";
       return;
     }
@@ -440,7 +443,8 @@ var BackupUtils = {
 
           _themes = LightweightThemeManager.usedThemes;
           _currentTheme = LightweightThemeManager.currentTheme;
-
+          if (SEAMONKEY)
+            _chromeWin.reloadThemes();
           return;
         }
 
@@ -466,6 +470,8 @@ var BackupUtils = {
           }
         }
 
+        if (SEAMONKEY)
+          _chromeWin.reloadThemes();
         LightweightThemeManager.setLocalTheme();
         location.reload();
       }
