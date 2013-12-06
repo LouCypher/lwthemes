@@ -349,8 +349,13 @@ var BackupUtils = {
 
       var filename = formatFileName(theme.name);
       fp.init(window, getString("themeSavePickerTitle"), Ci.nsIFilePicker.modeSave);
-      if (theme.id === "1")
-        fp.defaultString = "custom-personas-" + filename + ".theme.json";  // Custom Personas
+      if (theme.id === "1") {
+        var prefix = getEntityFromDTD("chrome://personas/locale/personas.dtd",
+                                      "customPersona.label", "Custom Persona");
+        prefix = formatFileName(prefix);
+        filename = prefix === filename ? filename : prefix + "-" + filename;
+        fp.defaultString = filename + ".theme.json";  // Custom Personas
+      }
       else
         fp.defaultString = filename + ".theme.json";
       callback = this.backupThemes;
@@ -747,8 +752,11 @@ function addThemeBox(aTheme) {
   if (_currentTheme && aTheme.id === _currentTheme.id)
     box.classList.add("current");
 
-  if (id === "1")
+  if (id === "1") {
     box.classList.add("persona");
+    $(".theme-author", box).textContent = getEntityFromDTD("chrome://personas/locale/personas.dtd",
+                                                           "customPersona.label", "Custom Persona");
+  }
 
   if (/^solid\-color/.test(aTheme.id)) {
     $(".preview", box).classList.add("solid-color");

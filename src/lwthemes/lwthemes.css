@@ -77,7 +77,7 @@ a:hover { text-decoration: underline }
 
 #template, .hidden, .no-themes, .private-browsing, .current .enable, .disable, .dev, .edit,
 .menu:not(.open), .viewer:not(.open), .compact .theme-title, .compact .theme-author,
-.persona .theme-author, .compact .theme-description, .compact .button.more, .update, .progress {
+.compact .theme-description, .compact .button.more, .update, .progress {
   display: none
 }
 .current .disable, .devmode .dev:not(.hidden), .personas .persona .edit,
