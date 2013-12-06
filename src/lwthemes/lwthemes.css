@@ -13,7 +13,7 @@ body {
   background-position: bottom right;
   background-repeat: no-repeat;
   padding: 0 1em;
-  height: 5em;
+  height: 52px;
 }
 
 .shadow {
@@ -68,9 +68,13 @@ body {
 button, label[for], input:not([type=search]) { cursor: pointer }
 input[disabled] + label[for] { color: grey }
 
-section { margin: 7em 1em 1em }
+section { margin: 70px 1em 1em }
 
 h1, h2 { font-family: sans-serif }
+h1 {
+  font-size: 18pt;
+  margin: 10px 0 0 0;
+}
 
 a:link, a:visited, .menu a:hover { text-decoration: none }
 a:hover { text-decoration: underline }
@@ -164,8 +168,11 @@ a:hover { text-decoration: underline }
 }
 
 .search {
-  margin: 1.5em 10em;
+  margin: 10px 10em 0 0;
   padding: .25em .5em;
+}
+.rtl .search {
+  margin: 10px 0 0 10em;
 }
 .search-input {
   background-color: rgba(255, 255, 255, .75);

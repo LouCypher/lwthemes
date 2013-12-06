@@ -916,7 +916,7 @@ function installSearchEngine(aNode) {
 
 function focusSearch() {
   closeMenu();
-  if (pageYOffset >= 80)
+  if (pageYOffset >= 50)
     fixedHeader();
   $(".search-input").focus();
 }
