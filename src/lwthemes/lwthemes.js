@@ -448,6 +448,7 @@ var BackupUtils = {
 
           _themes = LightweightThemeManager.usedThemes;
           _currentTheme = LightweightThemeManager.currentTheme;
+          _chromeWin.LightWeightThemeWebInstaller._removePreviousNotifications();
           if (SEAMONKEY)
             _chromeWin.reloadThemes();
           return;
@@ -469,6 +470,7 @@ var BackupUtils = {
         while (obj.length) {
           theme = obj.pop();
           LightweightThemeManager.themeChanged(theme);  // Install all themes from file
+          _chromeWin.LightWeightThemeWebInstaller._removePreviousNotifications();
           if (theme.id === "1") { // Custom Personas
             BackupUtils.setCustomPersonasPref(theme);
             _personas.custom = theme;
@@ -645,6 +647,7 @@ function setTheme(aNode, aAction) {
       _currentTheme = theme;
       applyThemeToNode($(".search"), _currentTheme);
       _themes = LightweightThemeManager.usedThemes;
+      _chromeWin.LightWeightThemeWebInstaller._removePreviousNotifications();
   }
 }
 
