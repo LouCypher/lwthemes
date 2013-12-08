@@ -153,7 +153,7 @@ function main(aWindow, reason) {
 */
 
   //log(reason);
-  if (reason == ADDON_INSTALL || reason == ADDON_ENABLE)
+  if (reason == ADDON_ENABLE)
     openLWT();
 
   unload(function() {
@@ -210,9 +210,8 @@ function install(data, reason) {
  * Handle the add-on being uninstalled
  */
 function uninstall(data, reason) {
-//  This isn't working. Whatever the reason is, the prefs always reset
-/*  if (reason != ADDON_UPGRADE || reason != ADDON_DOWNGRADE)
+  if (reason == ADDON_UNINSTALL)
     for (let [key] in Iterator(PREFS))
-      branch.clearUserPref(key); // Remove prefs on uninstall
-*/
+      prefs.clearUserPref(key); // Remove prefs on uninstall
+    prefs.clearUserPref("lastDir");
 }
