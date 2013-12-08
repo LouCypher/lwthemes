@@ -809,7 +809,7 @@ function openAddonsManager(aNode) {
   else
     addonId = aNode.dataset.addonId;
 
-  var view = "addons://detail/" + encodeURIComponent(addonId) + "/preferences";
+  var view = "addons://detail/" + encodeURIComponent(addonId);
 
   if ("toEM" in _chromeWin) {
     _chromeWin.toEM(view);
