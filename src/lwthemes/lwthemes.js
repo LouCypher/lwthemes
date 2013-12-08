@@ -846,18 +846,23 @@ function jsonView(aNode) {
   $(".viewer textarea").focus();
 }
 
-function toggleDevMode() {
-  _devMode = !_devMode;
-  $("#pref-devmode").setAttribute("checked", _devMode);
+function toggleDevMode(aNode) {
+  _devMode = aNode.checked;
   prefs.setBoolPref("devmode", _devMode);
-  $("html").classList.toggle("devmode");
+  if (_devMode)
+    $("html").classList.add("devmode");
+  else
+    $("html").classList.remove("devmode");
 }
 
-function toggleCompactView() {
-  _compact = !_compact;
-  $("#pref-compact").setAttribute("checked", _compact);
+function toggleCompactView(aNode) {
+  _compact = aNode.checked;
   prefs.setBoolPref("compactView", _compact);
-  $("html").classList.toggle("compact");
+  if (_compact)
+    $("html").classList.add("compact");
+  else
+    $("html").classList.remove("compact");
+
   var previews = $$(".theme .image");
   for (var i = 0; i < previews.length; i++)
     previews[i].title = _compact ? previews[i].alt : previews[i].parentNode.title;
