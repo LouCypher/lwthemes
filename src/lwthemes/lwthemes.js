@@ -7,6 +7,7 @@ const {Constructor: Ccnstr, classes: Cc, interfaces: Ci, utils: Cu} = Components
 function  $(aSelector, aNode) (aNode || document).querySelector(aSelector);
 function $$(aSelector, aNode) (aNode || document).querySelectorAll(aSelector);
 function jsm(aURL) Cu.import(aURL, {});
+function jsBeautify(aJS) js_beautify(aJS, {indent_size: 2, indent_char: " "});
 
 const {LightweightThemeManager} = jsm("resource://gre/modules/LightweightThemeManager.jsm");
 var {usedThemes: _themes, currentTheme: _currentTheme} = LightweightThemeManager;
@@ -523,11 +524,6 @@ function setPrivateWindow() {
     $$(".private-browsing p")[1].textContent += getString(string, name);
     $(".private-browsing a").textContent = getString(label, name);
   })
-}
-
-function jsBeautify(aJS) {
-  const {js_beautify} = jsm("resource://lwthemes-manager/modules/Jsbeautify.jsm");
-  return js_beautify(aJS, {indent_size: 2, indent_char: " "});
 }
 
 function sort(aArray) {
