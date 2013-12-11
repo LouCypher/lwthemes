@@ -994,11 +994,6 @@ function onload() {
   if (privateWindow())
     setPrivateWindow();
 
-  if (!_themes.length) {                        // If no installed themes
-    $("html").classList.add("nothemes");        // show 'No themes installed"
-    return;
-  }
-
   if (_compact) {
     $("#pref-compact").checked = true;
     $("html").classList.add("compact");
@@ -1013,6 +1008,11 @@ function onload() {
     $(".inspect").classList.remove("hidden");
     $(".inspect").textContent = getEntityFromDTD("chrome://inspector/locale/",
                                                  "btnInspect.label", "Inspect");
+  }
+
+  if (_themes.length) {                        // If no installed themes
+    $("html").classList.add("nothemes");        // show 'No themes installed"
+    return;
   }
 
   sort(_themes);  // Sort by name
