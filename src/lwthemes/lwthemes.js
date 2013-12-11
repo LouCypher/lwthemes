@@ -441,7 +441,7 @@ var BackupUtils = {
           if ($(".current"))
             $(".current").classList.remove("current");
 
-          var article = $(".theme") || $("#template");
+          var article = $(".theme:not(#template)") || $(".no-themes");
           article.parentNode.insertBefore(themeBox, article)
           applyThemeToNode($(".search"), theme);
           if ($(".nothemes"))
@@ -1019,11 +1019,11 @@ function onload() {
 
   // Generate boxes for installed themes
   for (var i in _themes)
-    $("section").insertBefore(addThemeBox(_themes[i]), $("#template"));
+    $("section").insertBefore(addThemeBox(_themes[i]), $(".no-themes"));
 
   // Move current theme to top
   if (_currentTheme) {
-    $(".current").parentNode.insertBefore($(".current"), $(".theme"));
+    $(".current").parentNode.insertBefore($(".current"), $(".theme:not(#template)"));
     applyThemeToNode($(".search"));
   }
 
