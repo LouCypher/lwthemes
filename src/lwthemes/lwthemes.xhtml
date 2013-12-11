@@ -149,6 +149,9 @@
                   onmouseleave="setTheme(this, 'reset');"
                   onclick="setTheme(this, 'wear');">&cmd.enableAddon.label;</button>
           <button class="button disable" title="&cmd.disableTheme.label;"
+                  onmouseenter="LightweightThemeManager.previewTheme({}); 
+                                $('.search').removeAttribute('style');"
+                  onmouseleave="setTheme(this, 'reset');"
                   onclick="setTheme(this, 'stop');">&cmd.disableAddon.label;</button>
 
           <button class="button more right" onclick="openAddonsManager(this);"
