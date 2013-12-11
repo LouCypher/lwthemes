@@ -1010,7 +1010,7 @@ function onload() {
                                                  "btnInspect.label", "Inspect");
   }
 
-  if (_themes.length) {                        // If no installed themes
+  if (!_themes.length) {                        // If no installed themes
     $("html").classList.add("nothemes");        // show 'No themes installed"
     return;
   }
