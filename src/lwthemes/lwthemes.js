@@ -310,8 +310,8 @@ var BackupUtils = {
   },
 
   filePicker: function backupUtils_filePicker(aCommand, aNode) {
-    function formatFileName(aString) aString.replace(/(\/|\\|\:|\*|\?|\"|\<|\>|\|)/g, "")
-                                            .replace(/\s/g, "-")
+    function formatFileName(aString) aString.replace(/(\\|\:|\*|\?|\"|\<|\>|\|)/g, "")
+                                            .replace(/(\/|\s)/g, "-")
                                             .toLowerCase();
 
     var callback, extra;
