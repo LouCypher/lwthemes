@@ -23,6 +23,7 @@
         <em:creator>LouCypher</em:creator>
         <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
         <em:contributor>David Vignoni (icon)</em:contributor>
+        <em:translator>Leszek(teo)Życzkowski</em:translator>
       </Description>
     </em:localized>
 
@@ -34,6 +35,18 @@
         <em:creator>LouCypher</em:creator>
         <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
         <em:contributor>David Vignoni (icon)</em:contributor>
+      </Description>
+    </em:localized>
+
+    <em:localized>
+      <Description>
+        <em:locale>pl</em:locale>
+        <em:name>Lightweight Themes Manager</em:name>
+        <em:description>Zarządzanie zainstalowanymi motywami tła.</em:description>
+        <em:creator>LouCypher</em:creator>
+        <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+        <em:contributor>David Vignoni (icon)</em:contributor>
+        <em:translator>Leszek(teo)Życzkowski</em:translator>
       </Description>
     </em:localized>
 

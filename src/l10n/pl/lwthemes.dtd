@@ -1,0 +1,31 @@
+<!ENTITY page.title "Motywy tła">
+<!ENTITY page.privatebrowsing.p1 "W trybie przeglądania prywatnego motywy tła są domyślnie wyłączone.">
+<!ENTITY page.privatebrowsing.p2 "Aby włączyć motywy tła w tym trybie, ">
+<!ENTITY page.reload "Odśwież tę stronę po zakończeniu">
+<!ENTITY menu.skin.light "Jasny motyw">
+<!ENTITY menu.skin.dark "Ciemny motyw">
+<!ENTITY menu.toggle.compact "Widok kompaktowy">
+<!ENTITY menu.toggle.devmode "Tryb programisty">
+<!ENTITY menu.theme.get "Pobierz motywy">
+<!ENTITY menu.theme.learn "Dowiedz się, jak tworzyć motywy tła">
+<!ENTITY menu.theme.submit "Prześlij nowy motyw">
+<!ENTITY menu.theme.backup "Kopia zapasowa…">
+<!ENTITY menu.theme.restore "Odtwarzanie…">
+<!ENTITY menu.theme.restore.from "Odtwórz motywy z kopii zapasowej…">
+<!ENTITY menu.theme.install.from "Zainstaluj motyw z pliku…">
+<!ENTITY menu.personas.install "Zainstaluj dodatek Personas Plus">
+<!ENTITY menu.personas.enable "Włącz dodatek Personas Plus">
+<!ENTITY menu.personas.create "Stwórz motyw">
+<!ENTITY menu.personas.edit "Edytuj własny motyw">
+<!ENTITY menu.search.install "Zainstaluj wyszukiwarkę…">
+<!ENTITY search.placeholder.value "Szukaj motywów">
+<!ENTITY button.json.tooltip "Zobacz motyw jako JSON">
+<!ENTITY button.inspect.label "Zbadaj">
+<!ENTITY button.inspect.tooltip "Zbadaj elementy motywu">
+<!ENTITY button.save.label "Zapisz">
+<!ENTITY button.save.tooltip "Zapisz ten motyw w pliku">
+<!ENTITY button.update.tooltip "Aktualizuj">
+<!ENTITY button.progress.tooltip "Aktualizowanie…">
+<!ENTITY addon.translator "Tłumaczenie:">
+<!ENTITY addon.translator.link "http://www.babelzilla.org/forum/index.php?showuser=122">
+<!ENTITY options.button.open "Otwórz menedżer motywów tła">
