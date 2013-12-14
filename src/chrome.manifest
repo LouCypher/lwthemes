@@ -2,6 +2,7 @@ content lwthemes              lwthemes/
 skin    lwthemes  classic/1.0 skin/
 locale  lwthemes  en-US       l10n/en-US/
 locale  lwthemes  id          l10n/id/
+locale  lwthemes  pl          l10n/pl/
 
 override chrome://lwthemes/content/lwthemes.xul chrome://lwthemes/content/lwthemes.xhtml
 override chrome://lwthemes/skin/lwthemes.css    chrome://lwthemes/content/lwthemes.css
