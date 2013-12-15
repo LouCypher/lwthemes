@@ -14,6 +14,7 @@
 <!ENTITY menu.theme.restore       "Restore…">
 <!ENTITY menu.theme.restore.from  "Restore themes from backup">
 <!ENTITY menu.theme.install.from  "Install theme from file…">
+<!ENTITY menu.theme.solidColor    "Solid Color Theme">
 <!ENTITY menu.personas.install    "Install Personas Plus">
 <!ENTITY menu.personas.enable     "Enable Personas Plus">
 <!ENTITY menu.personas.create     "Create a theme">

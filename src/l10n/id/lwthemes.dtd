@@ -14,6 +14,7 @@
 <!ENTITY menu.theme.restore       "Kembalikan…">
 <!ENTITY menu.theme.restore.from  "Kembalikan tema dari cadangan">
 <!ENTITY menu.theme.install.from  "Pasang tema dari file">
+<!ENTITY menu.theme.solidColor    "Tema warna">
 <!ENTITY menu.personas.install    "Pasang Personas Plus">
 <!ENTITY menu.personas.enable     "Aktifkan Personas Plus">
 <!ENTITY menu.personas.create     "Buat tema">

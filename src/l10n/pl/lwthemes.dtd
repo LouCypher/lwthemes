@@ -13,6 +13,7 @@
 <!ENTITY menu.theme.restore "Odtwarzanie…">
 <!ENTITY menu.theme.restore.from "Odtwórz motywy z kopii zapasowej…">
 <!ENTITY menu.theme.install.from "Zainstaluj motyw z pliku…">
+<!ENTITY menu.theme.solidColor "Solid Color Theme">
 <!ENTITY menu.personas.install "Zainstaluj dodatek Personas Plus">
 <!ENTITY menu.personas.enable "Włącz dodatek Personas Plus">
 <!ENTITY menu.personas.create "Stwórz motyw">
