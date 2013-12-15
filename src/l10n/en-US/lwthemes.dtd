@@ -32,6 +32,6 @@
 <!ENTITY button.progress.tooltip  "Updating…">
 
 <!ENTITY addon.translator         "Translated by">
-<!ENTITY addon.translator.link    "(NOTE TO TRANSLATOR: IF YOU HAVE A HOME PAGE, YOU CAN ENTER THE URL HERE. IF NOT, ENTER YOUR BABELZILLA PROFILE URL)">
+<!ENTITY addon.translator.link    "(NOTE TO TRANSLATOR: IF YOU HAVE A HOME PAGE, YOU CAN ENTER THE URL HERE. IF NOT, ENTER YOUR BABELZILLA PROFILE URL OR SOCIAL MEDIA, i.e. TWITTER, FACEBOOK, ETC.)">
 
 <!ENTITY options.button.open      "Open">
