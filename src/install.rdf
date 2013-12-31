@@ -23,7 +23,8 @@
         <em:creator>LouCypher</em:creator>
         <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
         <em:contributor>David Vignoni (icon)</em:contributor>
-        <em:translator>Leszek(teo)Życzkowski</em:translator>
+        <em:translator>Mozilla Indonesia (id)</em:translator>
+        <em:translator>Leszek(teo)Życzkowski (pl)</em:translator>
       </Description>
     </em:localized>
 
@@ -35,6 +36,7 @@
         <em:creator>LouCypher</em:creator>
         <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
         <em:contributor>David Vignoni (icon)</em:contributor>
+        <em:translator>Mozilla Indonesia</em:translator>
       </Description>
     </em:localized>
 
