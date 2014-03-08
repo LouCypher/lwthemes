@@ -21,14 +21,27 @@ Services.wm.getMostRecentWindow('mail:3pane').openContentTab('chrome://lwthemes/
   </setting>
 
   <setting type="control" title="&contributors.label;" first-row="true"/>
-  <setting type="control" title="David Vignoni" desc="Icon">
+  <setting type="control" title="Icon">
     <label class="text-link"
-           value="http://icon-king.com/"
+           value="David Vignoni"
            href="http://icon-king.com/"
            tooltiptext="&homepage.label;"/>
   </setting>
 
   <setting type="control" title="&translators.label;" first-row="true"/>
+  <setting type="control" title="Bahasa Indonesia">
+    <label class="text-link"
+           value="Mozilla Indonesia"
+           href="http://mozilla.web.id/"
+           tooltiptext="&homepage.label;"/>
+  </setting>
+
+  <setting type="control" title="Polski">
+    <label class="text-link"
+           value="Leszek Życzkowski"
+           href="http://www.babelzilla.org/forum/index.php?showuser=122"
+           tooltiptext="&homepage.label;"/>
+  </setting>
 
   <setting type="control" title="Solid Color Theme" first-row="true">
     <label class="text-link"

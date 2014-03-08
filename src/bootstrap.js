@@ -5,6 +5,14 @@
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 Cu.import("resource://gre/modules/Services.jsm");
 
+try {
+  // Australis
+  Cu.import("resource:///modules/CustomizableUI.jsm");
+}
+catch (ex) {
+  // Not Australis
+}
+
 const THUNDERBIRD = (Services.appinfo.ID === "{3550f703-e582-4d05-9a08-453d09bdfdc6}");
 
 /**
@@ -44,7 +52,7 @@ for (let [key, val] in Iterator(PREFS)) {
 let RESOURCE_NAME;
 
 function log(aString) {
-  Services.console.logStringMessage("LW Themes:\n" + aString);
+  Services.console.logStringMessage("Lightweight Themes Manager:\n" + aString);
 }
 
 function resProtocolHandler(aResourceName, aURI) {
@@ -138,11 +146,33 @@ function main(aWindow, reason) {
   if (menuP)
     menuP.appendChild(addMenuItem());
 
-  // Apply style to show theme preview
   const styleSheetService = Cc["@mozilla.org/content/style-sheet-service;1"].
                             getService(Ci.nsIStyleSheetService);
-  let cssURI = Services.io.newURI("chrome://lwthemes/skin/addons.css", null, null);
-  styleSheetService.loadAndRegisterSheet(cssURI, styleSheetService.USER_SHEET);
+
+  // Apply stylesheet to Add-ons Manager to show theme preview
+  let addonCssURI = Services.io.newURI("chrome://lwthemes/skin/addons.css", null, null);
+  styleSheetService.loadAndRegisterSheet(addonCssURI, styleSheetService.USER_SHEET);
+
+  /* Start initializing toolbarbutton for Australis */
+  //log(typeof CustomizableUI);
+  if (typeof CustomizableUI === "object") {
+    // Add stylesheet for toolbarbutton
+    let toolbarCssURI = Services.io.newURI("chrome://lwthemes/skin/toolbarbutton.css", null, null);
+    styleSheetService.loadAndRegisterSheet(toolbarCssURI, styleSheetService.USER_SHEET);
+
+    // Add toolbarbutton
+    CustomizableUI.createWidget(
+      { id : "lwthemes-manager-widget",
+        defaultArea : CustomizableUI.AREA_NAVBAR,
+        label : "Lightweight Themes Manager",
+        tooltiptext : "Lightweight Themes Manager",
+        onCommand : function(aEvent) {
+          openLWT();
+        }
+      });
+  }
+  /* End initializing toolbarbutton for Australis */
+
 
 /* For future use
   // Run openLWT() on installation
@@ -152,15 +182,25 @@ function main(aWindow, reason) {
   }
 */
 
-  //log(reason);
-  if (reason == ADDON_ENABLE)
+  /*if (reason === ADDON_INSTALL)
+    closeLWT();*/
+
+  log(reason);
+  if (reason === ADDON_INSTALL)
     openLWT();
 
   unload(function() {
-    // Unapply style
-    styleSheetService.unregisterSheet(cssURI, styleSheetService.USER_SHEET);
-
     closeLWT();
+
+    if ($("#lwthemes-manager-widget")) {  // If toolbarbutton was added
+      // Remove toolbarbutton
+      CustomizableUI.destroyWidget("lwthemes-manager-widget");
+      // Unapply stylesheet for toolbarbutton
+      styleSheetService.unregisterSheet(toolbarCssURI, styleSheetService.USER_SHEET);
+    }
+
+    // Unapply stylesheet for Add-on Manager
+    styleSheetService.unregisterSheet(addonCssURI, styleSheetService.USER_SHEET);
 
     // Remove all elements added by this extension
     let items = $$(".lwthemes");
@@ -188,7 +228,7 @@ function startup(data, reason) {
  */
 function shutdown(data, reason) {
   // Clean up with unloaders when we're deactivating
-  if (reason == APP_SHUTDOWN)
+  if (reason === APP_SHUTDOWN)
     return;
 
   unload();
@@ -210,7 +250,7 @@ function install(data, reason) {
  * Handle the add-on being uninstalled
  */
 function uninstall(data, reason) {
-  if (reason == ADDON_UNINSTALL)
+  if (reason === ADDON_UNINSTALL)
     for (let [key] in Iterator(PREFS))
       prefs.clearUserPref(key); // Remove prefs on uninstall
     prefs.clearUserPref("lastDir");

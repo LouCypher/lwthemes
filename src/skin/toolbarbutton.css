@@ -1,0 +1,10 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+@-moz-document url("chrome://browser/content/browser.xul") {
+  #lwthemes-manager-widget {
+    list-style-image: url("icon16.png");
+  }
+  #aus-hello-button[cui-areatype="menu-panel"],
+  toolbarpaletteitem[place="palette"] > #lwthemes-manager-widget {
+    list-style-image: url("icon32.png");
+  }
+}
