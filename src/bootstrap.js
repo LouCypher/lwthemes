@@ -115,7 +115,7 @@ function main(aWindow, reason) {
   function addMenuItem() {
     let menuitem = document.createElement("menuitem");
     menuitem.className = "lwthemes menuitem-iconic";
-    menuitem.setAttribute("label", "Lightweight Themes");
+    menuitem.setAttribute("label", "Lightweight Themes Manager");
     menuitem.setAttribute("image", "chrome://lwthemes/skin/icon16.png");
     menuitem.addEventListener("command", openLWT);
     return menuitem;
@@ -144,7 +144,7 @@ function main(aWindow, reason) {
   // Personas Plus menu
   let menuP = $("#personas-selector-menu");
   if (menuP)
-    menuP.appendChild(addMenuItem());
+    menuP.insertBefore(addMenuItem(), menuP.lastChild);
 
   const styleSheetService = Cc["@mozilla.org/content/style-sheet-service;1"].
                             getService(Ci.nsIStyleSheetService);
@@ -185,12 +185,22 @@ function main(aWindow, reason) {
   /*if (reason === ADDON_INSTALL)
     closeLWT();*/
 
-  log(reason);
+  //log(reason);
   if (reason === ADDON_INSTALL)
     openLWT();
 
   unload(function() {
     closeLWT();
+
+    // Remove all elements added by this extension
+    let items = $$(".lwthemes");
+    if (items.length) {
+      for (let i = 0; i < items.length; i++)
+        items[i].parentNode.removeChild(items[i]);
+    }
+
+    // Unapply stylesheet for Add-on Manager
+    styleSheetService.unregisterSheet(addonCssURI, styleSheetService.USER_SHEET);
 
     if ($("#lwthemes-manager-widget")) {  // If toolbarbutton was added
       // Remove toolbarbutton
@@ -198,15 +208,6 @@ function main(aWindow, reason) {
       // Unapply stylesheet for toolbarbutton
       styleSheetService.unregisterSheet(toolbarCssURI, styleSheetService.USER_SHEET);
     }
-
-    // Unapply stylesheet for Add-on Manager
-    styleSheetService.unregisterSheet(addonCssURI, styleSheetService.USER_SHEET);
-
-    // Remove all elements added by this extension
-    let items = $$(".lwthemes");
-    if (items.length)
-      for (let i = 0; i < items.length; i++)
-        items[i].parentNode.removeChild(items[i]);
   }, aWindow)
 }
 
