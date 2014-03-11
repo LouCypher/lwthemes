@@ -33,14 +33,14 @@ Services.wm.getMostRecentWindow('mail:3pane').openContentTab('chrome://lwthemes/
     <label class="text-link"
            value="Mozilla Indonesia"
            href="http://mozilla.web.id/"
-           tooltiptext="&homepage.label;"/>
+           tooltiptext="http://mozilla.web.id/"/>
   </setting>
 
   <setting type="control" title="Polski">
     <label class="text-link"
            value="Leszek Życzkowski"
            href="http://www.babelzilla.org/forum/index.php?showuser=122"
-           tooltiptext="&homepage.label;"/>
+           tooltiptext="http://www.babelzilla.org/forum/index.php?showuser=122"/>
   </setting>
 
   <setting type="control" title="Solid Color Theme" first-row="true">
