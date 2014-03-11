@@ -3,7 +3,7 @@
   #lwthemes-manager-widget {
     list-style-image: url("icon16.png");
   }
-  #aus-hello-button[cui-areatype="menu-panel"],
+  #lwthemes-manager-widget[cui-areatype="menu-panel"],
   toolbarpaletteitem[place="palette"] > #lwthemes-manager-widget {
     list-style-image: url("icon32.png");
   }
