@@ -115,16 +115,16 @@ function main(aWindow, reason) {
   function addMenuItem() {
     let menuitem = document.createElement("menuitem");
     menuitem.className = "lwthemes menuitem-iconic";
-    menuitem.setAttribute("label", "Lightweight Themes Manager");
+    menuitem.setAttribute("label", "Lightweight Themes");
     menuitem.setAttribute("image", "chrome://lwthemes/skin/icon16.png");
     menuitem.addEventListener("command", openLWT);
     return menuitem;
   }
 
   // Firefox app menu
-  let menuA = $("#appmenu_preferences");
+  let menuA = $("#appmenu_addons");
   if (menuA)
-    menuA.parentNode.insertBefore(addMenuItem(), menuA.nextSibling);
+    menuA.parentNode.insertBefore(addMenuItem(), menuA);
 
   // Firefox/Thunderbird Tools menu
   let menuT = $("#menu_openAddons") || $("#addonsManager");
@@ -163,8 +163,8 @@ function main(aWindow, reason) {
     // Add toolbarbutton
     CustomizableUI.createWidget(
       { id : "lwthemes-manager-widget",
-        defaultArea : CustomizableUI.AREA_NAVBAR,
-        label : "Lightweight Themes Manager",
+        defaultArea : CustomizableUI.AREA_PANEL,
+        label : "Lightweight Themes",
         tooltiptext : "Lightweight Themes Manager",
         onCommand : function(aEvent) {
           openLWT();
@@ -202,7 +202,7 @@ function main(aWindow, reason) {
     // Unapply stylesheet for Add-on Manager
     styleSheetService.unregisterSheet(addonCssURI, styleSheetService.USER_SHEET);
 
-    if ($("#lwthemes-manager-widget")) {  // If toolbarbutton was added
+    if ($("#lwthemes-manager-widget")) {  // If toolbarbutton was added (Australis)
       // Remove toolbarbutton
       CustomizableUI.destroyWidget("lwthemes-manager-widget");
       // Unapply stylesheet for toolbarbutton
