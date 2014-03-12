@@ -2,6 +2,8 @@
 
 Firefox extension for managing your installed lightweight themes.
 
+[![Screenshot](https://raw.github.com/LouCypher/lwthemes/gh-pages/images/screenshot.png)](https://raw.github.com/LouCypher/lwthemes/gh-pages/images/screenshot.png)
+
 ### Compatibility
 
 * Firefox 24.0 and newer.
