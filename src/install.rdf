@@ -10,7 +10,7 @@
     <em:description>Manage your installed lightweight themes.</em:description>
     <em:version>0.3pre1</em:version>
     <em:creator>LouCypher</em:creator>
-    <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+    <em:homepageURL>http://loucypher.github.io/lwthemes/</em:homepageURL>
     <em:contributor>David Vignoni (icon)</em:contributor>
     <em:iconURL>chrome://lwthemes/skin/icon32.png</em:iconURL>
     <em:icon64URL>chrome://lwthemes/skin/icon64.png</em:icon64URL>
@@ -21,7 +21,7 @@
         <em:name>Lightweight Themes Manager</em:name>
         <em:description>Manage your installed lightweight themes.</em:description>
         <em:creator>LouCypher</em:creator>
-        <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+        <em:homepageURL>http://loucypher.github.io/lwthemes/</em:homepageURL>
         <em:contributor>David Vignoni (icon)</em:contributor>
         <em:translator>Mozilla Indonesia (id)</em:translator>
         <em:translator>Leszek(teo)Życzkowski (pl)</em:translator>
@@ -34,7 +34,7 @@
         <em:name>Lightweight Themes Manager</em:name>
         <em:description>Manage your installed lightweight themes.</em:description>
         <em:creator>LouCypher</em:creator>
-        <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+        <em:homepageURL>http://loucypher.github.io/lwthemes/</em:homepageURL>
         <em:contributor>David Vignoni (icon)</em:contributor>
         <em:translator>AriesFr</em:translator>
       </Description>
@@ -46,7 +46,7 @@
         <em:name>Pengelola Tema Latar</em:name>
         <em:description>Mengelola tema latar yang telah terpasang.</em:description>
         <em:creator>LouCypher</em:creator>
-        <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+        <em:homepageURL>http://loucypher.github.io/lwthemes/</em:homepageURL>
         <em:contributor>David Vignoni (icon)</em:contributor>
         <em:translator>Mozilla Indonesia</em:translator>
       </Description>
@@ -58,7 +58,7 @@
         <em:name>Lightweight Themes Manager</em:name>
         <em:description>Zarządzanie zainstalowanymi motywami tła.</em:description>
         <em:creator>LouCypher</em:creator>
-        <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+        <em:homepageURL>http://loucypher.github.io/lwthemes/</em:homepageURL>
         <em:contributor>David Vignoni (icon)</em:contributor>
         <em:translator>Leszek(teo)Życzkowski</em:translator>
       </Description>
