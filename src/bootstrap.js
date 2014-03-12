@@ -121,8 +121,8 @@ function main(aWindow, reason) {
     return menuitem;
   }
 
-  // Firefox app menu
-  let menuA = $("#appmenu_addons");
+  // Firefox app menu and Thunderbird hotdog menu
+  let menuA = $("#appmenu_customize");
   if (menuA)
     menuA.parentNode.insertBefore(addMenuItem(), menuA);
 
@@ -130,11 +130,6 @@ function main(aWindow, reason) {
   let menuT = $("#menu_openAddons") || $("#addonsManager");
   if (menuT)
     menuT.parentNode.insertBefore(addMenuItem(), menuT.nextSibling);
-
-  // Thunderbird Tools menu in appmenu
-  let menuAT = $("#appmenu_taskPopup");
-  if (menuAT)
-    menuAT.insertBefore(addMenuItem(), $("#appmenu_sanitizeHistory"));
 
   // SeaMonkey View > Apply Theme menu
   let menuV = $("#menu_viewApplyTheme_Popup menuseparator");
