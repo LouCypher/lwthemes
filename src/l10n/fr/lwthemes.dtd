@@ -1,0 +1,32 @@
+<!ENTITY page.title "Lightweight Themes">
+<!ENTITY page.privatebrowsing.p1 "Les fenêtres de navigation privée désactivent intentionnellement les thèmes.">
+<!ENTITY page.privatebrowsing.p2 "Pour activer les thèmes dans une fenêtre de navigation privée,">
+<!ENTITY page.reload "Rechargez cette page une fois l'opération effectuée">
+<!ENTITY menu.skin.light "Thème clair">
+<!ENTITY menu.skin.dark "Thème sombre">
+<!ENTITY menu.toggle.compact "Vue condensée">
+<!ENTITY menu.toggle.devmode "Mode développeur">
+<!ENTITY menu.theme.get "Obtenir des thèmes">
+<!ENTITY menu.theme.learn "Apprendre à créer un thème">
+<!ENTITY menu.theme.submit "Soumettre un nouveau thème">
+<!ENTITY menu.theme.backup "Sauvegarder…">
+<!ENTITY menu.theme.restore "Restaurer…">
+<!ENTITY menu.theme.restore.from "Restaurer les thèmes depuis la sauvegarde">
+<!ENTITY menu.theme.install.from "Installer un thème depuis un fichier…">
+<!ENTITY menu.theme.solidColor "Thème uni">
+<!ENTITY menu.personas.install "Installer Personas Plus">
+<!ENTITY menu.personas.enable "Activer Personas Plus">
+<!ENTITY menu.personas.create "Créer un thème">
+<!ENTITY menu.personas.edit "Modifier un thème personnalisé">
+<!ENTITY menu.search.install "Installer un moteur de recherche…">
+<!ENTITY search.placeholder.value "Chercher des thèmes">
+<!ENTITY button.json.tooltip "Visualiser au format JSON">
+<!ENTITY button.inspect.label "Inspecter">
+<!ENTITY button.inspect.tooltip "Inspecter l'objet">
+<!ENTITY button.save.label "Enregistrer">
+<!ENTITY button.save.tooltip "Enregistrer ce thème vers un fichier">
+<!ENTITY button.update.tooltip "Mettre à jour">
+<!ENTITY button.progress.tooltip "Mise à jour en cours…">
+<!ENTITY addon.translator "Traduit par">
+<!ENTITY addon.translator.link "http://www.babelzilla.org/forum/index.php?showuser=19621">
+<!ENTITY options.button.open "Ouvrir">

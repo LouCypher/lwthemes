@@ -36,6 +36,13 @@ Services.wm.getMostRecentWindow('mail:3pane').openContentTab('chrome://lwthemes/
            tooltiptext="http://mozilla.web.id/"/>
   </setting>
 
+  <setting type="control" title="Français">
+    <label class="text-link"
+           value="AriesFr"
+           href="http://www.babelzilla.org/forum/index.php?showuser=19621"
+           tooltiptext="http://www.babelzilla.org/forum/index.php?showuser=19621"/>
+  </setting>
+
   <setting type="control" title="Polski">
     <label class="text-link"
            value="Leszek Życzkowski"

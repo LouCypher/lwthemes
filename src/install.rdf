@@ -30,6 +30,18 @@
 
     <em:localized>
       <Description>
+        <em:locale>fr</em:locale>
+        <em:name>Lightweight Themes Manager</em:name>
+        <em:description>Manage your installed lightweight themes.</em:description>
+        <em:creator>LouCypher</em:creator>
+        <em:homepageURL>https://github.com/LouCypher/lwthemes</em:homepageURL>
+        <em:contributor>David Vignoni (icon)</em:contributor>
+        <em:translator>AriesFr</em:translator>
+      </Description>
+    </em:localized>
+
+    <em:localized>
+      <Description>
         <em:locale>id</em:locale>
         <em:name>Pengelola Tema Latar</em:name>
         <em:description>Mengelola tema latar yang telah terpasang.</em:description>
