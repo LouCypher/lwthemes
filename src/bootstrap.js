@@ -90,7 +90,8 @@ function main(aWindow, reason) {
 
     else {
       let SessionStore = (Cc["@mozilla.org/browser/sessionstore;1"] ||
-                          Cc["@mozilla.org/suite/sessionstore;1"]).getService(Ci.nsISessionStore);
+                          Cc["@mozilla.org/suite/sessionstore;1"]).
+                          getService(Ci.nsISessionStore);
       let {gBrowser} = aWindow;
       let {tabs} = gBrowser;
       for (let i = 0; i < tabs.length; i++) {
@@ -156,15 +157,15 @@ function main(aWindow, reason) {
     styleSheetService.loadAndRegisterSheet(toolbarCssURI, styleSheetService.USER_SHEET);
 
     // Add toolbarbutton
-    CustomizableUI.createWidget(
-      { id : "lwthemes-manager-widget",
-        defaultArea : CustomizableUI.AREA_PANEL,
-        label : "Lightweight Themes",
-        tooltiptext : "Lightweight Themes Manager",
-        onCommand : function(aEvent) {
-          openLWT();
-        }
-      });
+    CustomizableUI.createWidget({
+      id : "lwthemes-manager-widget",
+      defaultArea : CustomizableUI.AREA_PANEL,
+      label : "Lightweight Themes",
+      tooltiptext : "Lightweight Themes Manager",
+      onCommand : function(aEvent) {
+        openLWT();
+      }
+    });
   }
   /* End initializing toolbarbutton for Australis */
 

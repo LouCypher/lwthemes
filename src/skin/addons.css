@@ -1,9 +1,15 @@
+/*  This Source Code Form is subject to the terms of the Mozilla Public
+ *  License, v. 2.0. If a copy of the MPL was not distributed with this
+ *  file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
 @-moz-document url("about:addons") {
   #detail-view[type="theme"] #detail-desc-container vbox:last-child {
     margin-top: 120px;
     margin-left: -710px !important;
   }
+
   #detail-view[type="theme"] #detail-screenshot[width="null"][height="null"] {
     min-width: 680px !important;
     min-height: 100px !important;
