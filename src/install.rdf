@@ -8,7 +8,7 @@
     <em:unpack>false</em:unpack>
     <em:name>Lightweight Themes Manager</em:name>
     <em:description>Manage your installed lightweight themes.</em:description>
-    <em:version>0.3pre1</em:version>
+    <em:version>0.2.1pre1</em:version>
     <em:creator>LouCypher</em:creator>
     <em:homepageURL>http://loucypher.github.io/lwthemes/</em:homepageURL>
     <em:contributor>David Vignoni (icon)</em:contributor>
