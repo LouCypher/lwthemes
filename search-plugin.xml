@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
                    xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+<script id="_wauom9">var _wau = _wau || [];
+_wau.push(["map", "r6l4sqhfauqs", "om9", "420", "210", "natural", "star-blue"]);(function() 
+                   {var s=document.createElement("script"); s.async=true;
+                    s.src="http://widgets.amung.us/map.js";
+                    document.getElementsByTagName("head")[0].appendChild(s);
+                   })();</script>
   <ShortName>Mozilla Themes</ShortName>
   <Description>Lightweight Themes</Description>
   <InputEncoding>UTF-8</InputEncoding>
